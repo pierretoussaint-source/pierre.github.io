@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E.plant-stem-icon { stroke: var(--theme-secondary-color, %234CAF50); stroke-width: 1.5; stroke-linecap: round; }.plant-leaf-icon { fill: var(--theme-secondary-color, %2366BB6A); }.n-stylized-icon { fill: var(--theme-heading-color, %23227A49); }.icon-background { fill: var(--theme-card-background-color, white); stroke: var(--theme-secondary-color, %23DDD); stroke-width:1; }%3C/style%3E%3Ccircle class='icon-background' cx='40' cy='40' r='38'/%3E%3Cpath d='M30 55 L30 25 M30 25 L50 55 M50 55 L50 25' stroke='var(--theme-heading-color, %23227A49)' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cg transform='translate(40, 15) scale(0.45)'%3E%3Cline class='plant-stem-icon' x1='0' y1='10' x2='0' y2='-3'/%3E%3Cellipse cx='0' cy='-8' rx='5' ry='7' fill='var(--theme-sorgho-primary-color, %23C0392B)'/%3E%3C/g%3E%3Cg transform='translate(18, 38) scale(0.45)'%3E%3Cline class='plant-stem-icon' x1='0' y1='12' x2='0' y2='-3'/%3E%3Ccircle cx='0' cy='-8' r='5' fill='var(--theme-primary-color, %23FFD700)'/%3E%3Ccircle cx='0' cy='-8' r='2' fill='var(--theme-secondary-color, %23A0522D)'/%3E%3C/g%3E%3Cg transform='translate(62, 38) scale(0.45)'%3E%3Crect class='plant-leaf-icon' x='-2' y='-10' width='4' height='18' rx='1'/%3E%3Cpath stroke='var(--theme-primary-color, %23E6B800)' stroke-width='1.5' fill='none' d='M-1.5,-10 Q0,-14 1.5,-10 M0,-10 Q-2.5,-13 -3,-9 M0,-10 Q2.5,-13 3,-9'/%3E%3C/g%3E%3Cg transform='translate(25, 60) scale(0.4)'%3E%3Cline class='plant-stem-icon' x1='0' y1='10' x2='0' y2='-1'/%3E%3Ccircle cx='0' cy='-3' r='2' fill='var(--theme-colza-primary-color, %23FFEB3B)'/%3E%3Ccircle cx='-3' cy='-5' r='2' fill='var(--theme-colza-primary-color, %23FFEB3B)'/%3E%3Ccircle cx='3' cy='-5' r='2' fill='var(--theme-colza-primary-color, %23FFEB3B)'/%3E%3C/g%3E%3Cg transform='translate(55, 60) scale(0.4)'%3E%3Cpath class='plant-leaf-icon' d='M0,12 Q-8,3 -4,-4 Q0,-8 4,-4 Q8,3 0,12 Z'/%3E%3Ccircle cx='-2' cy='-1' r='1' fill='var(--theme-soja-primary-color, %23E1BEE7)'/%3E%3Ccircle cx='2' cy='-1' r='1' fill='var(--theme-soja-primary-color, %23E1BEE7)'/%3E%3C/g%3E%3C/svg%3E">
+    <title>Notations v29</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<style>
+    :root {
+        --theme-primary-color: #33A532; --theme-secondary-color: #227A49; 
+        --theme-text-on-primary: white; --theme-text-on-secondary: white;
+        --theme-heading-color: #227A49; --theme-button-hover-bg: #227A49;
+        --theme-tab-active-bg: #33A532; --theme-tab-active-text: white;
+        --theme-gps-button-bg: #007bff; --theme-gps-button-text: white;
+        --theme-gps-button-hover-bg: #0056b3;
+        --theme-input-border-color: #ced4da; --theme-input-focus-border-color: #80bdff;
+        --theme-input-focus-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        --theme-text-color: #495057; --theme-background-color: #f8f9fa;
+        --theme-card-background-color: #ffffff; --theme-card-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        --theme-font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    }
+    .theme-mais { --theme-primary-color: #f1c40f; --theme-secondary-color: #27ae60; --theme-text-on-primary: #333; --theme-heading-color: #27ae60; --theme-button-hover-bg: #e6b800; --theme-tab-active-bg: #f1c40f; --theme-tab-active-text: #333; --theme-gps-button-bg: #27ae60; }
+    .theme-tournesol { --theme-primary-color: #e67e22; --theme-secondary-color: #2c3e50; --theme-text-on-primary: white; --theme-heading-color: #e67e22; --theme-button-hover-bg: #d35400; --theme-tab-active-bg: #e67e22; --theme-tab-active-text: white; --theme-gps-button-bg: #2c3e50; }
+    .theme-colza { --theme-primary-color: #f4d03f; --theme-secondary-color: #2ecc71; --theme-text-on-primary: #333; --theme-heading-color: #27ae60; --theme-button-hover-bg: #e1be32; --theme-tab-active-bg: #f4d03f; --theme-tab-active-text: #333; --theme-gps-button-bg: #2ecc71; }
+    .theme-soja { --theme-primary-color: #a2d9ce; --theme-secondary-color: #50623a; --theme-text-on-primary: #333; --theme-heading-color: #50623a; --theme-button-hover-bg: #8bc0b3; --theme-tab-active-bg: #a2d9ce; --theme-tab-active-text: #333; --theme-gps-button-bg: #50623a; }
+    .theme-sorgho { --theme-primary-color: #c0392b; --theme-secondary-color: #795548; --theme-text-on-primary: white; --theme-heading-color: #c0392b; --theme-button-hover-bg: #a93226; --theme-tab-active-bg: #c0392b; --theme-tab-active-text: white; --theme-gps-button-bg: #795548; }
+    .theme-fictive { --theme-primary-color: #9b59b6; --theme-secondary-color: #8e44ad; --theme-heading-color: #8e44ad; --theme-button-hover-bg: #732d91; --theme-tab-active-bg: #9b59b6; --theme-tab-active-text: white; --theme-gps-button-bg: #8e44ad; }
+
+    body { font-family: var(--theme-font-family); margin: 0; padding: 15px; background-color: var(--theme-background-color); color: var(--theme-text-color); transition: background-color 0.5s ease, color 0.5s ease; }
+    h1, h4 { color: var(--theme-heading-color); }
+    
+    .tabs { overflow: hidden; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+    .tablink { background-color: #e9ecef; float: left; border: none; outline: none; cursor: pointer; padding: 12px 18px; transition: background-color 0.3s, color 0.3s; font-size: 1em; border-radius: 6px 6px 0 0; margin-right: 3px; color: #495057; }
+    .tablink.active { background-color: var(--theme-tab-active-bg); color: var(--theme-tab-active-text); font-weight: 500; }
+    .tabcontent { display: none; padding: 15px 0; }
+    
+    #session-setup, .sidebar, .main-panel, #parametres div { padding: 20px; background-color: var(--theme-card-background-color); border-radius: 10px; box-shadow: var(--theme-card-shadow); margin-bottom:25px; }
+    #app-container { max-width: 1400px; margin: 0 auto; }
+    #app-content { display: flex; flex-wrap: wrap; gap: 25px; }
+    
+    .sidebar { flex: 1.3; min-width: 480px; } 
+    .main-panel { flex: 2; min-width: 450px; }
+    
+    label { display: block; margin-bottom: 6px; width: 100%; font-weight: 500; font-size: 0.95em; color: #343a40; }
+    input, select, textarea { padding: 10px; border: 1px solid var(--theme-input-border-color); border-radius: 5px; font-size: 1em; width: 100%; margin-bottom: 12px; box-sizing: border-box; }
+    input[type="checkbox"] { display: inline-block; width: auto; margin-right: 8px; vertical-align: middle; }
+    
+    button { background-color: var(--theme-primary-color); color: var(--theme-text-on-primary); border: none; padding: 12px 18px; font-size: 1em; font-weight: 500; cursor: pointer; border-radius: 6px; margin-top:15px; transition: 0.2s; }
+    button:hover { background-color: var(--theme-button-hover-bg); transform: translateY(-1px); }
+    .btn-secondary { background-color: #6c757d; color: white; }
+    .btn-secondary:hover { background-color: #5a6268; }
+    .btn-danger { background-color: #e74c3c; color: white; }
+    
+    /* Bouton spécifique pour "Enregistrer et Suivant" qui prend la couleur secondaire du thème */
+    .btn-accent { background-color: var(--theme-secondary-color); color: var(--theme-text-on-secondary); }
+    .btn-accent:hover { opacity: 0.9; }
+
+    .square-btn-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-bottom: 5px; } /* Gap réduit */
+    /* Taille réduite pour mobile (28px au lieu de 34px) */
+    .square-btn { width: 28px; height: 28px; line-height: 26px; border: 1px solid #adb5bd; background-color: #f8f9fa; text-align: center; cursor: pointer; border-radius: 4px; vertical-align: middle; font-size: 0.85em; font-weight: 500; }
+    .square-btn.selected { background-color: var(--theme-secondary-color); color: var(--theme-text-on-secondary); font-weight: bold; border-color: var(--theme-secondary-color); }
+    
+    .espece-gps-line { display: flex; align-items: center; justify-content: flex-start; margin-bottom: 15px; flex-wrap: wrap; }
+    #voir-sur-carte, #voir-plan-semis { margin: 0 0 0 10px; padding: 4px 8px; font-size: 0.85em; width: auto; border-radius: 4px; display:inline-block; }
+    #voir-sur-carte { background-color: var(--theme-gps-button-bg); color: var(--theme-gps-button-text); }
+    
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 800px; border-radius: 8px; max-height: 90vh; overflow-y: auto; }
+    
+    .input-inc-dec { display: flex; align-items: center; margin-bottom: 12px; width: auto; }
+    .input-inc-dec input { width: 75px !important; margin: 0 6px; text-align: center; display: inline-block !important; }
+    .input-inc-dec button { width: auto !important; padding: 6px 12px; margin: 0; display: inline-block !important; }
+
+    .checkbox-container { display: flex; align-items: center; margin-bottom: 10px; }
+    .checkbox-container input { margin-bottom: 0; margin-right: 10px; }
+    .checkbox-container label { margin-bottom: 0; display: inline-block; }
+
+    /* Conteneur pour les deux boutons d'enregistrement côte à côte */
+    .save-buttons-container { display: flex; gap: 10px; margin-top: 15px; }
+    .save-buttons-container button { flex: 1; padding: 15px 5px; font-size: 1em; line-height: 1.2; }
+
+    @media (max-width: 600px) {
+        .sidebar, .main-panel { min-width: 100%; padding: 15px; }
+        .tablink { padding: 10px 12px; font-size: 0.9em; }
+    }
+
+    #sowing-plan-grid-container table { border-collapse: collapse; margin: 0 auto; }
+    #sowing-plan-grid-container td { border: 1px solid #ccc; padding: 5px; text-align: center; min-width: 45px; height: 35px; font-size: 0.9em; background: #fff; cursor: pointer; vertical-align: top; }
+    .highlighted-plot { background-color: var(--theme-primary-color) !important; color: white !important; font-weight: bold; border: 2px solid #333 !important; }
+
+    .hidden-section { display: none !important; }
+    .notation-group-container { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 15px; background-color: #fdfdfd; }
+    .not-buttons-row { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
+    .not-btn-choix { flex: 1; padding: 8px; font-size: 0.9em; background-color: #e9ecef; color: #333; border: 1px solid #ccc; min-width: 50px; cursor: pointer; }
+    .not-btn-choix.active { background-color: var(--theme-secondary-color); color: white; border-color: var(--theme-secondary-color); box-shadow: inset 0 3px 5px rgba(0,0,0,0.2); }
+    
+    .simple-notation-line { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+    .simple-not-label { font-weight: bold; min-width: 30px; }
+
+    /* Styles Tableau BBCH */
+    #bbch-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+    #bbch-table th, #bbch-table td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 0.9em; }
+    #bbch-table th { background-color: #f2f2f2; font-weight: bold; }
+
+</style>
+<body>
+
+<div style="text-align: center; margin-bottom: 15px;">
+    <svg width="200" height="70" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg">
+        <path class="n-stylized" d="M88 50 L88 20 M88 20 L112 50 M112 50 L112 20" stroke="var(--theme-heading-color, #227A49)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <g transform="translate(35, 35) scale(0.8)"><line class="plant-stem" x1="0" y1="15" x2="0" y2="-5"/><circle cx="0" cy="-10" r="6" fill="var(--theme-primary-color, #FFD700)"/><circle cx="0" cy="-10" r="3" fill="var(--theme-secondary-color, #A0522D)"/><path class="plant-leaf" d="M0,5 Q5,0 2,-5 Q-5,-2 0,5 Z"/></g>
+        <g transform="translate(65, 38) scale(0.8)"><rect class="plant-leaf" x="-3" y="-15" width="6" height="25" rx="2"/><path stroke="var(--theme-primary-color, #E6B800)" stroke-width="1.5" fill="none" d="M-2,-15 Q0,-20 2,-15 M0,-15 Q-3,-18 -4,-14 M0,-15 Q3,-18 4,-14"/><path class="plant-leaf" d="M2,0 Q10,-5 8,-12 L3,-10 Q8,-3 2,0 Z"/><path class="plant-leaf" d="M-2,0 Q-10,-5 -8,-12 L-3,-10 Q-8,-3 -2,0 Z"/></g>
+        <g transform="translate(135, 38) scale(0.7)"><line class="plant-stem" x1="0" y1="18" x2="0" y2="-2"/><circle cx="0" cy="-5" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><circle cx="-4" cy="-8" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><circle cx="4" cy="-8" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><circle cx="0" cy="-11" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><path class="plant-leaf" d="M0,12 Q6,8 3,2 Q-3,6 0,12 Z" transform="rotate(10)"/></g>
+        <g transform="translate(165, 38) scale(0.75)"><path class="plant-leaf" d="M0,15 Q-10,5 -5,-5 Q0,-10 5,-5 Q10,5 0,15 Z"/><circle cx="-3" cy="0" r="1.5" fill="var(--theme-soja-primary-color, #E1BEE7)"/><circle cx="3" cy="0" r="1.5" fill="var(--theme-soja-primary-color, #E1BEE7)"/><circle cx="0" cy="-4" r="1.5" fill="var(--theme-soja-primary-color, #E1BEE7)"/></g>
+    </svg>
+</div>
+
+    <h1>Notations</h1>
+
+    <div id="session-setup">
+        <label for="choix-essai">Choix de l'essai :</label>
+        <select id="choix-essai"></select>
+        <button id="confirmer-essai" class="btn-primary">Confirmer</button>
+    </div>
+
+    <div id="app-container" style="display:none;">
+        <div class="tabs">
+            <button class="tablink active" onclick="openTab(event, 'saisie')" id="defaultOpen">Saisie</button>
+            <button class="tablink" onclick="openTab(event, 'parametres')">Paramètres</button>
+        </div>
+
+        <div id="saisie" class="tabcontent" style="display:block;">
+            <div id="app-content">
+                <div class="sidebar">
+                    <div class="selector-group"> 
+                        <h4>Numéro de parcelle</h4>
+                        <div id="d1-buttons" class="square-btn-group"></div>
+                        <div id="d2-buttons" class="square-btn-group"></div>
+                        <div id="d3-buttons" class="square-btn-group"></div>
+                    </div>
+
+                   <div class="mode-selection-line" style="display: flex; align-items: center; gap: 5px; margin-top:10px;">
+                      <label for="mode-avancement" style="width:auto; margin:0;">Mode:</label>
+                      <select id="mode-avancement" style="width:auto; margin:0;">
+                        <option value="C">C (Classique)</option>
+                        <option value="Z" selected>Z (Zigzag)</option>
+                        <option value="U">U (Zigzag Col)</option>
+                        <option value="N">N (Colonne)</option>
+                      </select>
+                      <button type="button" id="info-mode-avancement" class="btn-secondary" style="margin:0; padding: 5px 10px;">?</button>
+                    </div>
+
+                  <div class="parcelle-navigation" style="display: flex; gap: 5px; justify-content: space-around; margin-top: 15px;">
+                      <button id="parcelle-precedente" class="btn-secondary">← Préc.</button>
+                      <button id="valider-parcelle" class="btn-primary">Valider Parcelle</button>
+                      <button id="parcelle-suivante" class="btn-primary">Suiv. →</button>
+                    </div>
+                    
+                    <hr>
+                    <p id="variete-text" style="font-weight:bold; font-size:1.1em; color:var(--theme-heading-color);">Lignée : </p>
+                    <div class="espece-gps-line">
+                        <p id="espece-text" style="margin:0; margin-right:10px; color:var(--theme-secondary-color); font-weight:bold;"></p>
+                        <button id="voir-sur-carte" style="display:none;"><b>GPS</b></button>
+                        <button id="voir-plan-semis" style="display:none;">Plan de Semis</button>
+                    </div>
+                    
+                    <div class="input-inc-dec" style="margin-top:15px;">
+                        <label for="rep" style="width:auto; margin-right:10px;">Rep :</label>
+                        <button type="button" id="minus-rep" class="btn-secondary inline-btn">-</button>
+                        <input type="text" id="rep" value="A" maxlength="2">
+                        <button type="button" id="plus-rep" class="btn-secondary inline-btn">+</button>
+                    </div>
+
+                    <hr>
+                    <button id="btn-toggle-notations" class="btn-secondary" style="width:100%; text-align:left; margin-top:5px;">► MENUS (Ouvrir/Fermer)</button>
+                    
+                    <div id="central-notations-container" style="display:block; margin-top:10px;">
+                        <div id="notation-menu-row" class="not-buttons-row" style="display:none;">
+                            <button type="button" class="not-btn-choix" data-target="not-stade">Stade</button>
+                            <button type="button" class="not-btn-choix" data-target="not-flo">Flo</button>
+                            <button type="button" class="not-btn-choix" data-target="not-prlvmt">Prlvmt</button>
+                            <button type="button" class="not-btn-choix" data-target="not-visuelle">Visuelle</button>
+                            <button type="button" class="not-btn-choix" data-target="not-phyto">Phyto</button>
+                            <button type="button" class="not-btn-choix" data-target="not-simple">Simple</button>
+                        </div>
+
+                        <div id="not-stade" class="notation-group-container hidden-section">
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                                <label for="stade" style="width:auto; margin:0;">Stade (BBCH) :</label>
+                                <button type="button" id="bbch-info-button" class="btn-secondary" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
+                            </div>
+                            <div class="input-inc-dec">
+                                <button type="button" id="minus-stade" class="btn-secondary">-</button>
+                                <input type="text" id="stade" placeholder="ex: 65">
+                                <button type="button" id="plus-stade" class="btn-secondary">+</button>
+                            </div>
+                        </div>
+
+                        <div id="not-flo" class="notation-group-container hidden-section">
+                            <h4>Taux de floraison (%) <span id="flo-display">0</span></h4>
+                            <div id="flo-buttons" class="square-btn-group"></div>
+                        </div>
+
+                        <div id="not-prlvmt" class="notation-group-container hidden-section">
+                            <h4>Prélèvements / Échantillons</h4>
+                            <div style="display:flex; align-items:center; gap:5px; margin-bottom:5px;">
+                                <label style="width:auto; margin:0;">Code:</label>
+                                <input type="text" id="lettres-analyse" size="5" placeholder="AAA" style="width:60px !important; margin:0;">
+                                <input type="number" id="numero-analyse" value="1" min="1" style="width:60px !important; margin:0;">
+                                <button id="minus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">-</button>
+                                <button id="plus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">+</button>
+                            </div>
+                        </div>
+
+                        <div id="not-visuelle" class="notation-group-container hidden-section">
+                            <h4>NEC (0-9) <span id="nec-display">0</span></h4>
+                            <div id="nec-buttons" class="square-btn-group"></div>
+                            <h4>EP (0-9) <span id="ep-display">0</span></h4>
+                            <div id="ep-buttons" class="square-btn-group"></div>
+                        </div>
+
+                        <div id="not-phyto" class="notation-group-container hidden-section">
+                            <h4>Impact Phyto (0-9) <span id="phyto-display">0</span></h4>
+                            <div id="phyto-buttons" class="square-btn-group"></div>
+                        </div>
+
+                        <div id="not-simple" class="notation-group-container hidden-section">
+                            <div id="simple-notations-list"></div>
+                            <button id="btn-add-simple-line" class="btn-secondary" style="font-size:0.8em; width:100%;">+ Ajouter ligne</button>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <label for="obs">Observations:</label>
+                    <textarea id="obs" rows="2"></textarea>
+
+                    <div class="save-buttons-container">
+                        <button id="enregistrer" class="btn-primary">Enregistrer</button>
+                        <button id="enregistrer-suivant" class="btn-accent">Enregistrer & Suivant</button>
+                    </div>
+                </div>
+                
+                <div class="main-panel">
+                    <p id="date-heure-info-display" style="font-style:italic; color:#666;"></p> 
+                    <h4>Derniers enregistrements</h4>
+                    <div style="overflow-x:auto;">
+                        <table id="recap-table">
+                            <thead><tr><th>Essai</th><th>Parc.</th><th>Rep</th><th>Code Ech.</th><th>Stade</th><th>Flo%</th><th>Phyto</th><th>Act.</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="parametres" class="tabcontent">
+            <button id="changer-essai" class="btn-secondary">Changer d'essai</button>
+            <button id="reset-data-local" class="btn-danger">Reset Données Locales</button>
+            <hr>
+            <label>Date Obs :</label><input type="date" id="custom-date">
+            <label>Heure :</label><input type="time" id="custom-time">
+            <hr>
+            <label>Météo (Condition) :</label>
+            <select id="meteo-select">
+                <option value="Soleil">Soleil</option>
+                <option value="Eclaircies">Eclaircies</option>
+                <option value="Nuageux">Nuageux</option>
+                <option value="Couvert">Couvert</option>
+                <option value="Vent">Vent</option>
+                <option value="Pluie">Pluie</option>
+            </select>
+            <hr>
+            <h4>Aide au Formatage</h4>
+            <p>Pour ajouter vos propres essais, modifiez le fichier et ajoutez vos données dans la section CSV en incluant les colonnes <code>Plan_X</code> et <code>Plan_Y</code> pour dessiner le plan automatiquement.</p>
+            <button onclick="downloadTemplateWithPlan()" class="btn-primary">Télécharger Modèle CSV (avec Plan)</button>
+            <br><br>
+            <button id="telecharger-csv" class="btn-secondary" style="width:100%;">Télécharger CSV Données</button>
+        </div>
+    </div>
+
+    <div id="bbchModal" class="modal"><div class="modal-content"><span class="close-button" id="closeBbchModal" style="float:right; font-size:24px; cursor:pointer;">×</span><h2>Stades BBCH</h2><div id="bbch-modal-body"></div></div></div>
+    
+    <div id="sowingPlanModal" class="modal">
+        <div class="modal-content"> 
+            <span class="close-button" id="closeSowingPlanModal" style="float:right; font-size:24px; cursor:pointer;">×</span>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2>Plan de Semis</h2>
+                <button id="btn-validate-plan" class="btn-primary" style="margin:0;">Valider la parcelle</button>
+            </div>
+            <hr>
+            <div id="sowing-plan-grid-container" style="overflow:auto;"></div>
+        </div>
+    </div>
+    
+    <div id="progressionModeModal" class="modal">
+         <div class="modal-content">
+            <span class="close-button" id="closeProgressionModeModal" style="float:right; font-size:24px; cursor:pointer;">×</span>
+            <h2>Modes de Progression</h2>
+            <p>C: Classique (Ordre numérique)<br>Z: Zigzag (Ligne)<br>U: Zigzag (Colonne)<br>N: Colonne</p>
+        </div>
+    </div>
+
+<script>
+    // --- DONNÉES INITIALES (Séparateur ,) ---
+    const rawCsvData = `Code_Essai_Parcelle,variete,Essai,Espece,Gps,Plan_X,Plan_Y
+001,LID 5053L SU,Test,Tournesol,"43.69,1.27",1,1
+002,MYLADY,Test,Mais,"43.47,-0.34",2,1
+003,LID PANDORE,Test,Sorgho,"41.75,-0.79",3,1
+004,ISIDOR,Test,Soja,"43.65,1.65",1,2
+005,LID TRETO,Test,Colza,"44.39,1.39",2,2
+006,VarTest006,Test,Tournesol,"0.0,0.0",3,2
+007,VarTest007,Test,Tournesol,"0.0,0.0",1,3
+008,VarTest008,Test,Tournesol,"0.0,0.0",2,3
+009,VarTest009,Test,Tournesol,"0.0,0.0",3,3
+001,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",1,1
+002,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",2,1
+003,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",3,1
+004,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",4,1
+005,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",5,1
+006,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",6,1
+007,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",7,1
+008,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",8,1
+009,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",9,1
+010,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",10,1
+011,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",11,1
+012,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",12,1
+013,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",13,1
+014,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",14,1
+015,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",15,1
+016,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",16,1
+017,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",17,1
+018,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",18,1
+019,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",19,1
+020,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",20,1
+021,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",21,1
+022,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",22,1
+023,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",23,1
+024,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",24,1
+025,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",25,1
+026,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",26,1
+027,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",27,1
+028,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",28,1
+029,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",29,1
+030,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",30,1
+031,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",31,1
+032,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",32,1
+033,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",33,1
+034,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",34,1
+035,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",35,1
+036,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",36,1
+037,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",37,1
+038,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",38,1
+039,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",39,1
+040,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",40,1
+041,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",41,1
+042,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",42,1
+043,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",43,1
+044,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",44,1
+045,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",45,1
+046,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",46,1
+047,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",47,1
+048,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",48,1
+049,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",49,1
+050,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",50,1
+051,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",51,1
+052,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",52,1
+053,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",53,1
+054,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",54,1
+055,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",55,1
+056,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",56,1
+057,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",57,1
+058,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",58,1
+059,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",59,1
+060,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",60,1
+061,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",61,1
+062,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",62,1
+063,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",63,1
+064,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",64,1
+065,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",65,1
+066,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",66,1
+067,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",67,1
+068,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",68,1
+069,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",69,1
+070,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",70,1
+071,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",71,1
+072,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",72,1
+073,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",73,1
+074,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",74,1
+075,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",75,1
+076,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",76,1
+077,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",77,1
+078,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",78,1
+079,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",79,1
+080,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",80,1
+081,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",81,1
+082,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",82,1
+083,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",83,1
+084,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",84,1
+085,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",85,1
+086,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",86,1
+087,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",87,1
+088,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",88,1
+089,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",89,1
+090,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",90,1
+091,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",91,1
+092,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",92,1
+093,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",93,1
+094,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",94,1
+095,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",95,1
+096,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",96,1
+097,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",97,1
+098,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",98,1
+099,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",1,2
+100,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",2,2
+101,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",3,2
+102,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",4,2
+103,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",5,2
+104,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",6,2
+105,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",7,2
+106,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",8,2
+107,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",9,2
+108,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",10,2
+109,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",11,2
+110,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",12,2
+111,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",13,2
+112,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",14,2
+113,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",15,2
+114,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",16,2
+115,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",17,2
+116,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",18,2
+117,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",19,2
+118,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",20,2
+119,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",21,2
+120,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",22,2
+121,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",23,2
+122,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",24,2
+123,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",25,2
+124,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",26,2
+125,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",27,2
+126,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",28,2
+127,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",29,2
+128,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",30,2
+129,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",31,2
+130,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",32,2
+131,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",33,2
+132,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",34,2
+133,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",35,2
+134,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",36,2
+135,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",37,2
+136,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",38,2
+137,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",39,2
+138,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",40,2
+139,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",41,2
+140,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",42,2
+141,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",43,2
+142,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",44,2
+143,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",45,2
+144,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",46,2
+145,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",47,2
+146,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",48,2
+147,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",49,2
+148,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",50,2
+149,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",51,2
+150,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",52,2
+151,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",53,2
+152,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",54,2
+153,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",55,2
+154,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",56,2
+155,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",57,2
+156,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",58,2
+157,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",59,2
+158,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",60,2
+159,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",61,2
+160,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",62,2
+161,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",63,2
+162,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",64,2
+163,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",65,2
+164,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",66,2
+165,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",67,2
+166,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",68,2
+167,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",69,2
+168,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",70,2
+169,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",71,2
+170,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",72,2
+171,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",73,2
+172,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",74,2
+173,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",75,2
+174,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",76,2
+175,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",77,2
+176,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",78,2
+177,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",79,2
+178,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",80,2
+179,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",81,2
+180,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",82,2
+181,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",83,2
+182,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",84,2
+183,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",85,2
+184,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",86,2
+185,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",87,2
+186,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",88,2
+187,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",89,2
+188,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",90,2
+189,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",91,2
+190,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",92,2
+191,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",93,2
+192,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",94,2
+193,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",95,2
+194,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,2
+195,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,2
+196,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,2
+197,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",1,3
+198,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",2,3
+199,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",3,3
+200,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",4,3
+201,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",5,3
+202,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",6,3
+203,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",7,3
+204,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",8,3
+205,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",9,3
+206,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",10,3
+207,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",11,3
+208,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",12,3
+209,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",13,3
+210,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",14,3
+211,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",15,3
+212,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",16,3
+213,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",17,3
+214,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",18,3
+215,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",19,3
+216,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",20,3
+217,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",21,3
+218,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",22,3
+219,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",23,3
+220,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",24,3
+221,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",25,3
+222,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",26,3
+223,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",27,3
+224,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",28,3
+225,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",29,3
+226,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",30,3
+227,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",31,3
+228,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",32,3
+229,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",33,3
+230,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",34,3
+231,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",35,3
+232,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",36,3
+233,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",37,3
+234,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",38,3
+235,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",39,3
+236,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",40,3
+237,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",41,3
+238,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",42,3
+239,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",43,3
+240,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",44,3
+241,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",45,3
+242,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",46,3
+243,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",47,3
+244,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",48,3
+245,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",49,3
+246,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",50,3
+247,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",51,3
+248,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",52,3
+249,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",53,3
+250,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",54,3
+251,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",55,3
+252,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",56,3
+253,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",57,3
+254,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",58,3
+255,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",59,3
+256,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",60,3
+257,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",61,3
+258,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",62,3
+259,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",63,3
+260,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",64,3
+261,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",65,3
+262,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",66,3
+263,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",67,3
+264,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",68,3
+265,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",69,3
+266,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",70,3
+267,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",71,3
+268,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",72,3
+269,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",73,3
+270,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",74,3
+271,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",75,3
+272,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",76,3
+273,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",77,3
+274,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",78,3
+275,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",79,3
+276,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",80,3
+277,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",81,3
+278,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",82,3
+279,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",83,3
+280,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",84,3
+281,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",85,3
+282,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",86,3
+283,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",87,3
+284,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",88,3
+285,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",89,3
+286,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",90,3
+287,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",91,3
+288,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",92,3
+289,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",93,3
+290,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",94,3
+291,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",95,3
+292,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",96,3
+293,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",97,3
+294,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",98,3
+295,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",1,4
+296,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",2,4
+297,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",3,4
+298,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",4,4
+299,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",5,4
+300,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",6,4
+301,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",7,4
+302,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",8,4
+303,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",9,4
+304,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",10,4
+305,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",11,4
+306,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",12,4
+307,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",13,4
+308,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",14,4
+309,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",15,4
+310,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",16,4
+311,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",17,4
+312,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",18,4
+313,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",19,4
+314,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",20,4
+315,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",21,4
+316,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",22,4
+317,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",23,4
+318,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",24,4
+319,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",25,4
+320,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",26,4
+321,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",27,4
+322,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",28,4
+323,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",29,4
+324,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",30,4
+325,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",31,4
+326,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",32,4
+327,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",33,4
+328,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",34,4
+329,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",35,4
+330,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",36,4
+331,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",37,4
+332,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",38,4
+333,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",39,4
+334,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",40,4
+335,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",41,4
+336,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",42,4
+337,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",43,4
+338,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",44,4
+339,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",45,4
+340,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",46,4
+341,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",47,4
+342,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",48,4
+343,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",49,4
+344,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",50,4
+345,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",51,4
+346,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",52,4
+347,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",53,4
+348,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",54,4
+349,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",55,4
+350,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",56,4
+351,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",57,4
+352,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",58,4
+353,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",59,4
+354,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",60,4
+355,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",61,4
+356,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",62,4
+357,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",63,4
+358,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",64,4
+359,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",65,4
+360,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",66,4
+361,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",67,4
+362,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",68,4
+363,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",69,4
+364,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",70,4
+365,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",71,4
+366,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",72,4
+367,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",73,4
+368,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",74,4
+369,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",75,4
+370,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",76,4
+371,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",77,4
+372,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",78,4
+373,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",79,4
+374,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",80,4
+375,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",81,4
+376,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",82,4
+377,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",83,4
+378,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",84,4
+379,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",85,4
+380,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",86,4
+381,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",87,4
+382,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",88,4
+383,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",89,4
+384,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",90,4
+385,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",91,4
+386,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",92,4
+387,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",93,4
+388,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",94,4
+389,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",95,4
+390,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",96,4
+391,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",97,4
+392,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",98,4
+393,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",1,5
+394,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",2,5
+395,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",3,5
+396,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",4,5
+397,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",5,5
+398,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",6,5
+399,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",7,5
+400,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",8,5
+401,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",9,5
+402,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",10,5
+403,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",11,5
+404,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",12,5
+405,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",13,5
+406,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",14,5
+407,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",15,5
+408,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",16,5
+409,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",17,5
+410,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",18,5
+411,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",19,5
+412,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",20,5
+413,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",21,5
+414,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",22,5
+415,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",23,5
+416,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",24,5
+417,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",25,5
+418,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",26,5
+419,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",27,5
+420,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",28,5
+421,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",29,5
+422,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",30,5
+423,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",31,5
+424,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",32,5
+425,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",33,5
+426,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",34,5
+427,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",35,5
+428,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",36,5
+429,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",37,5
+430,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",38,5
+431,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",39,5
+432,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",40,5
+433,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",41,5
+434,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",42,5
+435,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",43,5
+436,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",44,5
+437,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",45,5
+438,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",46,5
+439,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",47,5
+440,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",48,5
+441,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",49,5
+442,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",50,5
+443,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",51,5
+444,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",52,5
+445,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",53,5
+446,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",54,5
+447,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",55,5
+448,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",56,5
+449,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",57,5
+450,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",58,5
+451,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",59,5
+452,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",60,5
+453,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",61,5
+454,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",62,5
+455,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",63,5
+456,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",64,5
+457,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",65,5
+458,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",66,5
+459,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",67,5
+460,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",68,5
+461,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",69,5
+462,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",70,5
+463,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",71,5
+464,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",72,5
+465,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",73,5
+466,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",74,5
+467,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",75,5
+468,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",76,5
+469,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",77,5
+470,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",78,5
+471,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",79,5
+472,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",80,5
+473,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",81,5
+474,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",82,5
+475,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",83,5
+476,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",84,5
+477,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",85,5
+478,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",86,5
+479,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",87,5
+480,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",88,5
+481,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",89,5
+482,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",90,5
+483,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",91,5
+484,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",92,5
+485,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",93,5
+486,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",94,5
+487,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",95,5
+488,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",96,5
+489,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",97,5
+490,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",98,5
+491,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",1,6
+492,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",2,6
+493,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",3,6
+494,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",4,6
+495,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",5,6
+496,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",6,6
+497,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",7,6
+498,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",8,6
+499,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",9,6
+500,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",10,6
+501,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",11,6
+502,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",12,6
+503,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",13,6
+504,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",14,6
+505,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",15,6
+506,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",16,6
+507,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",17,6
+508,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",18,6
+509,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",19,6
+510,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",20,6
+511,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",21,6
+512,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",22,6
+513,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",23,6
+514,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",24,6
+515,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",25,6
+516,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",26,6
+517,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",27,6
+518,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",28,6
+519,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",29,6
+520,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",30,6
+521,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",31,6
+522,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",32,6
+523,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",33,6
+524,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",34,6
+525,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",35,6
+526,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",36,6
+527,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",37,6
+528,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",38,6
+529,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",39,6
+530,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",40,6
+531,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",41,6
+532,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",42,6
+533,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",43,6
+534,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",44,6
+535,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",45,6
+536,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",46,6
+537,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",47,6
+538,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",48,6
+539,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",49,6
+540,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",50,6
+541,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",51,6
+542,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",52,6
+543,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",53,6
+544,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",54,6
+545,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",55,6
+546,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",56,6
+547,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",57,6
+548,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",58,6
+549,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",59,6
+550,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",60,6
+551,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",61,6
+552,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",62,6
+553,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",63,6
+554,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",64,6
+555,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",65,6
+556,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",66,6
+557,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",67,6
+558,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",68,6
+559,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",69,6
+560,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",70,6
+561,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",71,6
+562,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",72,6
+563,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",73,6
+564,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",74,6
+565,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",75,6
+566,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",76,6
+567,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",77,6
+568,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",78,6
+569,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",79,6
+570,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",80,6
+571,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",81,6
+572,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",82,6
+573,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",83,6
+574,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",84,6
+575,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",85,6
+576,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",86,6
+577,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",87,6
+578,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",88,6
+579,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",89,6
+580,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",90,6
+581,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",91,6
+582,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",92,6
+583,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",93,6
+584,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",94,6
+585,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",95,6
+586,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,6
+587,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,6
+588,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,6`
+    const hardcodedSowingPlans = {}; 
+
+   const bbchInfoData = {
+    "Mais": [
+        { code: "00-09", desc: "Germination & Levée : Semence sèche (00), radicule (05) puis levée du coléoptile (09)." },
+        { code: "10-19", desc: "Développement des feuilles : 1ère feuille étalée (10) jusqu'à 9 feuilles et plus (19)." },
+        { code: "61-69", desc: "Floraison : Étamines visibles (61), soies visibles (63), pleine floraison (65) jusqu'au dessèchement des soies (69)." }
+    ],
+    "Tournesol": [
+        { code: "00-09", desc: "Germination : Radicule sortie (05) puis levée avec cotylédons étalés (09)." },
+        { code: "10-19", desc: "Feuilles : 2ème paire (12), 5ème paire (15) jusqu'à 9 paires et plus (19)." },
+        { code: "51-59", desc: "Bouton floral : Visible au cœur (51), bien dégagé (55) jusqu'aux premiers rayons visibles (59)." },
+        { code: "61-69", desc: "Floraison : Ligules étalées (61), pleine floraison (65), chute des ligules et fin (69)." }
+    ],
+    "Colza": [
+        { code: "10-19", desc: "Feuilles (Rosette) : Cotylédons étalés (10), 1ère feuille (11) jusqu'à 9 feuilles et plus (19)." },
+        { code: "30-39", desc: "Montaison : Début élongation tige (30) jusqu'aux boutons visibles au-dessus du feuillage (39)." },
+        { code: "50-59", desc: "Boutons : Boutons séparés (55), boutons jaunes (57) puis premiers pétales visibles (59)." },
+        { code: "60-69", desc: "Floraison : 1ères fleurs (60), pleine floraison/chute pétales (65), fin floraison (69)." }
+    ],
+    "Soja": [
+        { code: "10-19", desc: "Feuilles : Cotylédons (10), 1ère trifoliée (12) jusqu'à 9 feuilles trifoliées et plus (19)." },
+        { code: "51-59", desc: "Inflorescence : Premiers boutons visibles (51) jusqu'aux premiers pétales visibles (59)." },
+        { code: "60-69", desc: "Floraison : Début R1 (60), pleine floraison R2 sur nœuds supérieurs (65), fin floraison (69)." }
+    ],
+    "Sorgho": [
+        { code: "10-19", desc: "Développement des feuilles : 1ère feuille étalée (10) jusqu'à 9 feuilles et plus (19)." },
+        { code: "51-59", desc: "Épiaison : Début sortie panicule (51) jusqu'au dégagement total de la panicule (59)." },
+        { code: "60-69", desc: "Floraison (Anthèse) : Sommet panicule (61), mi-panicule (65), fin à la base de la panicule (69)." }
+    ]
+};
+    
+    let varieteData = [];
+    let appObservations = []; 
+    let currentEssai = null;
+    let currentParcelleDigits = { d1: '0', d2: '0', d3: '0' };
+    let selectedPlotCodeForNavigation = null;
+    let currentEspece = null;
+    let currentGps = null;
+    let parcelleValideeCode = null;
+    let currentPlotOrder = [];
+
+    let simpleNotationsConfig = ['A'];
+    try { if(localStorage.getItem('simpleNotationsConfig')) simpleNotationsConfig = JSON.parse(localStorage.getItem('simpleNotationsConfig')); } catch(e){}
+
+    function parseCSVToObjects(csvString) {
+        const lines = csvString.trim().split(/\r?\n/);
+        if (lines.length < 2) return [];
+        const sep = lines[0].indexOf(';') > -1 ? ';' : ',';
+        const headers = lines[0].split(sep).map(h => h.trim());
+        const objects = [];
+        for (let i = 1; i < lines.length; i++) {
+            const regex = new RegExp(`${sep}(?=(?:(?:[^"]*"){2})*[^"]*$)`);
+            const currentline = lines[i].split(regex);
+            if(currentline.length >= 4) {
+                const obj = {};
+                headers.forEach((h, idx) => {
+                    let val = currentline[idx] ? currentline[idx].trim() : "";
+                    if (val.startsWith('"') && val.endsWith('"')) val = val.substring(1, val.length - 1);
+                    obj[h] = val;
+                });
+                objects.push(obj);
+            }
+        }
+        return objects;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        varieteData = parseCSVToObjects(rawCsvData);
+        initEssaiSelector();
+        initSimpleNotationsUI();
+        loadLocalObservations();
+        setupEventListeners();
+        
+        const now = new Date();
+        document.getElementById('custom-date').valueAsDate = now;
+        document.getElementById('custom-time').value = now.toTimeString().substring(0,5);
+    });
+
+    function initEssaiSelector() {
+        const selector = document.getElementById('choix-essai');
+        selector.innerHTML = '<option value="">-- Choisir un essai --</option>';
+        if(!varieteData.length) return;
+        const essais = [...new Set(varieteData.map(i => i.Essai))].sort();
+        essais.forEach(e => {
+            const o = document.createElement('option');
+            o.value = e; o.textContent = e;
+            selector.appendChild(o);
+        });
+    }
+
+    function generatePlotOrder() {
+        currentPlotOrder = [];
+        if (!currentEssai) return;
+        
+        const plots = varieteData.filter(p => p.Essai === currentEssai);
+        const hasCoords = plots.every(p => p.Plan_X && p.Plan_Y);
+        
+        if (hasCoords) {
+            plots.forEach(p => { p.x = parseInt(p.Plan_X); p.y = parseInt(p.Plan_Y); });
+            const mode = document.getElementById('mode-avancement').value;
+            
+            switch (mode) {
+                case 'C': 
+                    plots.sort((a,b) => String(a.Code_Essai_Parcelle).localeCompare(String(b.Code_Essai_Parcelle)));
+                    break;
+                case 'N': 
+                    plots.sort((a,b) => (a.x - b.x) || (a.y - b.y));
+                    break;
+                case 'Z': 
+                    plots.sort((a,b) => {
+                        if (a.y !== b.y) return a.y - b.y;
+                        return (a.y % 2 !== 0) ? (a.x - b.x) : (b.x - a.x);
+                    });
+                    break;
+                case 'U': 
+                    plots.sort((a,b) => {
+                        if (a.x !== b.x) return a.x - b.x;
+                        return (a.x % 2 !== 0) ? (a.y - b.y) : (b.y - a.y);
+                    });
+                    break;
+            }
+            currentPlotOrder = plots.map(p => String(p.Code_Essai_Parcelle).padStart(3,'0'));
+        } else {
+            currentPlotOrder = plots.map(p => String(p.Code_Essai_Parcelle).padStart(3,'0')).sort();
+        }
+    }
+
+    function handleNavigate(direction) {
+        if (!currentEssai) return alert("Choisir un essai");
+        if (currentPlotOrder.length === 0) generatePlotOrder();
+        
+        const currentCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
+        let idx = currentPlotOrder.indexOf(currentCode);
+        
+        if (idx === -1) idx = 0; 
+        else idx += direction;
+        
+        if (idx >= currentPlotOrder.length) idx = 0;
+        if (idx < 0) idx = currentPlotOrder.length - 1;
+        
+        selectedPlotCodeForNavigation = currentPlotOrder[idx];
+        updateUIForSelectedPlot(selectedPlotCodeForNavigation);
+        
+        const btn = document.getElementById('valider-parcelle');
+        btn.textContent = "Valider Parcelle";
+        btn.classList.replace("btn-secondary", "btn-primary");
+        parcelleValideeCode = null;
+    }
+
+    function setupEventListeners() {
+        document.getElementById('confirmer-essai').addEventListener('click', () => {
+            currentEssai = document.getElementById('choix-essai').value;
+            if (currentEssai) {
+                document.getElementById('session-setup').style.display = 'none';
+                document.getElementById('app-container').style.display = 'block';
+                generatePlotOrder();
+                selectedPlotCodeForNavigation = currentPlotOrder.length > 0 ? currentPlotOrder[0] : "001";
+                openTab(null, 'saisie');
+                updateUIForSelectedPlot(selectedPlotCodeForNavigation);
+            }
+        });
+
+        document.getElementById('valider-parcelle').addEventListener('click', () => {
+            if(selectedPlotCodeForNavigation) {
+                parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
+                document.getElementById('valider-parcelle').style.display = 'none';
+                document.getElementById('sowingPlanModal').style.display = 'none';
+            }
+        });
+        
+        document.getElementById('parcelle-suivante').addEventListener('click', () => handleNavigate(1));
+        document.getElementById('parcelle-precedente').addEventListener('click', () => handleNavigate(-1));
+        
+        document.getElementById('mode-avancement').addEventListener('change', generatePlotOrder);
+        document.getElementById('info-mode-avancement').addEventListener('click', () => document.getElementById('progressionModeModal').style.display='block');
+        document.getElementById('closeProgressionModeModal').addEventListener('click', () => document.getElementById('progressionModeModal').style.display='none');
+
+        ['d1','d2','d3'].forEach(k => {
+            const div = document.getElementById(k+'-buttons');
+            div.innerHTML = '';
+            for(let i=0; i<=9; i++) {
+                const b = document.createElement('div');
+                b.className = 'square-btn'; b.textContent = i;
+                b.onclick = () => {
+                    div.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
+                    b.classList.add('selected');
+                    currentParcelleDigits[k] = i;
+                    selectedPlotCodeForNavigation = `${currentParcelleDigits.d1}${currentParcelleDigits.d2}${currentParcelleDigits.d3}`;
+                    updateUIForSelectedPlot(selectedPlotCodeForNavigation);
+                };
+                div.appendChild(b);
+            }
+        });
+
+        document.getElementById('voir-sur-carte').addEventListener('click', () => {
+            if(currentGps) window.open(`https://www.google.com/maps/search/?api=1&query=${currentGps.replace(/\s/g,'')}`, '_blank');
+        });
+        document.getElementById('voir-plan-semis').addEventListener('click', openSowingPlan);
+        document.getElementById('closeSowingPlanModal').addEventListener('click', () => document.getElementById('sowingPlanModal').style.display='none');
+        
+        document.getElementById('btn-validate-plan').addEventListener('click', () => {
+            if(selectedPlotCodeForNavigation) {
+                parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
+                document.getElementById('valider-parcelle').style.display = 'none';
+                document.getElementById('sowingPlanModal').style.display = 'none';
+            }
+        });
+
+        document.getElementById('btn-toggle-notations').addEventListener('click', () => {
+            const menuRow = document.getElementById('notation-menu-row');
+            const btn = document.getElementById('btn-toggle-notations');
+            if(menuRow.style.display === 'none') {
+                menuRow.style.display = 'flex';
+                btn.textContent = "▼ MENUS (Fermer)";
+            } else {
+                menuRow.style.display = 'none';
+                btn.textContent = "► MENUS (Ouvrir)";
+            }
+        });
+
+        document.querySelectorAll('.not-btn-choix').forEach(b => b.addEventListener('click', function() {
+            // NOUVELLE LOGIQUE : TOGGLE (ON/OFF) SANS FERMER LES AUTRES
+            this.classList.toggle('active');
+            const target = document.getElementById(this.dataset.target);
+            target.classList.toggle('hidden-section');
+        }));
+        
+        ['nec','ep','phyto'].forEach(k => {
+            const div = document.getElementById(k+'-buttons');
+            div.innerHTML = '';
+            for(let i=0; i<=9; i++){
+                const b = document.createElement('div'); b.className = 'square-btn'; b.textContent = i;
+                b.onclick = () => { 
+                    div.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected')); 
+                    b.classList.add('selected'); 
+                    document.getElementById(k+'-display').textContent = i; 
+                };
+                div.appendChild(b);
+            }
+        });
+
+        const floDiv = document.getElementById('flo-buttons');
+        floDiv.innerHTML = '';
+        for(let i=0; i<=100; i+=10) {
+            const b = document.createElement('div'); 
+            b.className = 'square-btn'; 
+            b.style.width = '40px';
+            b.textContent = i;
+            b.onclick = () => {
+                floDiv.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
+                b.classList.add('selected');
+                document.getElementById('flo-display').textContent = i + '%';
+            };
+            floDiv.appendChild(b);
+        }
+        
+        document.getElementById('enregistrer').addEventListener('click', () => enregistrerObservation(false));
+        document.getElementById('enregistrer-suivant').addEventListener('click', () => enregistrerObservation(true));
+        document.getElementById('telecharger-csv').addEventListener('click', telechargerCSV);
+        document.getElementById('changer-essai').addEventListener('click', () => location.reload());
+        
+        // Reset Logic
+        document.getElementById('reset-data-local').addEventListener('click', () => {
+            if(appObservations.length > 0) {
+                if(confirm("ATTENTION : Vous êtes sur le point d'effacer toutes les observations enregistrées sur cet appareil.\n\nUn fichier de sauvegarde CSV sera téléchargé automatiquement avant la suppression.\n\nÊtes-vous sûr de vouloir continuer ?")) {
+                    telechargerCSV();
+                    setTimeout(() => {
+                        appObservations = [];
+                        localStorage.removeItem('observations_v12');
+                        renderRecapTable();
+                        alert("Les données locales ont été effacées.");
+                    }, 500);
+                }
+            } else {
+                alert("Aucune donnée à effacer.");
+            }
+        });
+        
+        document.getElementById('bbch-info-button').addEventListener('click', () => {
+            if(!currentEspece) return alert("Sélectionner une parcelle");
+            const div = document.getElementById('bbch-modal-body');
+            const data = bbchInfoData[currentEspece] || [];
+            let html = '<table id="bbch-table"><thead><tr><th>Code</th><th>Stade</th></tr></thead><tbody>';
+            data.forEach(d => html += `<tr><td>${d.code}</td><td>${d.desc}</td></tr>`);
+            html += '</tbody></table>';
+            div.innerHTML = html;
+            document.getElementById('bbchModal').style.display='block';
+        });
+        document.getElementById('closeBbchModal').addEventListener('click', () => document.getElementById('bbchModal').style.display='none');
+        
+        setupIncDec('stade'); 
+        setupIncDec('numero-analyse', 'minus-analyse', 'plus-analyse'); 
+        document.getElementById('plus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(el.value.charCodeAt(0)+1); };
+        document.getElementById('minus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(el.value.charCodeAt(0)-1); };
+        
+        document.getElementById('btn-add-simple-line').addEventListener('click', () => {
+            const used = new Set(simpleNotationsConfig);
+            let charCode = 65; // A
+            while (used.has(String.fromCharCode(charCode))) charCode++;
+            simpleNotationsConfig.push(String.fromCharCode(charCode));
+            localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig));
+            initSimpleNotationsUI();
+        });
+    }
+
+    function updateUIForSelectedPlot(code) {
+        const padded = String(code).padStart(3,'0');
+        ['d1','d2','d3'].forEach((k, idx) => {
+            currentParcelleDigits[k] = padded[idx];
+            const div = document.getElementById(k+'-buttons');
+            div.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
+            for(let b of div.children) if(b.textContent === padded[idx]) b.classList.add('selected');
+        });
+
+        // REINITIALISATION REP
+        document.getElementById('rep').value = 'A';
+
+        const plot = varieteData.find(i => i.Essai === currentEssai && String(i.Code_Essai_Parcelle).padStart(3,'0') === padded);
+        
+        document.getElementById('variete-text').textContent = "Lignée : " + (plot ? plot.variete : "INCONNUE");
+        currentEspece = plot ? plot.Espece : null;
+        currentGps = plot ? plot.Gps : null;
+        
+        document.getElementById('espece-text').textContent = currentEspece ? currentEspece.toUpperCase() : "";
+        document.body.className = currentEspece ? `theme-${currentEspece.toLowerCase()}` : '';
+        
+        document.getElementById('voir-sur-carte').style.display = (currentGps && currentGps.length > 5) ? 'inline-block' : 'none';
+        
+        // Plan de semis
+        const plots = varieteData.filter(p => p.Essai === currentEssai);
+        const hasPlan = plots.length > 0 && plots[0].Plan_X && plots[0].Plan_Y;
+        document.getElementById('voir-plan-semis').style.display = hasPlan ? 'inline-block' : 'none';
+
+        // BOUTON VALIDATION VISIBILITY
+        const btnValider = document.getElementById('valider-parcelle');
+        if(parcelleValideeCode && String(parcelleValideeCode).padStart(3,'0') === padded) {
+            btnValider.style.display = 'none';
+        } else {
+            btnValider.style.display = 'block';
+        }
+    }
+
+    function navigatePlot(delta) {
+        let cur = parseInt(selectedPlotCodeForNavigation);
+        if(!isNaN(cur)) {
+            selectedPlotCodeForNavigation = String(cur + delta).padStart(3,'0');
+            updateUIForSelectedPlot(selectedPlotCodeForNavigation);
+        }
+    }
+
+    function openSowingPlan() {
+        const div = document.getElementById('sowing-plan-grid-container');
+        div.innerHTML = '';
+        const modal = document.getElementById('sowingPlanModal');
+        
+        const plots = varieteData.filter(p => p.Essai === currentEssai);
+        if (plots.length === 0 || !plots[0].Plan_X) return alert("Pas de plan défini pour cet essai");
+
+        let maxX = 0, maxY = 0;
+        plots.forEach(p => {
+            if(parseInt(p.Plan_X) > maxX) maxX = parseInt(p.Plan_X);
+            if(parseInt(p.Plan_Y) > maxY) maxY = parseInt(p.Plan_Y);
+        });
+
+        let html = '<table>';
+        for(let r=1; r<=maxY; r++) {
+            html += '<tr>';
+            for(let c=1; c<=maxX; c++) {
+                const p = plots.find(plot => parseInt(plot.Plan_X) === c && parseInt(plot.Plan_Y) === r);
+                let content = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
+                
+                let css = content ? "cursor:pointer;" : "background:#eee;";
+                if(content === String(selectedPlotCodeForNavigation).padStart(3,'0')) css += "background-color:var(--theme-primary-color);color:white;font-weight:bold;";
+                
+                html += `<td style="${css}" onclick="${content ? `selectFromPlan('${content}', this)` : ''}">${content}</td>`;
+            }
+            html += '</tr>';
+        }
+        html += '</table>';
+        div.innerHTML = html;
+        modal.style.display = 'block';
+    }
+    
+    window.selectFromPlan = (code, cell) => {
+        selectedPlotCodeForNavigation = String(code).padStart(3,'0');
+        updateUIForSelectedPlot(selectedPlotCodeForNavigation);
+        
+        document.querySelectorAll('#sowing-plan-grid-container td').forEach(td => {
+            td.style.backgroundColor = ""; td.style.color = ""; td.style.fontWeight = "";
+        });
+        cell.style.backgroundColor = "var(--theme-primary-color)";
+        cell.style.color = "white";
+        cell.style.fontWeight = "bold";
+    };
+
+    function enregistrerObservation(andNext) {
+        if (!parcelleValideeCode) return alert("Valider parcelle");
+        let obs = {
+            id: Date.now(), ESSAI: currentEssai, Parcelle: parcelleValideeCode,
+            Variete: document.getElementById('variete-text').textContent.replace("Lignée : ",""),
+            Date: document.getElementById('custom-date').value,
+            Heure: document.getElementById('custom-time').value,
+            Meteo: document.getElementById('meteo-select').value,
+            Rep: document.getElementById('rep').value,
+            Observations: document.getElementById('obs').value,
+        };
+        
+        // RECUPERATION DONNEES STADE
+        const stadeVal = document.getElementById('stade').value;
+        if(stadeVal) obs.Stade = stadeVal;
+
+        // RECUPERATION FLORAISON (Valeur Bouton)
+        const floSel = document.querySelector('#flo-buttons .selected');
+        if(floSel) obs.Floraison = floSel.textContent + "%";
+
+        // RECUPERATION PRELEVEMENT
+        const prlvmtSection = document.getElementById('not-prlvmt');
+        const codeEch = (document.getElementById('lettres-analyse').value + document.getElementById('numero-analyse').value).toUpperCase();
+        
+        // Si l'utilisateur a rentré un code ou est dans l'onglet, on note le code
+        if(!prlvmtSection.classList.contains('hidden-section') || document.getElementById('lettres-analyse').value !== "") {
+            obs.Code_Ech = codeEch;
+            // Incrémentation auto du numéro d'analyse
+            let num = document.getElementById('numero-analyse'); num.value = parseInt(num.value)+1;
+        }
+        
+        const notVis = document.getElementById('not-visuelle');
+        if (!notVis.classList.contains('hidden-section')) {
+            let s = document.querySelector('#nec-buttons .selected'); if(s) obs.NEC = s.textContent;
+            let e = document.querySelector('#ep-buttons .selected'); if(e) obs.EP = e.textContent;
+        }
+
+        const notPhy = document.getElementById('not-phyto');
+        if (!notPhy.classList.contains('hidden-section')) {
+            let s = document.querySelector('#phyto-buttons .selected'); if(s) obs.Phyto = s.textContent;
+        }
+
+        const notSim = document.getElementById('not-simple');
+        if (!notSim.classList.contains('hidden-section')) {
+            simpleNotationsConfig.forEach(l => {
+                let v = document.getElementById('not-simple-'+l);
+                if(v && v.value) obs['Not_'+l] = v.value;
+            });
+        }
+
+        appObservations.unshift(obs);
+        localStorage.setItem('observations_v12', JSON.stringify(appObservations));
+        renderRecapTable();
+        document.getElementById('obs').value = "";
+        
+        // Reset Floraison buttons visual
+        document.querySelectorAll('#flo-buttons .selected').forEach(s => s.classList.remove('selected'));
+        document.getElementById('flo-display').textContent = "0";
+
+        // Incrémentation Rep (A->B...) à chaque enregistrement
+        let r = document.getElementById('rep');
+        let nextR = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1);
+        r.value = (nextR <= 'Z') ? nextR : 'A';
+        
+        // SI "Enregistrer et Suivant"
+        if(andNext) {
+            handleNavigate(1);
+            // Validation Automatique
+            parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
+            document.getElementById('valider-parcelle').style.display = 'none';
+        }
+    }
+    
+    function renderRecapTable() {
+        const tbody = document.querySelector('#recap-table tbody');
+        if(!tbody) return;
+        tbody.innerHTML = appObservations.map(o => 
+            `<tr>
+                <td>${o.ESSAI}</td>
+                <td>${o.Parcelle}</td>
+                <td>${o.Rep}</td>
+                <td>${o.Code_Ech||'-'}</td>
+                <td>${o.Stade||'-'}</td>
+                <td>${o.Floraison||'-'}</td>
+                <td>${o.Phyto||'-'}</td>
+                <td><button onclick="delObs(${o.id})" class="btn-danger" style="margin:0;padding:2px;">X</button></td>
+            </tr>`
+        ).join('');
+    }
+
+    window.delObs = (id) => {
+        if(confirm("Êtes-vous sûr de vouloir supprimer cette ligne ?")) {
+            appObservations = appObservations.filter(o => o.id !== id);
+            localStorage.setItem('observations_v12', JSON.stringify(appObservations));
+            renderRecapTable();
+        }
+    };
+
+    function setupIncDec(inputId, minusId, plusId) {
+        const input = document.getElementById(inputId);
+        const minus = document.getElementById(minusId || ('minus-' + inputId));
+        const plus = document.getElementById(plusId || ('plus-' + inputId));
+        
+        if (minus && input) {
+            minus.onclick = () => { input.value = Math.max(0, parseInt(input.value || 0) - 1); };
+        }
+        if (plus && input) {
+            plus.onclick = () => { input.value = parseInt(input.value || 0) + 1; };
+        }
+    }
+    
+    function initSimpleNotationsUI() {
+        const div = document.getElementById('simple-notations-list'); div.innerHTML='';
+        simpleNotationsConfig.forEach((l, idx) => {
+            div.innerHTML += `
+            <div class="simple-notation-line" id="line-${l}">
+                <span class="simple-not-label">${l}</span>
+                <div class="input-inc-dec" style="margin:0;">
+                    <button class="btn-secondary" onclick="changeSimpleVal('not-simple-${l}', -1)">-</button>
+                    <input type="number" id="not-simple-${l}" value="0" style="width:50px;">
+                    <button class="btn-secondary" onclick="changeSimpleVal('not-simple-${l}', 1)">+</button>
+                </div>
+                <button class="btn-danger" style="padding:2px 6px; margin-left:5px; font-size:0.8em;" onclick="removeSimpleLine('${l}')">X</button>
+            </div>`;
+        });
+    }
+    
+    window.changeSimpleVal = (id, delta) => {
+        let el = document.getElementById(id);
+        let val = parseInt(el.value) || 0;
+        el.value = val + delta;
+    }
+
+    window.removeSimpleLine = (l) => {
+        simpleNotationsConfig = simpleNotationsConfig.filter(x => x !== l);
+        localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig));
+        initSimpleNotationsUI();
+    };
+
+    window.openTab = (e,n) => {
+        document.querySelectorAll('.tabcontent').forEach(x=>x.style.display='none');
+        document.querySelectorAll('.tablink').forEach(x=>x.classList.remove('active'));
+        document.getElementById(n).style.display='block';
+        if(e) e.currentTarget.classList.add('active');
+    }
+    function loadLocalObservations() {
+        if(localStorage.getItem('observations_v12')) appObservations = JSON.parse(localStorage.getItem('observations_v12'));
+        renderRecapTable();
+    }
+    
+    // Téléchargement Modèle CSV (Séparateur ;)
+    function downloadTemplateWithPlan() {
+        const b = new Blob(["Code_Essai_Parcelle;variete;Essai;Espece;Gps;Plan_X;Plan_Y\n001;VarA;Essai1;Tournesol;0.0,0.0;1;1\n002;VarB;Essai1;Tournesol;0.0,0.0;2;1"],{type:'text/csv'});
+        const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download="Modele_Essai_Avec_Plan.csv"; a.click();
+    }
+    
+    // Export Données (Séparateur ;) AVEC COLONNES FORCÉES
+    function telechargerCSV() {
+        if(!appObservations.length) return alert("Rien");
+        
+        // 1. Liste Fixe des colonnes dans l'ordre souhaité (Sans les colonnes supprimées)
+        const fixedHeaders = ["ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Code_Ech", "NEC", "EP", "Phyto", "Observations"];
+        
+        // 2. Détection des colonnes dynamiques (Not_A, Not_B...)
+        let dynamicKeys = new Set();
+        appObservations.forEach(o => Object.keys(o).forEach(k => {
+            if(k.startsWith('Not_')) dynamicKeys.add(k);
+        }));
+        let sortedDynamicKeys = Array.from(dynamicKeys).sort();
+        
+        // 3. Fusion finale des headers
+        const finalHeaders = [...fixedHeaders, ...sortedDynamicKeys];
+
+        const BOM = "\uFEFF"; 
+        let csv = BOM + finalHeaders.join(";") + "\n";
+        
+        appObservations.forEach(o => {
+            let row = finalHeaders.map(k => {
+                let val = o[k] === undefined ? "" : o[k];
+                return val;
+            }).join(";");
+            csv += row + "\n";
+        });
+
+        const a = document.createElement('a'); 
+        a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); 
+        a.download="Export_Complet.csv"; 
+        a.click();
+    }
+</script>
+</body>
+</html>
