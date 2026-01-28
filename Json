@@ -1,0 +1,16 @@
+{
+  "name": "Notation Agricole v29",
+  "short_name": "Notations",
+  "description": "Outil de saisie de notations aux champs",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#227A49",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2910/2910768.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
