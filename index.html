@@ -134,6 +134,10 @@
     <div id="session-setup">
         <label for="choix-essai">Choix de l'essai :</label>
         <select id="choix-essai"></select>
+        
+        <label for="type-notation-session" style="margin-top:15px;">Type de notations (ex: Sortie Hiver) :</label>
+        <input type="text" id="type-notation-session" placeholder="Indiquer le type...">
+        
         <button id="confirmer-essai" class="btn-primary">Confirmer</button>
     </div>
 
@@ -1313,7 +1317,10 @@
     function enregistrerObservation(andNext) {
         if (!parcelleValideeCode) return alert("Valider parcelle");
         let obs = {
-            id: Date.now(), ESSAI: currentEssai, Parcelle: parcelleValideeCode,
+            id: Date.now(), 
+            Type_Not: document.getElementById('type-notation-session').value, // Ajout de la case de session
+            ESSAI: currentEssai, 
+            Parcelle: parcelleValideeCode,
             Variete: document.getElementById('variete-text').textContent.replace("Lignée : ",""),
             Date: document.getElementById('custom-date').value,
             Heure: document.getElementById('custom-time').value,
@@ -1467,12 +1474,11 @@
     }
     
     // Export Données (Séparateur ;) AVEC COLONNES FORCÉES
-    function telechargerCSV() {
+  function telechargerCSV() {
         if(!appObservations.length) return alert("Rien");
         
-        // 1. Liste Fixe des colonnes dans l'ordre souhaité (Sans les colonnes supprimées)
-        const fixedHeaders = ["ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Code_Ech", "NEC", "EP", "Phyto", "Observations"];
-        
+        // Ajout de Type_Not dans les colonnes fixées
+        const fixedHeaders = ["Type_Not", "ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Code_Ech", "NEC", "EP", "Phyto", "Observations"];
         // 2. Détection des colonnes dynamiques (Not_A, Not_B...)
         let dynamicKeys = new Set();
         appObservations.forEach(o => Object.keys(o).forEach(k => {
@@ -1503,5 +1509,6 @@
 </body>
 
 </html>
+
 
 
