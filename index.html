@@ -9,8 +9,6 @@
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgODAgODAnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PGNpcmNsZSBmaWxsPSd3aGl0ZScgY3g9JzQwJyBjeT0nNDAnIHI9JzM4Jy8+PHBhdGggZD0nTTMwIDU1IEwzMCAyNSBNMzAgMjUgTDUwIDU1IE01MCA1NSBMNTAgMjUnIHN0cm9rZT0nIzIyN0E0OScgc3Ryb2tlLXdpZHRoPSc3JyBmaWxsPSdub25lJyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnLz48L3N2Zz4=">
 <meta name="theme-color" content="#227A49">
 <script>
   if ('serviceWorker' in navigator) {
@@ -57,20 +55,15 @@
     
     label { display: block; margin-bottom: 6px; width: 100%; font-weight: 500; font-size: 0.95em; color: #343a40; }
     input, select, textarea { padding: 10px; border: 1px solid var(--theme-input-border-color); border-radius: 5px; font-size: 1em; width: 100%; margin-bottom: 12px; box-sizing: border-box; }
-    input[type="checkbox"] { display: inline-block; width: auto; margin-right: 8px; vertical-align: middle; }
     
     button { background-color: var(--theme-primary-color); color: var(--theme-text-on-primary); border: none; padding: 12px 18px; font-size: 1em; font-weight: 500; cursor: pointer; border-radius: 6px; margin-top:15px; transition: 0.2s; }
     button:hover { background-color: var(--theme-button-hover-bg); transform: translateY(-1px); }
     .btn-secondary { background-color: #6c757d; color: white; }
-    .btn-secondary:hover { background-color: #5a6268; }
     .btn-danger { background-color: #e74c3c; color: white; }
     
-    /* Bouton spécifique pour "Enregistrer et Suivant" qui prend la couleur secondaire du thème */
     .btn-accent { background-color: var(--theme-secondary-color); color: var(--theme-text-on-secondary); }
-    .btn-accent:hover { opacity: 0.9; }
 
-    .square-btn-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-bottom: 5px; } /* Gap réduit */
-    /* Taille réduite pour mobile (28px au lieu de 34px) */
+    .square-btn-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-bottom: 5px; }
     .square-btn { width: 28px; height: 28px; line-height: 26px; border: 1px solid #adb5bd; background-color: #f8f9fa; text-align: center; cursor: pointer; border-radius: 4px; vertical-align: middle; font-size: 0.85em; font-weight: 500; }
     .square-btn.selected { background-color: var(--theme-secondary-color); color: var(--theme-text-on-secondary); font-weight: bold; border-color: var(--theme-secondary-color); }
     
@@ -85,22 +78,8 @@
     .input-inc-dec input { width: 75px !important; margin: 0 6px; text-align: center; display: inline-block !important; }
     .input-inc-dec button { width: auto !important; padding: 6px 12px; margin: 0; display: inline-block !important; }
 
-    .checkbox-container { display: flex; align-items: center; margin-bottom: 10px; }
-    .checkbox-container input { margin-bottom: 0; margin-right: 10px; }
-    .checkbox-container label { margin-bottom: 0; display: inline-block; }
-
-    /* Conteneur pour les deux boutons d'enregistrement côte à côte */
     .save-buttons-container { display: flex; gap: 10px; margin-top: 15px; }
     .save-buttons-container button { flex: 1; padding: 15px 5px; font-size: 1em; line-height: 1.2; }
-
-    @media (max-width: 600px) {
-        .sidebar, .main-panel { min-width: 100%; padding: 15px; }
-        .tablink { padding: 10px 12px; font-size: 0.9em; }
-    }
-
-    #sowing-plan-grid-container table { border-collapse: collapse; margin: 0 auto; }
-    #sowing-plan-grid-container td { border: 1px solid #ccc; padding: 5px; text-align: center; min-width: 45px; height: 35px; font-size: 0.9em; background: #fff; cursor: pointer; vertical-align: top; }
-    .highlighted-plot { background-color: var(--theme-primary-color) !important; color: white !important; font-weight: bold; border: 2px solid #333 !important; }
 
     .hidden-section { display: none !important; }
     .notation-group-container { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 15px; background-color: #fdfdfd; }
@@ -108,14 +87,12 @@
     .not-btn-choix { flex: 1; padding: 8px; font-size: 0.9em; background-color: #e9ecef; color: #333; border: 1px solid #ccc; min-width: 50px; cursor: pointer; }
     .not-btn-choix.active { background-color: var(--theme-secondary-color); color: white; border-color: var(--theme-secondary-color); box-shadow: inset 0 3px 5px rgba(0,0,0,0.2); }
     
-    .simple-notation-line { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
-    .simple-not-label { font-weight: bold; min-width: 30px; }
-
-    /* Styles Tableau BBCH */
+    .simple-notation-line { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+    .simple-not-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9em;}
+    .simple-not-controls { display: flex; align-items: center; gap: 5px; }
     #bbch-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
     #bbch-table th, #bbch-table td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 0.9em; }
     #bbch-table th { background-color: #f2f2f2; font-weight: bold; }
-
 </style>
 <body>
 
@@ -125,86 +102,86 @@
         <g transform="translate(35, 35) scale(0.8)"><line class="plant-stem" x1="0" y1="15" x2="0" y2="-5"/><circle cx="0" cy="-10" r="6" fill="var(--theme-primary-color, #FFD700)"/><circle cx="0" cy="-10" r="3" fill="var(--theme-secondary-color, #A0522D)"/><path class="plant-leaf" d="M0,5 Q5,0 2,-5 Q-5,-2 0,5 Z"/></g>
         <g transform="translate(65, 38) scale(0.8)"><rect class="plant-leaf" x="-3" y="-15" width="6" height="25" rx="2"/><path stroke="var(--theme-primary-color, #E6B800)" stroke-width="1.5" fill="none" d="M-2,-15 Q0,-20 2,-15 M0,-15 Q-3,-18 -4,-14 M0,-15 Q3,-18 4,-14"/><path class="plant-leaf" d="M2,0 Q10,-5 8,-12 L3,-10 Q8,-3 2,0 Z"/><path class="plant-leaf" d="M-2,0 Q-10,-5 -8,-12 L-3,-10 Q-8,-3 -2,0 Z"/></g>
         <g transform="translate(135, 38) scale(0.7)"><line class="plant-stem" x1="0" y1="18" x2="0" y2="-2"/><circle cx="0" cy="-5" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><circle cx="-4" cy="-8" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><circle cx="4" cy="-8" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><circle cx="0" cy="-11" r="3" fill="var(--theme-colza-primary-color, #FFEB3B)"/><path class="plant-leaf" d="M0,12 Q6,8 3,2 Q-3,6 0,12 Z" transform="rotate(10)"/></g>
-        <g transform="translate(165, 38) scale(0.75)"><path class="plant-leaf" d="M0,15 Q-10,5 -5,-5 Q0,-10 5,-5 Q10,5 0,15 Z"/><circle cx="-3" cy="0" r="1.5" fill="var(--theme-soja-primary-color, #E1BEE7)"/><circle cx="3" cy="0" r="1.5" fill="var(--theme-soja-primary-color, #E1BEE7)"/><circle cx="0" cy="-4" r="1.5" fill="var(--theme-soja-primary-color, #E1BEE7)"/></g>
+        <g transform="translate(165, 38) scale(0.75)"><path class="plant-leaf" d="M0,15 Q-10,5 -5,-5 Q0,-10 5,-5 Q10,5 0,15 Z"/><circle cx="-3" cy="0" r="1.5" fill="var(--theme-soja-primary-color, %23E1BEE7)"/><circle cx="3" cy="0" r="1.5" fill="var(--theme-soja-primary-color, %23E1BEE7)"/><circle cx="0" cy="-4" r="1.5" fill="var(--theme-soja-primary-color, %23E1BEE7)"/></g>
     </svg>
 </div>
 
-    <h1>Notations</h1>
+    <h1 data-i18n="title">Notations</h1>
 
     <div id="session-setup">
-        <label for="choix-essai">Choix de l'essai :</label>
+        <label for="choix-essai" data-i18n="choix-essai">Choix de l'essai :</label>
         <select id="choix-essai"></select>
         
-        <label for="type-notation-session" style="margin-top:15px;">Type de notations (ex: Sortie Hiver) :</label>
-        <input type="text" id="type-notation-session" placeholder="Indiquer le type...">
+        <label for="type-notation-session" style="margin-top:15px;" data-i18n="type-notation">Type de notations (ex: Sortie Hiver) :</label>
+        <input type="text" id="type-notation-session" data-i18n-placeholder="type-notation-placeholder" placeholder="Indiquer le type...">
         
-        <button id="confirmer-essai" class="btn-primary">Confirmer</button>
+        <button id="confirmer-essai" class="btn-primary" data-i18n="confirmer">Confirmer</button>
     </div>
 
     <div id="app-container" style="display:none;">
         <div class="tabs">
-            <button class="tablink active" onclick="openTab(event, 'saisie')" id="defaultOpen">Saisie</button>
-            <button class="tablink" onclick="openTab(event, 'parametres')">Paramètres</button>
+            <button class="tablink active" onclick="openTab(event, 'saisie')" id="defaultOpen" data-i18n="tab-saisie">Saisie</button>
+            <button class="tablink" onclick="openTab(event, 'parametres')" data-i18n="tab-parametres">Paramètres</button>
         </div>
 
         <div id="saisie" class="tabcontent" style="display:block;">
             <div id="app-content">
                 <div class="sidebar">
                     <div class="selector-group"> 
-                        <h4>Numéro de parcelle</h4>
+                        <h4 data-i18n="num-parcelle">Numéro de parcelle</h4>
                         <div id="d1-buttons" class="square-btn-group"></div>
                         <div id="d2-buttons" class="square-btn-group"></div>
                         <div id="d3-buttons" class="square-btn-group"></div>
                     </div>
 
                    <div class="mode-selection-line" style="display: flex; align-items: center; gap: 5px; margin-top:10px;">
-                      <label for="mode-avancement" style="width:auto; margin:0;">Mode:</label>
+                      <label for="mode-avancement" style="width:auto; margin:0;" data-i18n="mode">Mode:</label>
                       <select id="mode-avancement" style="width:auto; margin:0;">
-                        <option value="C">C (Classique)</option>
-                        <option value="Z" selected>Z (Zigzag)</option>
-                        <option value="U">U (Zigzag Col)</option>
-                        <option value="N">N (Colonne)</option>
+                        <option value="C" data-i18n="mode-c">C (Classique)</option>
+                        <option value="Z" selected data-i18n="mode-z">Z (Zigzag)</option>
+                        <option value="U" data-i18n="mode-u">U (Zigzag Col)</option>
+                        <option value="N" data-i18n="mode-n">N (Colonne)</option>
                       </select>
                       <button type="button" id="info-mode-avancement" class="btn-secondary" style="margin:0; padding: 5px 10px;">?</button>
                     </div>
 
                   <div class="parcelle-navigation" style="display: flex; gap: 5px; justify-content: space-around; margin-top: 15px;">
-                      <button id="parcelle-precedente" class="btn-secondary">← Préc.</button>
-                      <button id="valider-parcelle" class="btn-primary">Valider Parcelle</button>
-                      <button id="parcelle-suivante" class="btn-primary">Suiv. →</button>
+                      <button id="parcelle-precedente" class="btn-secondary" data-i18n="prec">← Préc.</button>
+                      <button id="valider-parcelle" class="btn-primary" data-i18n="valider">Valider Parcelle</button>
+                      <button id="parcelle-suivante" class="btn-primary" data-i18n="suiv">Suiv. →</button>
                     </div>
                     
                     <hr>
-                    <p id="variete-text" style="font-weight:bold; font-size:1.1em; color:var(--theme-heading-color);">Lignée : </p>
+                    <p id="variete-text" style="font-weight:bold; font-size:1.1em; color:var(--theme-heading-color);"><span data-i18n="lignee">Lignée :</span> </p>
                     <div class="espece-gps-line">
                         <p id="espece-text" style="margin:0; margin-right:10px; color:var(--theme-secondary-color); font-weight:bold;"></p>
                         <button id="voir-sur-carte" style="display:none;"><b>GPS</b></button>
-                        <button id="voir-plan-semis" style="display:none;">Plan de Semis</button>
+                        <button id="voir-plan-semis" style="display:none;" data-i18n="plan-semis">Plan de Semis</button>
                     </div>
                     
                     <div class="input-inc-dec" style="margin-top:15px;">
-                        <label for="rep" style="width:auto; margin-right:10px;">Rep :</label>
+                        <label for="rep" style="width:auto; margin-right:10px;" data-i18n="rep">Rep :</label>
                         <button type="button" id="minus-rep" class="btn-secondary inline-btn">-</button>
                         <input type="text" id="rep" value="A" maxlength="2">
                         <button type="button" id="plus-rep" class="btn-secondary inline-btn">+</button>
                     </div>
 
                     <hr>
-                    <button id="btn-toggle-notations" class="btn-secondary" style="width:100%; text-align:left; margin-top:5px;">► MENUS (Ouvrir/Fermer)</button>
+                    <button id="btn-toggle-notations" class="btn-secondary" style="width:100%; text-align:left; margin-top:5px;" data-i18n="menus">► MENUS (Ouvrir/Fermer)</button>
                     
                     <div id="central-notations-container" style="display:block; margin-top:10px;">
                         <div id="notation-menu-row" class="not-buttons-row" style="display:none;">
-                            <button type="button" class="not-btn-choix" data-target="not-stade">Stade</button>
-                            <button type="button" class="not-btn-choix" data-target="not-flo">Flo</button>
-                            <button type="button" class="not-btn-choix" data-target="not-prlvmt">Prlvmt</button>
-                            <button type="button" class="not-btn-choix" data-target="not-visuelle">Visuelle</button>
-                            <button type="button" class="not-btn-choix" data-target="not-phyto">Phyto</button>
-                            <button type="button" class="not-btn-choix" data-target="not-simple">Simple</button>
+                            <button type="button" class="not-btn-choix" data-target="not-stade" data-i18n="not-stade">Stade</button>
+                            <button type="button" class="not-btn-choix" data-target="not-flo" data-i18n="not-flo">Flo</button>
+                            <button type="button" class="not-btn-choix" data-target="not-prlvmt" data-i18n="not-prlvmt">Prlvmt</button>
+                            <button type="button" class="not-btn-choix" data-target="not-visuelle" data-i18n="not-visuelle">Visuelle</button>
+                            <button type="button" class="not-btn-choix" data-target="not-phyto" data-i18n="not-phyto">Phyto</button>
+                            <button type="button" class="not-btn-choix" data-target="not-simple" data-i18n="not-simple">Simple</button>
                         </div>
 
                         <div id="not-stade" class="notation-group-container hidden-section">
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                                <label for="stade" style="width:auto; margin:0;">Stade (BBCH) :</label>
+                                <label for="stade" style="width:auto; margin:0;" data-i18n="stade-bbch">Stade (BBCH) :</label>
                                 <button type="button" id="bbch-info-button" class="btn-secondary" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
                             </div>
                             <div class="input-inc-dec">
@@ -215,18 +192,18 @@
                         </div>
 
                         <div id="not-flo" class="notation-group-container hidden-section">
-                            <h4>Taux de floraison (%) <span id="flo-display">0</span></h4>
+                            <h4 data-i18n="taux-flo">Taux de floraison (%) <span id="flo-display">0</span></h4>
                             <div id="flo-buttons" class="square-btn-group"></div>
                         </div>
 
                         <div id="not-prlvmt" class="notation-group-container hidden-section">
-                            <h4>Prélèvements / Échantillons</h4>
+                            <h4 data-i18n="prelevements">Prélèvements / Échantillons</h4>
                             <div style="display:flex; align-items:center; gap:5px; margin-bottom:5px;">
-                                <label style="width:auto; margin:0;">Code:</label>
+                                <label style="width:auto; margin:0;" data-i18n="code">Code:</label>
                                 <input type="text" id="lettres-analyse" size="5" placeholder="AAA" style="width:60px !important; margin:0;">
                                 <input type="number" id="numero-analyse" value="1" min="1" style="width:60px !important; margin:0;">
-                                <button id="minus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">-</button>
-                                <button id="plus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">+</button>
+                                <button type="button" id="minus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">-</button>
+                                <button type="button" id="plus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">+</button>
                             </div>
                         </div>
 
@@ -238,32 +215,32 @@
                         </div>
 
                         <div id="not-phyto" class="notation-group-container hidden-section">
-                            <h4>Impact Phyto (0-9) <span id="phyto-display">0</span></h4>
+                            <h4 data-i18n="impact-phyto">Impact Phyto (0-9) <span id="phyto-display">0</span></h4>
                             <div id="phyto-buttons" class="square-btn-group"></div>
                         </div>
 
                         <div id="not-simple" class="notation-group-container hidden-section">
                             <div id="simple-notations-list"></div>
-                            <button id="btn-add-simple-line" class="btn-secondary" style="font-size:0.8em; width:100%;">+ Ajouter ligne</button>
+                            <button id="btn-add-simple-line" class="btn-secondary" style="font-size:0.8em; width:100%;" data-i18n="ajouter-ligne">+ Ajouter ligne</button>
                         </div>
                     </div>
                     
                     <hr>
-                    <label for="obs">Observations:</label>
+                    <label for="obs" data-i18n="observations">Observations:</label>
                     <textarea id="obs" rows="2"></textarea>
 
                     <div class="save-buttons-container">
-                        <button id="enregistrer" class="btn-primary">Enregistrer</button>
-                        <button id="enregistrer-suivant" class="btn-accent">Enregistrer & Suivant</button>
+                        <button id="enregistrer" class="btn-primary" data-i18n="enregistrer">Enregistrer</button>
+                        <button id="enregistrer-suivant" class="btn-accent" data-i18n="enregistrer-suivant">Enregistrer & Suivant</button>
                     </div>
                 </div>
                 
                 <div class="main-panel">
                     <p id="date-heure-info-display" style="font-style:italic; color:#666;"></p> 
-                    <h4>Derniers enregistrements</h4>
+                    <h4 data-i18n="derniers-enregistrements">Derniers enregistrements</h4>
                     <div style="overflow-x:auto;">
                         <table id="recap-table">
-                            <thead><tr><th>Essai</th><th>Parc.</th><th>Rep</th><th>Code Ech.</th><th>Stade</th><th>Flo%</th><th>Phyto</th><th>Act.</th></tr></thead>
+                            <thead><tr><th data-i18n="th-essai">Essai</th><th data-i18n="th-parc">Parc.</th><th data-i18n="th-rep">Rep</th><th data-i18n="th-code">Code Ech.</th><th data-i18n="th-stade">Stade</th><th data-i18n="th-flo">Flo%</th><th data-i18n="th-phyto">Phyto</th><th data-i18n="th-act">Act.</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -272,54 +249,88 @@
         </div>
 
         <div id="parametres" class="tabcontent">
-            <button id="changer-essai" class="btn-secondary">Changer d'essai</button>
-            <button id="reset-data-local" class="btn-danger">Reset Données Locales</button>
-            <hr>
-            <label>Date Obs :</label><input type="date" id="custom-date">
-            <label>Heure :</label><input type="time" id="custom-time">
-            <hr>
-            <label>Météo (Condition) :</label>
-            <select id="meteo-select">
-                <option value="Soleil">Soleil</option>
-                <option value="Eclaircies">Eclaircies</option>
-                <option value="Nuageux">Nuageux</option>
-                <option value="Couvert">Couvert</option>
-                <option value="Vent">Vent</option>
-                <option value="Pluie">Pluie</option>
+            <label data-i18n="choix-langue">Langue :</label>
+            <select id="lang-select">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
             </select>
             <hr>
-            <h4>Aide au Formatage</h4>
-            <p>Pour ajouter vos propres essais, modifiez le fichier et ajoutez vos données dans la section CSV en incluant les colonnes <code>Plan_X</code> et <code>Plan_Y</code> pour dessiner le plan automatiquement.</p>
-            <button onclick="downloadTemplateWithPlan()" class="btn-primary">Télécharger Modèle CSV (avec Plan)</button>
+            <button id="changer-essai" class="btn-secondary" data-i18n="changer-essai">Changer d'essai</button>
+            <button id="reset-data-local" class="btn-danger" data-i18n="reset-donnees">Reset Données Locales</button>
+            <hr>
+            <label data-i18n="date-obs">Date Obs :</label><input type="date" id="custom-date">
+            <label data-i18n="heure-obs">Heure :</label><input type="time" id="custom-time">
+            <hr>
+            <label data-i18n="meteo">Météo (Condition) :</label>
+            <select id="meteo-select">
+                <option value="Soleil" data-i18n="meteo-soleil">Soleil</option>
+                <option value="Eclaircies" data-i18n="meteo-eclaircies">Eclaircies</option>
+                <option value="Nuageux" data-i18n="meteo-nuageux">Nuageux</option>
+                <option value="Couvert" data-i18n="meteo-couvert">Couvert</option>
+                <option value="Vent" data-i18n="meteo-vent">Vent</option>
+                <option value="Pluie" data-i18n="meteo-pluie">Pluie</option>
+            </select>
+            <hr>
+            <h4 data-i18n="aide-formatage">Aide au Formatage</h4>
+            <p data-i18n="p-aide">Pour ajouter vos propres essais, modifiez le fichier et ajoutez vos données dans la section CSV en incluant les colonnes Plan_X et Plan_Y pour dessiner le plan automatiquement.</p>
+            <button onclick="downloadTemplateWithPlan()" class="btn-primary" data-i18n="telecharger-modele">Télécharger Modèle CSV (avec Plan)</button>
             <br><br>
-            <button id="telecharger-csv" class="btn-secondary" style="width:100%;">Télécharger CSV Données</button>
+            <button id="telecharger-csv" class="btn-secondary" style="width:100%;" data-i18n="telecharger-donnees">Télécharger CSV Données</button>
         </div>
     </div>
 
-    <div id="bbchModal" class="modal"><div class="modal-content"><span class="close-button" id="closeBbchModal" style="float:right; font-size:24px; cursor:pointer;">×</span><h2>Stades BBCH</h2><div id="bbch-modal-body"></div></div></div>
-    
+    <div id="choiceSimpleNotModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <h3 data-i18n="prompt-title-simple">Type de notation</h3>
+            <input type="text" id="new-simple-title-modal" placeholder="Ex: Rayon cap">
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button id="btn-choice-num" class="btn-primary" style="flex:1">123 (Numérique)</button>
+                <button id="btn-choice-text" class="btn-accent" style="flex:1">ABC (Lettres)</button>
+            </div>
+            <button onclick="document.getElementById('choiceSimpleNotModal').style.display='none'" class="btn-secondary" style="margin-top:20px; width:100%;">Annuler</button>
+        </div>
+    </div>
+
+    <div id="bbchModal" class="modal"><div class="modal-content"><span class="close-button" id="closeBbchModal" style="float:right; font-size:24px; cursor:pointer;">×</span><h2 data-i18n="h2-bbch">Stades BBCH</h2><div id="bbch-modal-body"></div></div></div>
     <div id="sowingPlanModal" class="modal">
         <div class="modal-content"> 
             <span class="close-button" id="closeSowingPlanModal" style="float:right; font-size:24px; cursor:pointer;">×</span>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2>Plan de Semis</h2>
-                <button id="btn-validate-plan" class="btn-primary" style="margin:0;">Valider la parcelle</button>
+                <h2 data-i18n="h2-plan">Plan de Semis</h2>
+                <button id="btn-validate-plan" class="btn-primary" style="margin:0;" data-i18n="valider-parcelle-plan">Valider la parcelle</button>
             </div>
             <hr>
             <div id="sowing-plan-grid-container" style="overflow:auto;"></div>
         </div>
     </div>
-    
     <div id="progressionModeModal" class="modal">
          <div class="modal-content">
             <span class="close-button" id="closeProgressionModeModal" style="float:right; font-size:24px; cursor:pointer;">×</span>
-            <h2>Modes de Progression</h2>
-            <p>C: Classique (Ordre numérique)<br>Z: Zigzag (Ligne)<br>U: Zigzag (Colonne)<br>N: Colonne</p>
+            <h2 data-i18n="h2-modes">Modes de Progression</h2>
+            <p data-i18n="p-modes">C: Classique (Ordre numérique)<br>Z: Zigzag (Ligne)<br>U: Zigzag (Colonne)<br>N: Colonne</p>
         </div>
     </div>
 
 <script>
-    // --- DONNÉES INITIALES (Séparateur ,) ---
+    const translations = {
+        fr: { "title": "Notations", "choix-essai": "Choix de l'essai :", "type-notation": "Type de notations (ex: Sortie Hiver) :", "type-notation-placeholder": "Indiquer le type...", "confirmer": "Confirmer", "tab-saisie": "Saisie", "tab-parametres": "Paramètres", "num-parcelle": "Numéro de parcelle", "mode": "Mode:", "mode-c": "C (Classique)", "mode-z": "Z (Zigzag)", "mode-u": "U (Zigzag Col)", "mode-n": "N (Colonne)", "prec": "← Préc.", "valider": "Valider Parcelle", "suiv": "Suiv. →", "lignee": "Lignée :", "plan-semis": "Plan de Semis", "rep": "Rep :", "menus": "► MENUS (Ouvrir/Fermer)", "menus-close": "▼ MENUS (Fermer)", "menus-open": "► MENUS (Ouvrir)", "not-stade": "Stade", "not-flo": "Flo", "not-prlvmt": "Prlvmt", "not-visuelle": "Visuelle", "not-phyto": "Phyto", "not-simple": "Simple", "stade-bbch": "Stade (BBCH) :", "taux-flo": "Taux de floraison (%) ", "prelevements": "Prélèvements / Échantillons", "code": "Code:", "impact-phyto": "Impact Phyto (0-9) ", "ajouter-ligne": "+ Ajouter ligne", "observations": "Observations:", "enregistrer": "Enregistrer", "enregistrer-suivant": "Enregistrer & Suivant", "derniers-enregistrements": "Derniers enregistrements", "th-essai": "Essai", "th-parc": "Parc.", "th-rep": "Rep", "th-code": "Code Ech.", "th-stade": "Stade", "th-flo": "Flo%", "th-phyto": "Phyto", "th-act": "Act.", "choix-langue": "Langue :", "changer-essai": "Changer d'essai", "reset-donnees": "Reset Données Locales", "date-obs": "Date Obs :", "heure-obs": "Heure :", "meteo": "Météo (Condition) :", "meteo-soleil": "Soleil", "meteo-eclaircies": "Eclaircies", "meteo-nuageux": "Nuageux", "meteo-couvert": "Couvert", "meteo-vent": "Vent", "meteo-pluie": "Pluie", "aide-formatage": "Aide au Formatage", "p-aide": "Pour ajouter vos propres essais, modifiez le fichier et ajoutez vos données dans la section CSV en incluant les colonnes Plan_X et Plan_Y.", "telecharger-modele": "Télécharger Modèle CSV (avec Plan)", "telecharger-donnees": "Télécharger CSV Données", "h2-bbch": "Stades BBCH", "h2-plan": "Plan de Semis", "valider-parcelle-plan": "Valider la parcelle", "h2-modes": "Modes de Progression", "p-modes": "C: Classique (Ordre numérique)<br>Z: Zigzag (Ligne)<br>U: Zigzag (Colonne)<br>N: Colonne", "alert-choix-essai": "Choisir un essai", "alert-valider-parcelle": "Valider parcelle", "alert-select-parcelle": "Sélectionner une parcelle", "alert-reset": "SÉCURITÉ : Un export CSV va être téléchargé. Effacer ensuite toutes les observations ?", "alert-no-data": "Aucune donnée à effacer.", "alert-no-plan": "Pas de plan défini pour cet essai", "alert-delete-line": "Êtes-vous sûr de vouloir supprimer cette ligne ?", "alert-rien": "Rien", "prompt-title-simple": "Titre de la notation :" },
+        en: { "title": "Notes", "choix-essai": "Trial Choice:", "type-notation": "Note type:", "type-notation-placeholder": "Enter type...", "confirmer": "Confirm", "tab-saisie": "Entry", "tab-parametres": "Settings", "num-parcelle": "Plot Number", "mode": "Mode:", "mode-c": "C (Classic)", "mode-z": "Z (Zigzag)", "mode-u": "U (Zigzag Col)", "mode-n": "N (Column)", "prec": "← Prev.", "valider": "Validate Plot", "suiv": "Next →", "lignee": "Line:", "plan-semis": "Planting Plan", "rep": "Rep:", "menus": "► MENUS (Open/Close)", "menus-close": "▼ MENUS (Close)", "menus-open": "► MENUS (Open)", "not-stade": "Stage", "not-flo": "Bloom", "not-prlvmt": "Sample", "not-visuelle": "Visual", "not-phyto": "Phyto", "not-simple": "Simple", "stade-bbch": "Stage (BBCH):", "taux-flo": "Bloom Rate (%) ", "prelevements": "Sampling / Samples", "code": "Code:", "impact-phyto": "Phyto Impact (0-9) ", "ajouter-ligne": "+ Add line", "observations": "Observations:", "enregistrer": "Save", "enregistrer-suivant": "Save & Next", "derniers-enregistrements": "Recent Records", "th-essai": "Trial", "th-parc": "Plot", "th-rep": "Rep", "th-code": "Sample Code", "th-stade": "Stage", "th-flo": "Bloom%", "th-phyto": "Phyto", "th-act": "Act.", "choix-langue": "Language:", "changer-essai": "Change Trial", "reset-donnees": "Reset Local Data", "date-obs": "Date:", "heure-obs": "Time:", "meteo": "Weather:", "meteo-soleil": "Sunny", "meteo-eclaircies": "Partly Cloudy", "meteo-nuageux": "Cloudy", "meteo-couvert": "Overcast", "meteo-vent": "Windy", "meteo-pluie": "Rainy", "aide-formatage": "Formatting Help", "p-aide": "To add your own trials, modify the file and add your data in the CSV section.", "telecharger-modele": "Download Template", "telecharger-donnees": "Download Data", "h2-bbch": "BBCH Stages", "h2-plan": "Planting Plan", "valider-parcelle-plan": "Validate Plot", "h2-modes": "Progression Modes", "p-modes": "C: Classic<br>Z: Zigzag<br>U: Zigzag Col<br>N: Column", "alert-choix-essai": "Choose trial", "alert-valider-parcelle": "Validate plot", "alert-select-parcelle": "Select plot", "alert-reset": "SECURITY: CSV will be downloaded. Clear all data?", "alert-no-data": "No data to clear.", "alert-no-plan": "No plan defined", "alert-delete-line": "Delete line?", "alert-rien": "Nothing", "prompt-title-simple": "Notation Title:" },
+        es: { "title": "Notas", "choix-essai": "Elegir Ensayo:", "type-notation": "Tipo nota:", "type-notation-placeholder": "Indicar tipo...", "confirmer": "Confirmar", "tab-saisie": "Entrada", "tab-parametres": "Ajustes", "num-parcelle": "Número Parcela", "mode": "Modo:", "mode-c": "C (Clásico)", "mode-z": "Z (Zigzag)", "mode-u": "U (Zigzag Col)", "mode-n": "N (Columna)", "prec": "← Ant.", "valider": "Validar Parcela", "suiv": "Sig. →", "lignee": "Línea:", "plan-semis": "Plan de Siembra", "rep": "Rep:", "menus": "► MENÚS (Abrir/Cerrar)", "menus-close": "▼ MENÚS (Cerrar)", "menus-open": "► MENÚS (Abrir)", "not-stade": "Estadio", "not-flo": "Flor", "not-prlvmt": "Muestreo", "not-visuelle": "Visual", "not-phyto": "Fito", "not-simple": "Simple", "stade-bbch": "Estadio (BBCH):", "taux-flo": "Floración (%) ", "prelevements": "Muestreo / Muestras", "code": "Cód:", "impact-phyto": "Impacto Fito (0-9) ", "ajouter-ligne": "+ Añadir línea", "observations": "Obs:", "enregistrer": "Guardar", "enregistrer-suivant": "Guardar y Sig.", "derniers-enregistrements": "Registros", "th-essai": "Ensayo", "th-parc": "Parc.", "th-rep": "Rep", "th-code": "Cód.", "th-stade": "Estadio", "th-flo": "Flor%", "th-phyto": "Fito", "th-act": "Act.", "choix-langue": "Idioma:", "changer-essai": "Cambiar Ensayo", "reset-donnees": "Borrar Memoria", "date-obs": "Fecha:", "heure-obs": "Hora:", "meteo": "Clima:", "meteo-soleil": "Sol", "meteo-eclaircies": "Aclarados", "meteo-nuageux": "Nublado", "meteo-couvert": "Cubierto", "meteo-vent": "Viento", "meteo-pluie": "Lluvia", "aide-formatage": "Ayuda Formato", "p-aide": "Modificar CSV con Plan_X/Y.", "telecharger-modele": "Plantilla CSV", "telecharger-donnees": "Descargar CSV", "h2-bbch": "BBCH", "h2-plan": "Plan Siembra", "valider-parcelle-plan": "Validar", "h2-modes": "Modos", "p-modes": "C/Z/U/N.", "alert-choix-essai": "Elegir ensayo", "alert-valider-parcelle": "Validar parcela", "alert-select-parcelle": "Seleccionar parcela", "alert-reset": "SEGURIDAD: Se descargará CSV. ¿Borrar todo?", "alert-no-data": "Sin datos.", "alert-no-plan": "Sin plan.", "alert-delete-line": "¿Eliminar?", "alert-rien": "Nada", "prompt-title-simple": "Título:" }
+    };
+
+    function applyTranslations(lang) {
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+            const key = el.getAttribute("data-i18n");
+            if (translations[lang][key]) el.innerHTML = translations[lang][key];
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+            const key = el.getAttribute("data-i18n-placeholder");
+            if (translations[lang][key]) el.placeholder = translations[lang][key];
+        });
+        localStorage.setItem('selected_lang', lang);
+    }
+
     const rawCsvData = `Code_Essai_Parcelle,variete,Essai,Espece,Gps,Plan_X,Plan_Y
 001,LID 5053L SU,Test,Tournesol,"43.69,1.27",1,1
 002,MYLADY,Test,Mais,"43.47,-0.34",2,1
@@ -917,51 +928,137 @@
 585,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",95,6
 586,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,6
 587,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,6
-588,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,6`
-    const hardcodedSowingPlans = {}; 
+588,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,6
+1,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,1
+2,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,1
+3,R12BQ3MI-Influx-plenaris-XCLG589630T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,1
+4,R13SG1MJO-Influx-plenaris-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1
+5,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1
+6,R13SG1MJO-Influx-plenaris-F0440F606583T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,1
+7,R13SG1MJO-Influx-plenaris-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1
+8,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1
+9,R14WD1M-Influx-plenaris-XRCH24MA82335T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,1
+10,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,1
+11,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,1
+12,R21DW2JS-Influx-plenaris-F0440F597914T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,1
+13,R4NA1MK-Influx-plenaris-F0440F610406T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,1
+14,R4NA1MK-Influx-plenaris-F0440F610791T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,1
+15,R4NA1MK-Influx-plenaris-XESF601666T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,1
+16,R4NO4M-Influx-plenaris-XESG559541TT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,1
+17,R4NO4MJ-Influx-plenaris-F0440D474497T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,1
+18,R469MJKO-Influx-plenaris-F0440F597862T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,2
+19,R469MJSO-Influx-plenaris-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2
+20,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2
+21,R469MJSO-Influx-plenaris-F0440F597559T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,2
+22,R469MJSO-Influx-plenaris-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2
+23,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2
+24,R469MJSO-Influx-plenaris-F0440F597563T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,2
+25,R469MJSO-Influx-plenaris-XRCH25MA84934T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,2
+26,R4NA1MJ-Influx-plenaris-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2
+27,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2
+28,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,2
+29,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,2
+30,R4NA1MJO-Influx-plenaris-F0440F609634T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,2
+31,R4NA1MJO-Influx-plenaris-XCLG590786T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,2
+32,R8035MJ-Influx-plenaris-F0440F597569T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,2
+33,R8035MJI-Influx-plenaris-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2
+34,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2
+35,R5PE4MS-Influx-plenaris-F0440F610782T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,3
+36,R5PE4MS-Influx-plenaris-F0440G554644T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,3
+37,R5PG6MJS-Influx-plenaris-F0440F610784T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,3
+38,R5PG6MJS-Influx-plenaris-F0440G547818T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,3
+39,R8035M1JS-Influx-plenaris-F0440F597387T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,3
+40,R8035M1JS-Influx-plenaris-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3
+41,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3
+42,R8035M1JS-Influx-plenaris-F0440F597390T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,3
+43,R8035M1JS-Influx-plenaris-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3
+44,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3
+45,R8035M1JS-Influx-plenaris-XESF598972T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,3
+46,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,3
+47,R890JP-Influx-plenaris-F0440D472278T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,3
+48,R890JP-Influx-plenaris-F0440D472306T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,3
+49,R890JP-Influx-plenaris-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3
+50,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3
+51,SR1087MS-Influx-plenaris-XRCHE67458T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,3
+52,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,4
+53,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,4
+54,R14WD1M-Influx-plenaris-XRCH24MA82335T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,4
+55,R21DW2JS-Influx-plenaris-F0440F597914T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,4
+56,R4NA1MK-Influx-plenaris-XESF601666T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,4
+57,R4NA1MK-Influx-plenaris-F0440F610406T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,4
+58,R4NO4M-Influx-plenaris-XESG559541TT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,4
+59,R4NA1MK-Influx-plenaris-F0440F610791T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,4
+60,R13SG1MJO-Influx-plenaris-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4
+61,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4
+62,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4
+63,R13SG1MJO-Influx-plenaris-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4
+64,R13SG1MJO-Influx-plenaris-F0440F606583T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,4
+65,R12BQ3MI-Influx-plenaris-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4
+66,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4
+67,R12BQ3MI-Influx-plenaris-XCLG589630T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,4
+68,R4NO4MJ-Influx-plenaris-F0440D474497T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,4
+69,R469MJSO-Influx-plenaris-F0440F597559T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,5
+70,R469MJSO-Influx-plenaris-F0440F597563T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,5
+71,R469MJKO-Influx-plenaris-F0440F597862T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,5
+72,R469MJSO-Influx-plenaris-XRCH25MA84934T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,5
+73,R469MJSO-Influx-plenaris-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5
+74,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5
+75,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5
+76,R469MJSO-Influx-plenaris-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5
+77,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5
+78,R4NA1MJ-Influx-plenaris-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5
+79,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5
+80,R8035MJI-Influx-plenaris-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5
+81,R8035MJ-Influx-plenaris-F0440F597569T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,5
+82,R4NA1MJO-Influx-plenaris-XCLG590786T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,5
+83,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,5
+84,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,5
+85,R4NA1MJO-Influx-plenaris-F0440F609634T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,5
+86,R890JP-Influx-plenaris-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6
+87,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6
+88,R8035M1JS-Influx-plenaris-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6
+89,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6
+90,R8035M1JS-Influx-plenaris-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6
+91,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6
+92,R8035M1JS-Influx-plenaris-XESF598972T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,6
+93,R8035M1JS-Influx-plenaris-F0440F597390T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,6
+94,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,6
+95,R8035M1JS-Influx-plenaris-F0440F597387T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,6
+96,R5PG6MJS-Influx-plenaris-F0440F610784T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,6
+97,R5PG6MJS-Influx-plenaris-F0440G547818T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,6
+98,R5PE4MS-Influx-plenaris-F0440F610782T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,6
+99,SR1087MS-Influx-plenaris-XRCHE67458T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,6
+100,R890JP-Influx-plenaris-F0440D472306T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,6
+101,R890JP-Influx-plenaris-F0440D472278T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,6
+102,R5PE4MS-Influx-plenaris-F0440G554644T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,6
+103,R12BQ3MI-Influx-plenaris-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7
+104,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7
+105,R12BQ3MI-Influx-plenaris-XCLG589630T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",3,7
+106,R13SG1MJO-Influx-plenaris-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7
+107,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7
+108,R13SG1MJO-Influx-plenaris-F0440F606583T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",6,7
+109,R13SG1MJO-Influx-plenaris-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7
+110,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7
+111,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",9,7
+112,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",10,7
+113,R469MJKO-Influx-plenaris-F0440F597862T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",11,7
+114,R469MJSO-Influx-plenaris-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7
+115,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7
+116,R469MJSO-Influx-plenaris-F0440F597559T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",14,7
+117,R469MJSO-Influx-plenaris-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7
+118,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7
+119,R469MJSO-Influx-plenaris-F0440F597563T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",17,7
+120,R469MJSO-Influx-plenaris-XRCH25MA84934T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7`
 
    const bbchInfoData = {
-    "Mais": [
-        { code: "00-09", desc: "Germination & Levée : Semence sèche (00), radicule (05) puis levée du coléoptile (09)." },
-        { code: "10-19", desc: "Développement des feuilles : 1ère feuille étalée (10) jusqu'à 9 feuilles et plus (19)." },
-        { code: "61-69", desc: "Floraison : Étamines visibles (61), soies visibles (63), pleine floraison (65) jusqu'au dessèchement des soies (69)." }
-    ],
-    "Tournesol": [
-        { code: "00-09", desc: "Germination : Radicule sortie (05) puis levée avec cotylédons étalés (09)." },
-        { code: "10-19", desc: "Feuilles : 2ème paire (12), 5ème paire (15) jusqu'à 9 paires et plus (19)." },
-        { code: "51-59", desc: "Bouton floral : Visible au cœur (51), bien dégagé (55) jusqu'aux premiers rayons visibles (59)." },
-        { code: "61-69", desc: "Floraison : Ligules étalées (61), pleine floraison (65), chute des ligules et fin (69)." }
-    ],
-    "Colza": [
-        { code: "10-19", desc: "Feuilles (Rosette) : Cotylédons étalés (10), 1ère feuille (11) jusqu'à 9 feuilles et plus (19)." },
-        { code: "30-39", desc: "Montaison : Début élongation tige (30) jusqu'aux boutons visibles au-dessus du feuillage (39)." },
-        { code: "50-59", desc: "Boutons : Boutons séparés (55), boutons jaunes (57) puis premiers pétales visibles (59)." },
-        { code: "60-69", desc: "Floraison : 1ères fleurs (60), pleine floraison/chute pétales (65), fin floraison (69)." }
-    ],
-    "Soja": [
-        { code: "10-19", desc: "Feuilles : Cotylédons (10), 1ère trifoliée (12) jusqu'à 9 feuilles trifoliées et plus (19)." },
-        { code: "51-59", desc: "Inflorescence : Premiers boutons visibles (51) jusqu'aux premiers pétales visibles (59)." },
-        { code: "60-69", desc: "Floraison : Début R1 (60), pleine floraison R2 sur nœuds supérieurs (65), fin floraison (69)." }
-    ],
-    "Sorgho": [
-        { code: "10-19", desc: "Développement des feuilles : 1ère feuille étalée (10) jusqu'à 9 feuilles et plus (19)." },
-        { code: "51-59", desc: "Épiaison : Début sortie panicule (51) jusqu'au dégagement total de la panicule (59)." },
-        { code: "60-69", desc: "Floraison (Anthèse) : Sommet panicule (61), mi-panicule (65), fin à la base de la panicule (69)." }
-    ]
+    "Mais": [ { code: "00-09", desc: "Germination & Levée" }, { code: "10-19", desc: "Développement feuilles" }, { code: "61-69", desc: "Floraison" } ],
+    "Tournesol": [ { code: "00-09", desc: "Germination" }, { code: "10-19", desc: "Feuilles" }, { code: "51-59", desc: "Bouton" }, { code: "61-69", desc: "Floraison" } ],
+    "Colza": [ { code: "10-19", desc: "Feuilles" }, { code: "30-39", desc: "Montaison" }, { code: "50-59", desc: "Boutons" }, { code: "60-69", desc: "Floraison" } ],
+    "Soja": [ { code: "10-19", desc: "Feuilles" }, { code: "51-59", desc: "Inflorescence" }, { code: "60-69", desc: "Floraison" } ],
+    "Sorgho": [ { code: "10-19", desc: "Développement feuilles" }, { code: "51-59", desc: "Épiaison" }, { code: "60-69", desc: "Floraison" } ]
 };
     
-    let varieteData = [];
-    let appObservations = []; 
-    let currentEssai = null;
-    let currentParcelleDigits = { d1: '0', d2: '0', d3: '0' };
-    let selectedPlotCodeForNavigation = null;
-    let currentEspece = null;
-    let currentGps = null;
-    let parcelleValideeCode = null;
-    let currentPlotOrder = [];
-
-    let simpleNotationsConfig = ['A'];
-    try { if(localStorage.getItem('simpleNotationsConfig')) simpleNotationsConfig = JSON.parse(localStorage.getItem('simpleNotationsConfig')); } catch(e){}
+    let varieteData = [], appObservations = [], currentEssai = null, currentParcelleDigits = { d1: '0', d2: '0', d3: '0' }, selectedPlotCodeForNavigation = null, currentEspece = null, currentGps = null, parcelleValideeCode = null, currentPlotOrder = [], simpleNotationsConfig = [];
 
     function parseCSVToObjects(csvString) {
         const lines = csvString.trim().split(/\r?\n/);
@@ -986,12 +1083,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('selected_lang') || 'fr';
+        document.getElementById('lang-select').value = savedLang;
+        applyTranslations(savedLang);
         varieteData = parseCSVToObjects(rawCsvData);
         initEssaiSelector();
-        initSimpleNotationsUI();
         loadLocalObservations();
         setupEventListeners();
-        
         const now = new Date();
         document.getElementById('custom-date').valueAsDate = now;
         document.getElementById('custom-time').value = now.toTimeString().substring(0,5);
@@ -999,7 +1097,7 @@
 
     function initEssaiSelector() {
         const selector = document.getElementById('choix-essai');
-        selector.innerHTML = '<option value="">-- Choisir un essai --</option>';
+        selector.innerHTML = '<option value="">-- Trial --</option>';
         if(!varieteData.length) return;
         const essais = [...new Set(varieteData.map(i => i.Essai))].sort();
         essais.forEach(e => {
@@ -1012,33 +1110,16 @@
     function generatePlotOrder() {
         currentPlotOrder = [];
         if (!currentEssai) return;
-        
         const plots = varieteData.filter(p => p.Essai === currentEssai);
         const hasCoords = plots.every(p => p.Plan_X && p.Plan_Y);
-        
         if (hasCoords) {
             plots.forEach(p => { p.x = parseInt(p.Plan_X); p.y = parseInt(p.Plan_Y); });
             const mode = document.getElementById('mode-avancement').value;
-            
             switch (mode) {
-                case 'C': 
-                    plots.sort((a,b) => String(a.Code_Essai_Parcelle).localeCompare(String(b.Code_Essai_Parcelle)));
-                    break;
-                case 'N': 
-                    plots.sort((a,b) => (a.x - b.x) || (a.y - b.y));
-                    break;
-                case 'Z': 
-                    plots.sort((a,b) => {
-                        if (a.y !== b.y) return a.y - b.y;
-                        return (a.y % 2 !== 0) ? (a.x - b.x) : (b.x - a.x);
-                    });
-                    break;
-                case 'U': 
-                    plots.sort((a,b) => {
-                        if (a.x !== b.x) return a.x - b.x;
-                        return (a.x % 2 !== 0) ? (a.y - b.y) : (b.y - a.y);
-                    });
-                    break;
+                case 'C': plots.sort((a,b) => String(a.Code_Essai_Parcelle).localeCompare(String(b.Code_Essai_Parcelle))); break;
+                case 'N': plots.sort((a,b) => (a.x - b.x) || (a.y - b.y)); break;
+                case 'Z': plots.sort((a,b) => (a.y !== b.y) ? (a.y - b.y) : ((a.y % 2 !== 0) ? (a.x - b.x) : (b.x - a.x))); break;
+                case 'U': plots.sort((a,b) => (a.x !== b.x) ? (a.x - b.x) : ((a.x % 2 !== 0) ? (a.y - b.y) : (b.y - a.y))); break;
             }
             currentPlotOrder = plots.map(p => String(p.Code_Essai_Parcelle).padStart(3,'0'));
         } else {
@@ -1046,62 +1127,46 @@
         }
     }
 
+    function getT(key) {
+        const lang = document.getElementById('lang-select').value;
+        return translations[lang][key] || key;
+    }
+
     function handleNavigate(direction) {
-        if (!currentEssai) return alert("Choisir un essai");
+        if (!currentEssai) return alert(getT("alert-choix-essai"));
         if (currentPlotOrder.length === 0) generatePlotOrder();
-        
         const currentCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
         let idx = currentPlotOrder.indexOf(currentCode);
-        
-        if (idx === -1) idx = 0; 
-        else idx += direction;
-        
-        if (idx >= currentPlotOrder.length) idx = 0;
-        if (idx < 0) idx = currentPlotOrder.length - 1;
-        
+        if (idx === -1) idx = 0; else idx = (idx + direction + currentPlotOrder.length) % currentPlotOrder.length;
         selectedPlotCodeForNavigation = currentPlotOrder[idx];
         updateUIForSelectedPlot(selectedPlotCodeForNavigation);
-        
-        const btn = document.getElementById('valider-parcelle');
-        btn.textContent = "Valider Parcelle";
-        btn.classList.replace("btn-secondary", "btn-primary");
         parcelleValideeCode = null;
+        document.getElementById('valider-parcelle').style.display = 'block';
     }
 
     function setupEventListeners() {
-        document.getElementById('confirmer-essai').addEventListener('click', () => {
+        document.getElementById('lang-select').onchange = (e) => applyTranslations(e.target.value);
+        document.getElementById('confirmer-essai').onclick = () => {
             currentEssai = document.getElementById('choix-essai').value;
             if (currentEssai) {
                 document.getElementById('session-setup').style.display = 'none';
                 document.getElementById('app-container').style.display = 'block';
                 generatePlotOrder();
-                selectedPlotCodeForNavigation = currentPlotOrder.length > 0 ? currentPlotOrder[0] : "001";
-                openTab(null, 'saisie');
+                selectedPlotCodeForNavigation = currentPlotOrder[0] || "001";
                 updateUIForSelectedPlot(selectedPlotCodeForNavigation);
             }
-        });
-
-        document.getElementById('valider-parcelle').addEventListener('click', () => {
-            if(selectedPlotCodeForNavigation) {
-                parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
-                document.getElementById('valider-parcelle').style.display = 'none';
-                document.getElementById('sowingPlanModal').style.display = 'none';
-            }
-        });
+        };
+        document.getElementById('valider-parcelle').onclick = () => {
+            parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
+            document.getElementById('valider-parcelle').style.display = 'none';
+        };
+        document.getElementById('parcelle-suivante').onclick = () => handleNavigate(1);
+        document.getElementById('parcelle-precedente').onclick = () => handleNavigate(-1);
         
-        document.getElementById('parcelle-suivante').addEventListener('click', () => handleNavigate(1));
-        document.getElementById('parcelle-precedente').addEventListener('click', () => handleNavigate(-1));
-        
-        document.getElementById('mode-avancement').addEventListener('change', generatePlotOrder);
-        document.getElementById('info-mode-avancement').addEventListener('click', () => document.getElementById('progressionModeModal').style.display='block');
-        document.getElementById('closeProgressionModeModal').addEventListener('click', () => document.getElementById('progressionModeModal').style.display='none');
-
         ['d1','d2','d3'].forEach(k => {
             const div = document.getElementById(k+'-buttons');
-            div.innerHTML = '';
             for(let i=0; i<=9; i++) {
-                const b = document.createElement('div');
-                b.className = 'square-btn'; b.textContent = i;
+                const b = document.createElement('div'); b.className = 'square-btn'; b.textContent = i;
                 b.onclick = () => {
                     div.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
                     b.classList.add('selected');
@@ -1113,42 +1178,25 @@
             }
         });
 
-        document.getElementById('voir-sur-carte').addEventListener('click', () => {
+        // REACTIVATION GPS
+        document.getElementById('voir-sur-carte').onclick = () => {
             if(currentGps) window.open(`https://www.google.com/maps/search/?api=1&query=${currentGps.replace(/\s/g,'')}`, '_blank');
-        });
-        document.getElementById('voir-plan-semis').addEventListener('click', openSowingPlan);
-        document.getElementById('closeSowingPlanModal').addEventListener('click', () => document.getElementById('sowingPlanModal').style.display='none');
-        
-        document.getElementById('btn-validate-plan').addEventListener('click', () => {
-            if(selectedPlotCodeForNavigation) {
-                parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
-                document.getElementById('valider-parcelle').style.display = 'none';
-                document.getElementById('sowingPlanModal').style.display = 'none';
-            }
-        });
+        };
 
-        document.getElementById('btn-toggle-notations').addEventListener('click', () => {
+        document.getElementById('voir-plan-semis').onclick = openSowingPlan;
+        document.getElementById('closeSowingPlanModal').onclick = () => document.getElementById('sowingPlanModal').style.display='none';
+        document.getElementById('btn-toggle-notations').onclick = () => {
             const menuRow = document.getElementById('notation-menu-row');
-            const btn = document.getElementById('btn-toggle-notations');
-            if(menuRow.style.display === 'none') {
-                menuRow.style.display = 'flex';
-                btn.textContent = "▼ MENUS (Fermer)";
-            } else {
-                menuRow.style.display = 'none';
-                btn.textContent = "► MENUS (Ouvrir)";
-            }
-        });
-
-        document.querySelectorAll('.not-btn-choix').forEach(b => b.addEventListener('click', function() {
-            // NOUVELLE LOGIQUE : TOGGLE (ON/OFF) SANS FERMER LES AUTRES
+            menuRow.style.display = (menuRow.style.display === 'none') ? 'flex' : 'none';
+            document.getElementById('btn-toggle-notations').textContent = (menuRow.style.display === 'none') ? getT("menus-open") : getT("menus-close");
+        };
+        document.querySelectorAll('.not-btn-choix').forEach(b => b.onclick = function() {
             this.classList.toggle('active');
-            const target = document.getElementById(this.dataset.target);
-            target.classList.toggle('hidden-section');
-        }));
+            document.getElementById(this.dataset.target).classList.toggle('hidden-section');
+        });
         
         ['nec','ep','phyto'].forEach(k => {
             const div = document.getElementById(k+'-buttons');
-            div.innerHTML = '';
             for(let i=0; i<=9; i++){
                 const b = document.createElement('div'); b.className = 'square-btn'; b.textContent = i;
                 b.onclick = () => { 
@@ -1161,12 +1209,8 @@
         });
 
         const floDiv = document.getElementById('flo-buttons');
-        floDiv.innerHTML = '';
         for(let i=0; i<=100; i+=10) {
-            const b = document.createElement('div'); 
-            b.className = 'square-btn'; 
-            b.style.width = '40px';
-            b.textContent = i;
+            const b = document.createElement('div'); b.className = 'square-btn'; b.style.width = '40px'; b.textContent = i;
             b.onclick = () => {
                 floDiv.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
                 b.classList.add('selected');
@@ -1174,219 +1218,152 @@
             };
             floDiv.appendChild(b);
         }
+
+        document.getElementById('enregistrer').onclick = () => enregistrerObservation(false);
+        document.getElementById('enregistrer-suivant').onclick = () => enregistrerObservation(true);
+        document.getElementById('telecharger-csv').onclick = telechargerCSV;
+        document.getElementById('changer-essai').onclick = () => location.reload();
         
-        document.getElementById('enregistrer').addEventListener('click', () => enregistrerObservation(false));
-        document.getElementById('enregistrer-suivant').addEventListener('click', () => enregistrerObservation(true));
-        document.getElementById('telecharger-csv').addEventListener('click', telechargerCSV);
-        document.getElementById('changer-essai').addEventListener('click', () => location.reload());
-        
-        // Reset Logic
-        document.getElementById('reset-data-local').addEventListener('click', () => {
-            if(appObservations.length > 0) {
-                if(confirm("ATTENTION : Vous êtes sur le point d'effacer toutes les observations enregistrées sur cet appareil.\n\nUn fichier de sauvegarde CSV sera téléchargé automatiquement avant la suppression.\n\nÊtes-vous sûr de vouloir continuer ?")) {
-                    telechargerCSV();
-                    setTimeout(() => {
-                        appObservations = [];
-                        localStorage.removeItem('observations_v12');
-                        renderRecapTable();
-                        alert("Les données locales ont été effacées.");
-                    }, 500);
-                }
-            } else {
-                alert("Aucune donnée à effacer.");
+        // RESET AVEC SECURITE EXPORT
+        document.getElementById('reset-data-local').onclick = () => {
+            if(confirm(getT("alert-reset"))) {
+                telechargerCSV();
+                setTimeout(() => { localStorage.clear(); location.reload(); }, 1000);
             }
-        });
-        
-        document.getElementById('bbch-info-button').addEventListener('click', () => {
-            if(!currentEspece) return alert("Sélectionner une parcelle");
+        };
+
+        document.getElementById('bbch-info-button').onclick = () => {
+            if(!currentEspece) return alert(getT("alert-select-parcelle"));
             const div = document.getElementById('bbch-modal-body');
             const data = bbchInfoData[currentEspece] || [];
-            let html = '<table id="bbch-table"><thead><tr><th>Code</th><th>Stade</th></tr></thead><tbody>';
-            data.forEach(d => html += `<tr><td>${d.code}</td><td>${d.desc}</td></tr>`);
-            html += '</tbody></table>';
+            let html = '<table id="bbch-table"><thead><tr><th>Code</th><th>Stade</th></tr></thead><tbody>' + data.map(d=>`<tr><td>${d.code}</td><td>${d.desc}</td></tr>`).join('') + '</tbody></table>';
             div.innerHTML = html;
             document.getElementById('bbchModal').style.display='block';
-        });
-        document.getElementById('closeBbchModal').addEventListener('click', () => document.getElementById('bbchModal').style.display='none');
+        };
+        document.getElementById('closeBbchModal').onclick = () => document.getElementById('bbchModal').style.display='none';
         
-        setupIncDec('stade'); 
-        setupIncDec('numero-analyse', 'minus-analyse', 'plus-analyse'); 
+        // REACTIVATION INC/DEC MANUEL
+        document.getElementById('plus-analyse').onclick = () => document.getElementById('numero-analyse').value++;
+        document.getElementById('minus-analyse').onclick = () => document.getElementById('numero-analyse').value = Math.max(1, document.getElementById('numero-analyse').value - 1);
+        document.getElementById('plus-stade').onclick = () => document.getElementById('stade').value++;
+        document.getElementById('minus-stade').onclick = () => document.getElementById('stade').value = Math.max(0, document.getElementById('stade').value - 1);
         document.getElementById('plus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(el.value.charCodeAt(0)+1); };
-        document.getElementById('minus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(el.value.charCodeAt(0)-1); };
-        
-        document.getElementById('btn-add-simple-line').addEventListener('click', () => {
-            const used = new Set(simpleNotationsConfig);
-            let charCode = 65; // A
-            while (used.has(String.fromCharCode(charCode))) charCode++;
-            simpleNotationsConfig.push(String.fromCharCode(charCode));
-            localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig));
-            initSimpleNotationsUI();
-        });
+        document.getElementById('minus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(Math.max(65, el.value.charCodeAt(0)-1)); };
+
+        // MODALE CHOIX NOTATION SIMPLE
+        document.getElementById('btn-add-simple-line').onclick = () => {
+            document.getElementById('choiceSimpleNotModal').style.display = 'block';
+            document.getElementById('new-simple-title-modal').focus();
+        };
+        document.getElementById('btn-choice-num').onclick = () => addSimpleLine('num');
+        document.getElementById('btn-choice-text').onclick = () => addSimpleLine('text');
     }
 
-    function updateUIForSelectedPlot(code) {
-        const padded = String(code).padStart(3,'0');
-        ['d1','d2','d3'].forEach((k, idx) => {
-            currentParcelleDigits[k] = padded[idx];
-            const div = document.getElementById(k+'-buttons');
-            div.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
-            for(let b of div.children) if(b.textContent === padded[idx]) b.classList.add('selected');
-        });
-
-        // REINITIALISATION REP
-        document.getElementById('rep').value = 'A';
-
-        const plot = varieteData.find(i => i.Essai === currentEssai && String(i.Code_Essai_Parcelle).padStart(3,'0') === padded);
-        
-        document.getElementById('variete-text').textContent = "Lignée : " + (plot ? plot.variete : "INCONNUE");
-        currentEspece = plot ? plot.Espece : null;
-        currentGps = plot ? plot.Gps : null;
-        
-        document.getElementById('espece-text').textContent = currentEspece ? currentEspece.toUpperCase() : "";
-        document.body.className = currentEspece ? `theme-${currentEspece.toLowerCase()}` : '';
-        
-        document.getElementById('voir-sur-carte').style.display = (currentGps && currentGps.length > 5) ? 'inline-block' : 'none';
-        
-        // Plan de semis
-        const plots = varieteData.filter(p => p.Essai === currentEssai);
-        const hasPlan = plots.length > 0 && plots[0].Plan_X && plots[0].Plan_Y;
-        document.getElementById('voir-plan-semis').style.display = hasPlan ? 'inline-block' : 'none';
-
-        // BOUTON VALIDATION VISIBILITY
-        const btnValider = document.getElementById('valider-parcelle');
-        if(parcelleValideeCode && String(parcelleValideeCode).padStart(3,'0') === padded) {
-            btnValider.style.display = 'none';
-        } else {
-            btnValider.style.display = 'block';
-        }
+    function addSimpleLine(type) {
+        const title = document.getElementById('new-simple-title-modal').value;
+        if(!title) return;
+        const used = new Set(simpleNotationsConfig.map(s => s.code));
+        let charCode = 65; while (used.has(String.fromCharCode(charCode))) charCode++;
+        simpleNotationsConfig.push({label: title, code: String.fromCharCode(charCode), type: type});
+        localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig));
+        initSimpleNotationsUI();
+        document.getElementById('choiceSimpleNotModal').style.display = 'none';
+        document.getElementById('new-simple-title-modal').value = '';
     }
 
-    function navigatePlot(delta) {
-        let cur = parseInt(selectedPlotCodeForNavigation);
-        if(!isNaN(cur)) {
-            selectedPlotCodeForNavigation = String(cur + delta).padStart(3,'0');
-            updateUIForSelectedPlot(selectedPlotCodeForNavigation);
-        }
-    }
+function updateUIForSelectedPlot(code) {
+    const padded = String(code).padStart(3,'0');
+    ['d1','d2','d3'].forEach((k, idx) => {
+        currentParcelleDigits[k] = padded[idx];
+        const div = document.getElementById(k+'-buttons');
+        div.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
+        for(let b of div.children) if(b.textContent === padded[idx]) b.classList.add('selected');
+    });
+
+    // --- LIGNE CORRIGÉE CI-DESSOUS ---
+    // On cherche l'élément qui correspond au code ET à l'essai actuel
+    const plot = varieteData.find(i => 
+        String(i.Code_Essai_Parcelle).padStart(3,'0') === padded && 
+        i.Essai === currentEssai
+    );
+    // --------------------------------
+
+    document.getElementById('variete-text').innerHTML = `<span data-i18n="lignee">${getT("lignee")}</span> ` + (plot ? plot.variete : "INCONNUE");
+    currentEspece = plot ? plot.Espece : null;
+    currentGps = plot ? plot.Gps : null;
+    
+    document.getElementById('espece-text').textContent = currentEspece ? currentEspece.toUpperCase() : "";
+    document.body.className = currentEspece ? `theme-${currentEspece.toLowerCase()}` : '';
+    
+    // Le reste de la fonction reste identique...
+    document.getElementById('voir-sur-carte').style.display = (currentGps && currentGps.length > 3) ? 'inline-block' : 'none';
+    const plots = varieteData.filter(p => p.Essai === currentEssai);
+    document.getElementById('voir-plan-semis').style.display = (plots.length > 0 && plots[0].Plan_X) ? 'inline-block' : 'none';
+    document.getElementById('valider-parcelle').style.display = (parcelleValideeCode === padded) ? 'none' : 'block';
+}
 
     function openSowingPlan() {
-        const div = document.getElementById('sowing-plan-grid-container');
-        div.innerHTML = '';
-        const modal = document.getElementById('sowingPlanModal');
-        
         const plots = varieteData.filter(p => p.Essai === currentEssai);
-        if (plots.length === 0 || !plots[0].Plan_X) return alert("Pas de plan défini pour cet essai");
-
-        let maxX = 0, maxY = 0;
-        plots.forEach(p => {
-            if(parseInt(p.Plan_X) > maxX) maxX = parseInt(p.Plan_X);
-            if(parseInt(p.Plan_Y) > maxY) maxY = parseInt(p.Plan_Y);
-        });
-
+        if (!plots[0].Plan_X) return alert(getT("alert-no-plan"));
+        let maxX = Math.max(...plots.map(p => parseInt(p.Plan_X))), maxY = Math.max(...plots.map(p => parseInt(p.Plan_Y)));
         let html = '<table>';
         for(let r=1; r<=maxY; r++) {
             html += '<tr>';
             for(let c=1; c<=maxX; c++) {
                 const p = plots.find(plot => parseInt(plot.Plan_X) === c && parseInt(plot.Plan_Y) === r);
-                let content = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
-                
-                let css = content ? "cursor:pointer;" : "background:#eee;";
-                if(content === String(selectedPlotCodeForNavigation).padStart(3,'0')) css += "background-color:var(--theme-primary-color);color:white;font-weight:bold;";
-                
-                html += `<td style="${css}" onclick="${content ? `selectFromPlan('${content}', this)` : ''}">${content}</td>`;
+                let code = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
+                let css = code ? "cursor:pointer;" : "background:#eee;";
+                if(code === String(selectedPlotCodeForNavigation).padStart(3,'0')) css += "background-color:var(--theme-primary-color);color:white;font-weight:bold;";
+                html += `<td style="${css}" onclick="${code ? `selectFromPlan('${code}')` : ''}">${code}</td>`;
             }
             html += '</tr>';
         }
-        html += '</table>';
-        div.innerHTML = html;
-        modal.style.display = 'block';
+        document.getElementById('sowing-plan-grid-container').innerHTML = html + '</table>';
+        document.getElementById('sowingPlanModal').style.display = 'block';
     }
     
-    window.selectFromPlan = (code, cell) => {
-        selectedPlotCodeForNavigation = String(code).padStart(3,'0');
-        updateUIForSelectedPlot(selectedPlotCodeForNavigation);
-        
-        document.querySelectorAll('#sowing-plan-grid-container td').forEach(td => {
-            td.style.backgroundColor = ""; td.style.color = ""; td.style.fontWeight = "";
-        });
-        cell.style.backgroundColor = "var(--theme-primary-color)";
-        cell.style.color = "white";
-        cell.style.fontWeight = "bold";
+    window.selectFromPlan = (code) => {
+        selectedPlotCodeForNavigation = code; updateUIForSelectedPlot(code);
+        document.getElementById('sowingPlanModal').style.display = 'none';
     };
 
     function enregistrerObservation(andNext) {
-        if (!parcelleValideeCode) return alert("Valider parcelle");
+        if (!parcelleValideeCode) return alert(getT("alert-valider-parcelle"));
         let obs = {
-            id: Date.now(), 
-            Type_Not: document.getElementById('type-notation-session').value, // Ajout de la case de session
-            ESSAI: currentEssai, 
-            Parcelle: parcelleValideeCode,
-            Variete: document.getElementById('variete-text').textContent.replace("Lignée : ",""),
-            Date: document.getElementById('custom-date').value,
-            Heure: document.getElementById('custom-time').value,
-            Meteo: document.getElementById('meteo-select').value,
-            Rep: document.getElementById('rep').value,
+            id: Date.now(), Type_Not: document.getElementById('type-notation-session').value,
+            ESSAI: currentEssai, Parcelle: parcelleValideeCode,
+            Variete: document.getElementById('variete-text').textContent.split(':').pop().trim(),
+            Date: document.getElementById('custom-date').value, Heure: document.getElementById('custom-time').value,
+            Meteo: document.getElementById('meteo-select').value, Rep: document.getElementById('rep').value,
             Observations: document.getElementById('obs').value,
         };
+        if(document.getElementById('stade').value) obs.Stade = document.getElementById('stade').value;
+        const floSel = document.querySelector('#flo-buttons .selected'); if(floSel) obs.Floraison = floSel.textContent + "%";
+        const phytoSel = document.querySelector('#phyto-buttons .selected'); if(phytoSel) obs.Phyto = phytoSel.textContent;
         
-        // RECUPERATION DONNEES STADE
-        const stadeVal = document.getElementById('stade').value;
-        if(stadeVal) obs.Stade = stadeVal;
-
-        // RECUPERATION FLORAISON (Valeur Bouton)
-        const floSel = document.querySelector('#flo-buttons .selected');
-        if(floSel) obs.Floraison = floSel.textContent + "%";
-
-        // RECUPERATION PRELEVEMENT
-        const prlvmtSection = document.getElementById('not-prlvmt');
-        const codeEch = (document.getElementById('lettres-analyse').value + document.getElementById('numero-analyse').value).toUpperCase();
-        
-        // Si l'utilisateur a rentré un code ou est dans l'onglet, on note le code
-        if(!prlvmtSection.classList.contains('hidden-section') || document.getElementById('lettres-analyse').value !== "") {
-            obs.Code_Ech = codeEch;
-            // Incrémentation auto du numéro d'analyse
-            let num = document.getElementById('numero-analyse'); num.value = parseInt(num.value)+1;
-        }
-        
-        const notVis = document.getElementById('not-visuelle');
-        if (!notVis.classList.contains('hidden-section')) {
-            let s = document.querySelector('#nec-buttons .selected'); if(s) obs.NEC = s.textContent;
-            let e = document.querySelector('#ep-buttons .selected'); if(e) obs.EP = e.textContent;
+        // INCREMENTATION PRELEVEMENTS SEULEMENT SI LETTRES SAISIES
+        if (document.getElementById('lettres-analyse').value !== "") {
+            obs.Code_Ech = (document.getElementById('lettres-analyse').value + document.getElementById('numero-analyse').value).toUpperCase();
+            document.getElementById('numero-analyse').value++;
         }
 
-        const notPhy = document.getElementById('not-phyto');
-        if (!notPhy.classList.contains('hidden-section')) {
-            let s = document.querySelector('#phyto-buttons .selected'); if(s) obs.Phyto = s.textContent;
-        }
-
-        const notSim = document.getElementById('not-simple');
-        if (!notSim.classList.contains('hidden-section')) {
-            simpleNotationsConfig.forEach(l => {
-                let v = document.getElementById('not-simple-'+l);
-                if(v && v.value) obs['Not_'+l] = v.value;
-            });
-        }
+        simpleNotationsConfig.forEach(s => {
+            let v = document.getElementById('not-simple-'+s.code).value;
+            if(v) { obs['Titre_Not_'+s.code] = s.label; obs['Not_'+s.code] = v; }
+        });
 
         appObservations.unshift(obs);
         localStorage.setItem('observations_v12', JSON.stringify(appObservations));
         renderRecapTable();
-        document.getElementById('obs').value = "";
         
-        // Reset Floraison buttons visual
-        document.querySelectorAll('#flo-buttons .selected').forEach(s => s.classList.remove('selected'));
-        document.getElementById('flo-display').textContent = "0";
-
-        // Incrémentation Rep (A->B...) à chaque enregistrement
-        let r = document.getElementById('rep');
-        let nextR = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1);
-        r.value = (nextR <= 'Z') ? nextR : 'A';
-        
-        // SI "Enregistrer et Suivant"
         if(andNext) {
             handleNavigate(1);
-            // Validation Automatique
             parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
-            document.getElementById('valider-parcelle').style.display = 'none';
+            updateUIForSelectedPlot(selectedPlotCodeForNavigation);
+            document.getElementById('rep').value = 'A';
+        } else {
+            let r = document.getElementById('rep');
+            r.value = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1);
         }
     }
     
@@ -1394,121 +1371,47 @@
         const tbody = document.querySelector('#recap-table tbody');
         if(!tbody) return;
         tbody.innerHTML = appObservations.map(o => 
-            `<tr>
-                <td>${o.ESSAI}</td>
-                <td>${o.Parcelle}</td>
-                <td>${o.Rep}</td>
-                <td>${o.Code_Ech||'-'}</td>
-                <td>${o.Stade||'-'}</td>
-                <td>${o.Floraison||'-'}</td>
-                <td>${o.Phyto||'-'}</td>
-                <td><button onclick="delObs(${o.id})" class="btn-danger" style="margin:0;padding:2px;">X</button></td>
-            </tr>`
+            `<tr><td>${o.ESSAI}</td><td>${o.Parcelle}</td><td>${o.Rep}</td><td>${o.Code_Ech||'-'}</td><td>${o.Stade||'-'}</td><td>${o.Floraison||'-'}</td><td>${o.Phyto||'-'}</td><td><button onclick="delObs(${o.id})" class="btn-danger" style="margin:0;padding:2px;">X</button></td></tr>`
         ).join('');
     }
 
     window.delObs = (id) => {
-        if(confirm("Êtes-vous sûr de vouloir supprimer cette ligne ?")) {
+        if(confirm(getT("alert-delete-line"))) {
             appObservations = appObservations.filter(o => o.id !== id);
-            localStorage.setItem('observations_v12', JSON.stringify(appObservations));
-            renderRecapTable();
+            localStorage.setItem('observations_v12', JSON.stringify(appObservations)); renderRecapTable();
         }
     };
 
-    function setupIncDec(inputId, minusId, plusId) {
-        const input = document.getElementById(inputId);
-        const minus = document.getElementById(minusId || ('minus-' + inputId));
-        const plus = document.getElementById(plusId || ('plus-' + inputId));
-        
-        if (minus && input) {
-            minus.onclick = () => { input.value = Math.max(0, parseInt(input.value || 0) - 1); };
-        }
-        if (plus && input) {
-            plus.onclick = () => { input.value = parseInt(input.value || 0) + 1; };
-        }
-    }
-    
     function initSimpleNotationsUI() {
         const div = document.getElementById('simple-notations-list'); div.innerHTML='';
-        simpleNotationsConfig.forEach((l, idx) => {
-            div.innerHTML += `
-            <div class="simple-notation-line" id="line-${l}">
-                <span class="simple-not-label">${l}</span>
-                <div class="input-inc-dec" style="margin:0;">
-                    <button class="btn-secondary" onclick="changeSimpleVal('not-simple-${l}', -1)">-</button>
-                    <input type="number" id="not-simple-${l}" value="0" style="width:50px;">
-                    <button class="btn-secondary" onclick="changeSimpleVal('not-simple-${l}', 1)">+</button>
-                </div>
-                <button class="btn-danger" style="padding:2px 6px; margin-left:5px; font-size:0.8em;" onclick="removeSimpleLine('${l}')">X</button>
-            </div>`;
+        simpleNotationsConfig = simpleNotationsConfig.filter(s => typeof s === 'object' && s.code);
+        simpleNotationsConfig.forEach(s => {
+            let inputField = (s.type === 'num') 
+                ? `<div class="simple-not-controls"><button class="btn-secondary" style="padding:5px 10px;" onclick="cV('${s.code}',-1)">-</button><input type="number" id="not-simple-${s.code}" value="0" style="margin:0; text-align:center;"><button class="btn-secondary" style="padding:5px 10px;" onclick="cV('${s.code}',1)">+</button></div>`
+                : `<input type="text" id="not-simple-${s.code}" placeholder="..." style="margin:0">`;
+            div.innerHTML += `<div class="simple-notation-line"><div class="simple-not-header"><span>${s.label}</span><button class="btn-danger" style="padding:2px 6px; font-size:0.7em;" onclick="removeSimpleLine('${s.code}')">X</button></div>${inputField}</div>`;
         });
     }
     
-    window.changeSimpleVal = (id, delta) => {
-        let el = document.getElementById(id);
-        let val = parseInt(el.value) || 0;
-        el.value = val + delta;
-    }
-
-    window.removeSimpleLine = (l) => {
-        simpleNotationsConfig = simpleNotationsConfig.filter(x => x !== l);
-        localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig));
-        initSimpleNotationsUI();
-    };
-
-    window.openTab = (e,n) => {
-        document.querySelectorAll('.tabcontent').forEach(x=>x.style.display='none');
-        document.querySelectorAll('.tablink').forEach(x=>x.classList.remove('active'));
-        document.getElementById(n).style.display='block';
-        if(e) e.currentTarget.classList.add('active');
-    }
-    function loadLocalObservations() {
-        if(localStorage.getItem('observations_v12')) appObservations = JSON.parse(localStorage.getItem('observations_v12'));
-        renderRecapTable();
+    window.cV = (c, d) => { let el = document.getElementById('not-simple-'+c); el.value = (parseInt(el.value) || 0) + d; }
+    window.removeSimpleLine = (c) => { simpleNotationsConfig = simpleNotationsConfig.filter(x => x.code !== c); localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig)); initSimpleNotationsUI(); };
+    window.openTab = (e,n) => { document.querySelectorAll('.tabcontent').forEach(x=>x.style.display='none'); document.querySelectorAll('.tablink').forEach(x=>x.classList.remove('active')); document.getElementById(n).style.display='block'; if(e) e.currentTarget.classList.add('active'); }
+    function loadLocalObservations() { 
+        appObservations = JSON.parse(localStorage.getItem('observations_v12') || "[]");
+        simpleNotationsConfig = JSON.parse(localStorage.getItem('simpleNotationsConfig') || "[]");
+        renderRecapTable(); initSimpleNotationsUI();
     }
     
-    // Téléchargement Modèle CSV (Séparateur ;)
-    function downloadTemplateWithPlan() {
-        const b = new Blob(["Code_Essai_Parcelle;variete;Essai;Espece;Gps;Plan_X;Plan_Y\n001;VarA;Essai1;Tournesol;0.0,0.0;1;1\n002;VarB;Essai1;Tournesol;0.0,0.0;2;1"],{type:'text/csv'});
-        const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download="Modele_Essai_Avec_Plan.csv"; a.click();
-    }
-    
-    // Export Données (Séparateur ;) AVEC COLONNES FORCÉES
-  function telechargerCSV() {
-        if(!appObservations.length) return alert("Rien");
-        
-        // Ajout de Type_Not dans les colonnes fixées
+    function telechargerCSV() {
+        if(!appObservations.length) return alert(getT("alert-rien"));
         const fixedHeaders = ["Type_Not", "ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Code_Ech", "NEC", "EP", "Phyto", "Observations"];
-        // 2. Détection des colonnes dynamiques (Not_A, Not_B...)
         let dynamicKeys = new Set();
-        appObservations.forEach(o => Object.keys(o).forEach(k => {
-            if(k.startsWith('Not_')) dynamicKeys.add(k);
-        }));
-        let sortedDynamicKeys = Array.from(dynamicKeys).sort();
-        
-        // 3. Fusion finale des headers
-        const finalHeaders = [...fixedHeaders, ...sortedDynamicKeys];
-
-        const BOM = "\uFEFF"; 
-        let csv = BOM + finalHeaders.join(";") + "\n";
-        
-        appObservations.forEach(o => {
-            let row = finalHeaders.map(k => {
-                let val = o[k] === undefined ? "" : o[k];
-                return val;
-            }).join(";");
-            csv += row + "\n";
-        });
-
-        const a = document.createElement('a'); 
-        a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); 
-        a.download="Export_Complet.csv"; 
-        a.click();
+        appObservations.forEach(o => Object.keys(o).forEach(k => { if(k.startsWith('Titre_Not_') || k.startsWith('Not_')) dynamicKeys.add(k); }));
+        const finalHeaders = [...fixedHeaders, ...Array.from(dynamicKeys).sort()];
+        let csv = "\uFEFF" + finalHeaders.join(";") + "\n";
+        appObservations.forEach(o => { csv += finalHeaders.map(k => o[k] === undefined ? "" : o[k]).join(";") + "\n"; });
+        const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download="Export_Notations.csv"; a.click();
     }
 </script>
 </body>
-
 </html>
-
-
-
