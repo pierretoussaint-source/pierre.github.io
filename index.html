@@ -49,7 +49,7 @@ html {
     .tablink.active { background-color: var(--theme-tab-active-bg); color: var(--theme-tab-active-text); font-weight: 500; }
     .tabcontent { display: none; padding: 15px 0; }
     
-    #session-setup, .sidebar, .main-panel, #parametres div { padding: 20px; background-color: var(--theme-card-background-color); border-radius: 10px; box-shadow: var(--theme-card-shadow); margin-bottom:25px; }
+    #session-setup, .sidebar, .main-panel, #Configuration div { padding: 20px; background-color: var(--theme-card-background-color); border-radius: 10px; box-shadow: var(--theme-card-shadow); margin-bottom:25px; }
     #app-container { max-width: 1400px; margin: 0 auto; }
     #app-content { display: flex; flex-wrap: wrap; gap: 25px; }
     
@@ -130,11 +130,11 @@ html {
 
     <div id="app-container" style="display:none;">
         <div class="tabs">
-            <button class="tablink active" onclick="openTab(event, 'saisie')" id="defaultOpen" data-i18n="tab-saisie">Saisie</button>
-            <button class="tablink" onclick="openTab(event, 'parametres')" data-i18n="tab-parametres">Paramètres</button>
+            <button class="tablink active" onclick="openTab(event, 'Note')" id="defaultOpen" data-i18n="tab-Note">Note</button>
+            <button class="tablink" onclick="openTab(event, 'Configuration')" data-i18n="tab-Configuration">Configuration</button>
         </div>
 
-        <div id="saisie" class="tabcontent" style="display:block;">
+        <div id="Note" class="tabcontent" style="display:block;">
             <div id="app-content">
                 <div class="sidebar">
                     <div class="selector-group"> 
@@ -147,10 +147,10 @@ html {
                    <div class="mode-selection-line" style="display: flex; align-items: center; gap: 5px; margin-top:10px;">
                       <label for="mode-avancement" style="width:auto; margin:0;" data-i18n="mode">Mode:</label>
                       <select id="mode-avancement" onchange="generatePlotOrder()">
-                        <option value="S">S (Serpentin Ligne)</option>
-                        <option value="Z" selected>Z (Ligne par ligne)</option>
-                        <option value="U">U (Serpentin Colonne)</option>
-                        <option value="N">N (Colonne par colonne)</option>
+                        <option value="S">S</option>
+                        <option value="Z" selected>Z</option>
+                        <option value="U">U</option>
+                        <option value="N">N</option>
                       </select>
                     </div>
 
@@ -257,12 +257,15 @@ html {
             </div>
         </div>
 
-        <div id="parametres" class="tabcontent">
+        <div id="Configuration" class="tabcontent">
             <label data-i18n="choix-langue">Langue :</label>
             <select id="lang-select">
                 <option value="fr">Français</option>
                 <option value="en">English</option>
                 <option value="es">Español</option>
+		<option value="pl">Polski</option>
+		<option value="ro">Română</option>
+		<option value="uk">Українська</option>
             </select>
             <hr>
             <button id="changer-essai" class="btn-secondary" data-i18n="changer-essai">Changer d'essai</button>
@@ -280,12 +283,9 @@ html {
                 <option value="Vent" data-i18n="meteo-vent">Vent</option>
                 <option value="Pluie" data-i18n="meteo-pluie">Pluie</option>
             </select>
-            <hr>
-            <h4 data-i18n="aide-formatage">Aide au Formatage</h4>
-            <p data-i18n="p-aide">Pour ajouter vos propres essais, modifiez le fichier et ajoutez vos données dans la section CSV en incluant les colonnes Plan_X et Plan_Y pour dessiner le plan automatiquement.</p>
-            <button onclick="downloadTemplateWithPlan()" class="btn-primary" data-i18n="telecharger-modele">Télécharger Modèle CSV (avec Plan)</button>
-            <br><br>
-            <button id="telecharger-csv" class="btn-secondary" style="width:100%;" data-i18n="telecharger-donnees">Télécharger CSV Données</button>
+         <hr>
+<button id="telecharger-csv" class="btn-secondary" style="width:100%;" data-i18n="telecharger-donnees">Télécharger CSV Données</button>
+         
         </div>
     </div>
 
@@ -308,7 +308,6 @@ html {
             <span class="close-button" id="closeSowingPlanModal" style="float:right; font-size:24px; cursor:pointer;">×</span>
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h2 data-i18n="h2-plan">Plan de Semis</h2>
-                <button id="btn-validate-plan" class="btn-primary" style="margin:0;" data-i18n="valider-parcelle-plan">Valider la parcelle</button>
             </div>
             <hr>
             <div id="sowing-plan-grid-container"></div>
@@ -316,11 +315,300 @@ html {
     </div>
 
 <script>
-    const translations = {
-        fr: { "title": "Notations", "choix-essai": "Choix de l'essai :", "type-notation": "Type de notations (ex: Sortie Hiver) :", "type-notation-placeholder": "Indiquer le type...", "confirmer": "Confirmer", "tab-saisie": "Saisie", "tab-parametres": "Paramètres", "num-parcelle": "Numéro de parcelle", "mode": "Mode:", "prec": "← Préc.", "valider": "Valider Parcelle", "suiv": "Suiv. →", "lignee": "Lignée :", "plan-semis": "Plan de Semis", "rep": "Rep :", "menus": "► MENUS (Ouvrir/Fermer)", "menus-close": "▼ MENUS (Fermer)", "menus-open": "► MENUS (Ouvrir)", "not-stade": "Stade", "not-flo": "Flo", "not-prlvmt": "Prlvmt", "not-visuelle": "Visuelle", "not-phyto": "Phyto", "not-simple": "Simple", "stade-bbch": "Stade (BBCH) :", "taux-flo": "Taux de floraison (%) ", "prelevements": "Prélèvements / Échantillons", "code": "Code:", "impact-phyto": "Impact Phyto (0-9) ", "ajouter-ligne": "+ Ajouter ligne", "observations": "Observations:", "enregistrer": "Enregistrer", "enregistrer-suivant": "Enregistrer & Suivant", "derniers-enregistrements": "Derniers enregistrements", "th-essai": "Essai", "th-parc": "Parc.", "th-rep": "Rep", "th-code": "Code Ech.", "th-stade": "Stade", "th-flo": "Flo%", "th-phyto": "Phyto", "th-act": "Act.", "choix-langue": "Langue :", "changer-essai": "Changer d'essai", "reset-donnees": "Reset Données Locales", "date-obs": "Date Obs :", "heure-obs": "Heure :", "meteo": "Météo (Condition) :", "meteo-soleil": "Soleil", "meteo-eclaircies": "Eclaircies", "meteo-nuageux": "Nuageux", "meteo-couvert": "Couvert", "meteo-vent": "Vent", "meteo-pluie": "Pluie", "aide-formatage": "Aide au Formatage", "p-aide": "Pour ajouter vos propres essais, modifiez le fichier et ajoutez vos données dans la section CSV en incluant les colonnes Plan_X et Plan_Y.", "telecharger-modele": "Télécharger Modèle CSV (avec Plan)", "telecharger-donnees": "Télécharger CSV Données", "h2-bbch": "Stades BBCH", "h2-plan": "Plan de Semis", "valider-parcelle-plan": "Valider la parcelle", "h2-modes": "Modes de Progression", "alert-choix-essai": "Choisir un essai", "alert-valider-parcelle": "Valider parcelle", "alert-select-parcelle": "Sélectionner une parcelle", "alert-reset": "SÉCURITÉ : Un export CSV va être téléchargé. Effacer ensuite toutes les observations ?", "alert-no-data": "Aucune donnée à effacer.", "alert-no-plan": "Pas de plan défini pour cet essai", "alert-delete-line": "Êtes-vous sûr de vouloir supprimer cette ligne ?", "alert-rien": "Rien", "prompt-title-simple": "Titre de la notation :" },
-        en: { "title": "Notes", "choix-essai": "Trial Choice:", "confirmer": "Confirm", "num-parcelle": "Plot Number", "mode": "Mode:", "prec": "← Prev.", "valider": "Validate Plot", "suiv": "Next →", "lignee": "Line:", "plan-semis": "Planting Plan", "rep": "Rep:", "menus": "► MENUS (Open/Close)", "menus-close": "▼ MENUS (Close)", "menus-open": "► MENUS (Open)", "not-stade": "Stage", "not-flo": "Bloom", "not-prlvmt": "Sample", "not-visuelle": "Visual", "not-phyto": "Phyto", "not-simple": "Simple", "stade-bbch": "Stage (BBCH):", "taux-flo": "Bloom Rate (%) ", "prelevements": "Sampling / Samples", "code": "Code:", "impact-phyto": "Phyto Impact (0-9) ", "ajouter-ligne": "+ Add line", "observations": "Observations:", "enregistrer": "Save", "enregistrer-suivant": "Save & Next", "derniers-enregistrements": "Recent Records", "th-essai": "Trial", "th-parc": "Plot", "th-rep": "Rep", "th-code": "Sample Code", "th-stade": "Stage", "th-flo": "Bloom%", "th-phyto": "Phyto", "th-act": "Act.", "choix-langue": "Language:", "changer-essai": "Change Trial", "reset-donnees": "Reset Local Data", "date-obs": "Date:", "heure-obs": "Time:", "meteo": "Weather:", "meteo-soleil": "Sunny", "meteo-eclaircies": "Partly Cloudy", "meteo-nuageux": "Cloudy", "meteo-couvert": "Overcast", "meteo-vent": "Windy", "meteo-pluie": "Rainy", "aide-formatage": "Formatting Help", "p-aide": "To add your own trials, modify the file and add your data in the CSV section.", "telecharger-modele": "Download Template", "telecharger-donnees": "Download Data", "h2-bbch": "BBCH Stages", "h2-plan": "Planting Plan", "valider-parcelle-plan": "Validate Plot", "h2-modes": "Progression Modes", "alert-choix-essai": "Choose trial", "alert-valider-parcelle": "Validate plot", "alert-select-parcelle": "Select plot", "alert-reset": "SECURITY: CSV will be downloaded. Clear all data?", "alert-no-data": "No data to clear.", "alert-no-plan": "No plan defined", "alert-delete-line": "Delete line?", "alert-rien": "Nothing", "prompt-title-simple": "Notation Title:" },
-        es: { "title": "Notas", "choix-essai": "Elegir Ensayo:", "confirmer": "Confirmar", "num-parcelle": "Número Parcela", "mode": "Modo:", "prec": "← Ant.", "valider": "Validar Parcela", "suiv": "Sig. →", "lignee": "Línea:", "plan-semis": "Plan de Siembra", "rep": "Rep:", "menus": "► MENÚS (Abrir/Cerrar)", "menus-close": "▼ MENÚS (Cerrar)", "menus-open": "► MENÚS (Abrir)", "not-stade": "Estadio", "not-flo": "Flor", "not-prlvmt": "Muestreo", "not-visuelle": "Visual", "not-phyto": "Fito", "not-simple": "Simple", "stade-bbch": "Estadio (BBCH):", "taux-flo": "Floración (%) ", "prelevements": "Muestreo / Muestras", "code": "Cód:", "impact-phyto": "Impacto Fito (0-9) ", "ajouter-ligne": "+ Añadir línea", "observations": "Obs:", "enregistrer": "Guardar", "enregistrer-suivant": "Guardar y Sig.", "derniers-enregistrements": "Registros", "th-essai": "Ensayo", "th-parc": "Parc.", "th-rep": "Rep", "th-code": "Cód.", "th-stade": "Estadio", "th-flo": "Flor%", "th-phyto": "Fito", "th-act": "Act.", "choix-langue": "Idioma:", "changer-essai": "Cambiar Ensayo", "reset-donnees": "Borrar Memoria", "date-obs": "Fecha:", "heure-obs": "Hora:", "meteo": "Clima:", "meteo-soleil": "Sol", "meteo-eclaircies": "Aclarados", "meteo-nuageux": "Nublado", "meteo-couvert": "Cubierto", "meteo-vent": "Viento", "meteo-pluie": "Lluvia", "aide-formatage": "Ayuda Formato", "p-aide": "Modificar CSV con Plan_X/Y.", "telecharger-modele": "Plantilla CSV", "telecharger-donnees": "Descargar CSV", "h2-bbch": "BBCH", "h2-plan": "Plan Siembra", "valider-parcelle-plan": "Validar", "h2-modes": "Modos", "alert-choix-essai": "Elegir ensayo", "alert-valider-parcelle": "Validar parcela", "alert-select-parcelle": "Seleccionar parcela", "alert-reset": "SEGURIDAD: Se descargará CSV. ¿Borrar todo?", "alert-no-data": "Sin datos.", "alert-no-plan": "Sin plan.", "alert-delete-line": "¿Eliminar?", "alert-rien": "Nada", "prompt-title-simple": "Título:" }
-    };
+   const translations = {
+    fr: {
+        // --- Interface ---
+        "title": "Notations",
+        "choix-essai": "Choix de l'essai :",
+        "type-notation": "Type de notations (ex: Sortie Hiver) :",
+        "type-notation-placeholder": "Indiquer le type...",
+        "confirmer": "Confirmer",
+        "tab-Note": "Note",
+        "tab-Configuration": "Configuration",
+        "num-parcelle": "Numéro de parcelle",
+        "mode": "Mode :",
+        "prec": "← Préc.",
+        "valider": "Valider Parcelle",
+        "suiv": "Suiv. →",
+        "lignee": "Lignée :",
+        "plan-semis": "Plan de Semis",
+        "rep": "Répétition :",
+        "menus": "► MENUS (Ouvrir/Fermer)",
+        "menus-close": "▼ MENUS (Fermer)",
+        "menus-open": "► MENUS (Ouvrir)",
+        "not-stade": "Stade",
+        "not-flo": "Floraison",
+        "not-prlvmt": "Prélèvement",
+        "not-visuelle": "Visuelle",
+        "not-phyto": "Phyto",
+        "not-simple": "Simple",
+        "stade-bbch": "Stade (BBCH) :",
+        "taux-flo": "Taux de floraison (%) ",
+        "prelevements": "Prélèvements / Échantillons",
+        "code": "Code :",
+        "impact-phyto": "Impact Phyto (0-9) ",
+        "ajouter-ligne": "+ Ajouter ligne",
+        "observations": "Observations :",
+        "enregistrer": "Enregistrer",
+        "enregistrer-suivant": "Enregistrer & Suivant",
+        "derniers-enregistrements": "Derniers enregistrements",
+        "th-essai": "Essai",
+        "th-parc": "Parc.",
+        "th-rep": "Rép.",
+        "th-code": "Code Éch.",
+        "th-stade": "Stade",
+        "th-flo": "Flo%",
+        "th-phyto": "Phyto",
+        "th-act": "Act.",
+        "choix-langue": "Langue :",
+        "changer-essai": "Changer d'essai",
+        "reset-donnees": "Reset Données Locales",
+        "date-obs": "Date Obs :",
+        "heure-obs": "Heure :",
+        "meteo": "Météo (Condition) :",
+        "meteo-soleil": "Soleil",
+        "meteo-eclaircies": "Éclaircies",
+        "meteo-nuageux": "Nuageux",
+        "meteo-couvert": "Couvert",
+        "meteo-vent": "Vent",
+        "meteo-pluie": "Pluie",
+        "telecharger-donnees": "Télécharger CSV Données",
+        "h2-bbch": "Stades BBCH",
+        "h2-plan": "Plan de Semis",
+        "valider-parcelle-plan": "Valider la parcelle",
+        "prompt-title-simple": "Titre de la notation :",
+        "alert-choix-essai": "Veuillez choisir un essai",
+        "alert-valider-parcelle": "Veuillez d'abord valider la parcelle",
+        "alert-select-parcelle": "Sélectionnez une parcelle",
+        "alert-reset": "SÉCURITÉ : Un export CSV va être téléchargé. Effacer ensuite toutes les observations ?",
+        "alert-no-data": "Aucune donnée à effacer.",
+        "alert-no-plan": "Pas de plan défini pour cet essai",
+        "alert-delete-line": "Supprimer cette ligne ?",
+        "alert-rien": "Aucune donnée à exporter",
+        "btn-info": "Info",
+        "btn-cancel": "Annuler",
+        "label-trial-select": "-- Choisir --",
+        "placeholder-aaa": "ABC",
+        "unknown-variety": "INCONNUE",
+
+        // --- Espèces ---
+        "Mais": "Maïs",
+        "Tournesol": "Tournesol",
+        "Colza": "Colza",
+        "Soja": "Soja",
+        "Sorgho": "Sorgho"
+    },
+    en: {
+        "title": "Notes",
+        "choix-essai": "Trial Choice:",
+        "type-notation": "Note Type (e.g. Winter Exit):",
+        "type-notation-placeholder": "Enter type...",
+        "confirmer": "Confirm",
+        "tab-Note": "Note",
+        "tab-Configuration": "Setup",
+        "num-parcelle": "Plot Number",
+        "mode": "Mode:",
+        "prec": "← Prev.",
+        "valider": "Validate Plot",
+        "suiv": "Next →",
+        "lignee": "Line:",
+        "plan-semis": "Planting Plan",
+        "rep": "Repetition:",
+        "menus": "► MENUS (Open/Close)",
+        "menus-close": "▼ MENUS (Close)",
+        "menus-open": "► MENUS (Open)",
+        "not-stade": "Stage",
+        "not-flo": "Bloom",
+        "not-prlvmt": "Sampling",
+        "not-visuelle": "Visual",
+        "not-phyto": "Phyto",
+        "not-simple": "Simple",
+        "stade-bbch": "Stage (BBCH):",
+        "taux-flo": "Bloom Rate (%) ",
+        "prelevements": "Sampling / Samples",
+        "code": "Code:",
+        "impact-phyto": "Phyto Impact (0-9) ",
+        "ajouter-ligne": "+ Add line",
+        "observations": "Observations:",
+        "enregistrer": "Save",
+        "enregistrer-suivant": "Save & Next",
+        "derniers-enregistrements": "Recent Records",
+        "th-essai": "Trial",
+        "th-parc": "Plot",
+        "th-rep": "Rep.",
+        "th-code": "Sample Code",
+        "th-stade": "Stage",
+        "th-flo": "Bloom%",
+        "th-phyto": "Phyto",
+        "th-act": "Act.",
+        "choix-langue": "Language:",
+        "changer-essai": "Change Trial",
+        "reset-donnees": "Reset Local Data",
+        "date-obs": "Date:",
+        "heure-obs": "Time:",
+        "meteo": "Weather:",
+        "meteo-soleil": "Sunny",
+        "meteo-eclaircies": "Partly Cloudy",
+        "meteo-nuageux": "Cloudy",
+        "meteo-couvert": "Overcast",
+        "meteo-vent": "Windy",
+        "meteo-pluie": "Rainy",
+        "telecharger-donnees": "Download CSV Data",
+        "h2-bbch": "BBCH Stages",
+        "h2-plan": "Planting Plan",
+        "valider-parcelle-plan": "Validate Plot",
+        "prompt-title-simple": "Notation Title:",
+        "alert-choix-essai": "Please choose a trial",
+        "alert-valider-parcelle": "Please validate the plot first",
+        "alert-select-parcelle": "Select a plot",
+        "alert-reset": "SECURITY: CSV will be downloaded. Clear all local data?",
+        "alert-no-data": "No data to clear.",
+        "alert-no-plan": "No plan defined for this trial",
+        "alert-delete-line": "Delete this record?",
+        "alert-rien": "No data to export",
+        "btn-info": "Info",
+        "btn-cancel": "Cancel",
+        "label-trial-select": "-- Select --",
+        "placeholder-aaa": "ABC",
+        "unknown-variety": "UNKNOWN",
+
+        // --- Species ---
+        "Mais": "Corn",
+        "Tournesol": "Sunflower",
+        "Colza": "Rapeseed",
+        "Soja": "Soybean",
+        "Sorgho": "Sorghum"
+    },
+    es: {
+        "title": "Notas",
+        "choix-essai": "Elegir Ensayo:",
+        "type-notation": "Tipo de nota (ej: Salida Invierno):",
+        "type-notation-placeholder": "Indicar tipo...",
+        "confirmer": "Confirmar",
+        "tab-Note": "Nota",
+        "tab-Configuration": "Configuración",
+        "num-parcelle": "Número Parcela",
+        "mode": "Modo:",
+        "prec": "← Ant.",
+        "valider": "Validar Parcela",
+        "suiv": "Sig. →",
+        "lignee": "Línea:",
+        "plan-semis": "Plan de Siembra",
+        "rep": "Repetición:",
+        "menus": "► MENÚS (Abrir/Cerrar)",
+        "menus-close": "▼ MENÚS (Cerrar)",
+        "menus-open": "► MENÚS (Abrir)",
+        "not-stade": "Estadio",
+        "not-flo": "Floración",
+        "not-prlvmt": "Muestreo",
+        "not-visuelle": "Visual",
+        "not-phyto": "Fito",
+        "not-simple": "Simple",
+        "stade-bbch": "Estadio (BBCH):",
+        "taux-flo": "Floración (%) ",
+        "prelevements": "Muestreo / Muestras",
+        "code": "Cód:",
+        "impact-phyto": "Impacto Fito (0-9) ",
+        "ajouter-ligne": "+ Añadir línea",
+        "observations": "Observaciones:",
+        "enregistrer": "Guardar",
+        "enregistrer-suivant": "Guardar y Sig.",
+        "derniers-enregistrements": "Registros",
+        "th-essai": "Ensayo",
+        "th-parc": "Parc.",
+        "th-rep": "Rep.",
+        "th-code": "Cód. Muest.",
+        "th-stade": "Estadio",
+        "th-flo": "Flor%",
+        "th-phyto": "Fito",
+        "th-act": "Act.",
+        "choix-langue": "Idioma:",
+        "changer-essai": "Cambiar Ensayo",
+        "reset-donnees": "Borrar Memoria",
+        "date-obs": "Fecha:",
+        "heure-obs": "Hora:",
+        "meteo": "Clima:",
+        "meteo-soleil": "Sol",
+        "meteo-eclaircies": "Nubes y Claros",
+        "meteo-nuageux": "Nublado",
+        "meteo-couvert": "Cubierto",
+        "meteo-vent": "Viento",
+        "meteo-pluie": "Lluvia",
+        "telecharger-donnees": "Descargar CSV",
+        "h2-bbch": "Estadios BBCH",
+        "h2-plan": "Plan de Siembra",
+        "valider-parcelle-plan": "Validar parcela",
+        "prompt-title-simple": "Título de nota:",
+        "alert-choix-essai": "Por favor elija un ensayo",
+        "alert-valider-parcelle": "Primero valide la parcela",
+        "alert-select-parcelle": "Seleccione una parcela",
+        "alert-reset": "SEGURIDAD: Se descargará un CSV. ¿Borrar todos los datos locales?",
+        "alert-no-data": "Sin datos para borrar.",
+        "alert-no-plan": "Sin plan para este ensayo",
+        "alert-delete-line": "¿Eliminar este registro?",
+        "alert-rien": "Sin datos para exportar",
+        "btn-info": "Info",
+        "btn-cancel": "Cancelar",
+        "label-trial-select": "-- Elegir --",
+        "placeholder-aaa": "ABC",
+        "unknown-variety": "DESCONOCIDA",
+
+        // --- Especies ---
+        "Mais": "Maíz",
+        "Tournesol": "Girasol",
+        "Colza": "Colza",
+        "Soja": "Soja",
+        "Sorgho": "Sorgo"
+    },
+    pl: {
+        "title": "Notatki", "choix-essai": "Wybór próby:", "type-notation": "Typ oceny (np. Wyjście zimowe):", "type-notation-placeholder": "Wpisz typ...", "confirmer": "Potwierdź",
+        "tab-Note": "Notatka", "tab-Configuration": "Konfiguracja", "num-parcelle": "Numer poletka", "mode": "Tryb:", "prec": "← Poprz.", "valider": "Zatwierdź poletko", "suiv": "Nast. →",
+        "lignee": "Linia:", "plan-semis": "Plan siewu", "rep": "Powtórzenie:", "menus": "► MENU (Otwórz/Zamknij)", "menus-close": "▼ MENU (Zamknij)", "menus-open": "► MENU (Otwórz)",
+        "not-stade": "Faza", "not-flo": "Kwitnienie", "not-prlvmt": "Próba", "not-visuelle": "Wizualna", "not-phyto": "Fito", "not-simple": "Prosta",
+        "stade-bbch": "Faza (BBCH):", "taux-flo": "Stopień kwitnienia (%)", "prelevements": "Pobieranie próbek", "code": "Kod:", "impact-phyto": "Wpływ fito (0-9)",
+        "ajouter-ligne": "+ Dodaj linię", "observations": "Obserwacje:", "enregistrer": "Zapisz", "enregistrer-suivant": "Zapisz i następny", "derniers-enregistrements": "Ostatnie rekordy",
+        "th-essai": "Próba", "th-parc": "Pol.", "th-rep": "Powt.", "th-code": "Kod prób.", "th-stade": "Faza", "th-flo": "Kwit%", "th-phyto": "Fito", "th-act": "Akcja",
+        "choix-langue": "Język:", "changer-essai": "Zmień próbę", "reset-donnees": "Resetuj dane", "date-obs": "Data:", "heure-obs": "Godzina:",
+        "meteo": "Pogoda:", "meteo-soleil": "Słońce", "meteo-eclaircies": "Przejaśnienia", "meteo-nuageux": "Zachmurzenie", "meteo-couvert": "Pochmurno", "meteo-vent": "Wiatr", "meteo-pluie": "Deszcz",
+        "telecharger-donnees": "Pobierz dane CSV", "h2-bbch": "Fazy BBCH", "h2-plan": "Plan siewu", "valider-parcelle-plan": "Zatwierdź", "prompt-title-simple": "Tytuł oceny:",
+        "alert-choix-essai": "Wybierz próbę", "alert-valider-parcelle": "Najpierw zatwierdź poletko", "alert-select-parcelle": "Wybierz poletko",
+        "alert-reset": "BEZPIECZEŃSTWO: Plik CSV zostanie pobrany. Czy usunąć wszystkie dane lokalne?", "alert-no-data": "Brak danych do usunięcia.", "alert-no-plan": "Brak planu dla tej próby",
+        "alert-delete-line": "Usunąć ten rekord?", "alert-rien": "Brak danych do eksportu", "btn-info": "Info", "btn-cancel": "Anuluj", "label-trial-select": "-- Wybierz --", "placeholder-aaa": "ABC", "unknown-variety": "NIEZNANA",
+        "Mais": "Kukurydza", "Tournesol": "Słonecznik", "Colza": "Rzepak", "Soja": "Soja", "Sorgho": "Sorgo"
+    },
+    ro: {
+        "title": "Notații", "choix-essai": "Alegere test:", "type-notation": "Tip notație (ex: Ieșire iarnă):", "type-notation-placeholder": "Introduceți tipul...", "confirmer": "Confirmă",
+        "tab-Note": "Notă", "tab-Configuration": "Configurare", "num-parcelle": "Număr parcelă", "mode": "Mod:", "prec": "← Prec.", "valider": "Validează parcela", "suiv": "Urm. →",
+        "lignee": "Linie:", "plan-semis": "Plan semănat", "rep": "Repetiție:", "menus": "► MENIURI (Deschide/Închide)", "menus-close": "▼ MENIURI (Închide)", "menus-open": "► MENIURI (Deschide)",
+        "not-stade": "Stadiu", "not-flo": "Înflorire", "not-prlvmt": "Prelevare", "not-visuelle": "Vizuală", "not-phyto": "Fito", "not-simple": "Simplă",
+        "stade-bbch": "Stadiu (BBCH):", "taux-flo": "Rata de înflorire (%)", "prelevements": "Prelevări / Probe", "code": "Cod:", "impact-phyto": "Impact Fito (0-9)",
+        "ajouter-ligne": "+ Adaugă linie", "observations": "Observații:", "enregistrer": "Salvează", "enregistrer-suivant": "Salvează și următorul", "derniers-enregistrements": "Ultimele înregistrări",
+        "th-essai": "Test", "th-parc": "Parc.", "th-rep": "Rep.", "th-code": "Cod probă", "th-stade": "Stadiu", "th-flo": "Înfl.%", "th-phyto": "Fito", "th-act": "Act.",
+        "choix-langue": "Limbă:", "changer-essai": "Schimbă testul", "reset-donnees": "Resetează datele", "date-obs": "Data:", "heure-obs": "Ora:",
+        "meteo": "Meteo:", "meteo-soleil": "Soare", "meteo-eclaircies": "Senin cu nori", "meteo-nuageux": "Noros", "meteo-couvert": "Acoperit", "meteo-vent": "Vânt", "meteo-pluie": "Ploaie",
+        "telecharger-donnees": "Descărcați datele CSV", "h2-bbch": "Stadii BBCH", "h2-plan": "Plan semănat", "valider-parcelle-plan": "Validează", "prompt-title-simple": "Titlu notație:",
+        "alert-choix-essai": "Vă rugăm să alegeți un test", "alert-valider-parcelle": "Vă rugăm să validați parcela mai întâi", "alert-select-parcelle": "Selectați o parcelă",
+        "alert-reset": "SECURITATE: Se va descărca un fișier CSV. Ștergeți apoi toate datele locale?", "alert-no-data": "Nu există date de șters.", "alert-no-plan": "Nu există plan definit pentru acest test",
+        "alert-delete-line": "Ștergeți această linie?", "alert-rien": "Nu există date de exportat", "btn-info": "Info", "btn-cancel": "Anulează", "label-trial-select": "-- Alege --", "placeholder-aaa": "ABC", "unknown-variety": "NECUNOSCUTĂ",
+        "Mais": "Porumb", "Tournesol": "Floarea-soarelui", "Colza": "Rapiță", "Soja": "Soia", "Sorgho": "Sorg"
+    },
+    uk: {
+        "title": "Нотатки", "choix-essai": "Вибір випробування:", "type-notation": "Тип оцінки (напр: Вихід з зими):", "type-notation-placeholder": "Введіть тип...", "confirmer": "Підтвердити",
+        "tab-Note": "Нотатка", "tab-Configuration": "Конфігурація", "num-parcelle": "Номер ділянки", "mode": "Режим:", "prec": "← Поп.", "valider": "Підтвердити ділянку", "suiv": "Наст. →",
+        "lignee": "Лінія:", "plan-semis": "План посіву", "rep": "Повтор:", "menus": "► МЕНЮ (Відкрити/Закрити)", "menus-close": "▼ МЕНЮ (Закрити)", "menus-open": "► МЕНЮ (Відкрити)",
+        "not-stade": "Стадія", "not-flo": "Цвітіння", "not-prlvmt": "Відбір", "not-visuelle": "Візуальна", "not-phyto": "Фіто", "not-simple": "Проста",
+        "stade-bbch": "Стадія (BBCH):", "taux-flo": "Рівень цвітіння (%)", "prelevements": "Зразки / Проби", "code": "Код:", "impact-phyto": "Фіто вплив (0-9)",
+        "ajouter-ligne": "+ Додати рядок", "observations": "Примітки:", "enregistrer": "Зберегти", "enregistrer-suivant": "Зберегти і далі", "derniers-enregistrements": "Останні записи",
+        "th-essai": "Випроб.", "th-parc": "Діл.", "th-rep": "Повт.", "th-code": "Код зразка", "th-stade": "Стадія", "th-flo": "Цвіт%", "th-phyto": "Фіто", "th-act": "Дія",
+        "choix-langue": "Мова:", "changer-essai": "Змінити випробування", "reset-donnees": "Скинути дані", "date-obs": "Дата:", "heure-obs": "Час:",
+        "meteo": "Погода:", "meteo-soleil": "Сонце", "meteo-eclaircies": "Мінлива хмарність", "meteo-nuageux": "Хмарно", "meteo-couvert": "Похмуро", "meteo-vent": "Вітер", "meteo-pluie": "Дощ",
+        "telecharger-donnees": "Завантажити CSV дані", "h2-bbch": "Стадії BBCH", "h2-plan": "План посіву", "valider-parcelle-plan": "Підтвердити", "prompt-title-simple": "Заголовок оцінки:",
+        "alert-choix-essai": "Будь ласка, виберіть випробування", "alert-valider-parcelle": "Будь ласка, спочатку підтвердіть ділянку", "alert-select-parcelle": "Виберіть ділянку",
+        "alert-reset": "БЕЗПЕКА: Буде завантажено CSV-файл. Очистити всі локальні дані?", "alert-no-data": "Немає даних для очищення.", "alert-no-plan": "План для цього випробування не визначений",
+        "alert-delete-line": "Видалити цей запис?", "alert-rien": "Немає даних для експорту", "btn-info": "Інфо", "btn-cancel": "Скасувати", "label-trial-select": "-- Вибрати --", "placeholder-aaa": "ABC", "unknown-variety": "НЕВІДОМО",
+        "Mais": "Кукурудза", "Tournesol": "Соняшник", "Colza": "Ріпак", "Soja": "Соя", "Sorgho": "Сорго"
+    }
+};
 
     function applyTranslations(lang) {
         document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -1054,28 +1342,179 @@ html {
 120,R469MJSO-Influx-plenaris-XRCH25MA84934T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7`
 
    const bbchInfoData = {
-        fr: {
-            "Mais": [{ code: "00-09", desc: "Germination & Levée" }, { code: "10-19", desc: "Développement feuilles" }, { code: "61-69", desc: "Floraison" }],
-            "Tournesol": [{ code: "00-09", desc: "Germination" }, { code: "10-19", desc: "Feuilles" }, { code: "51-59", desc: "Bouton" }, { code: "61-69", desc: "Floraison" }],
-            "Colza": [{ code: "10-19", desc: "Feuilles" }, { code: "30-39", desc: "Montaison" }, { code: "50-59", desc: "Boutons" }, { code: "60-69", desc: "Floraison" }],
-            "Soja": [{ code: "10-19", desc: "Feuilles" }, { code: "51-59", desc: "Inflorescence" }, { code: "60-69", desc: "Floraison" }],
-            "Sorgho": [{ code: "10-19", desc: "Développement feuilles" }, { code: "51-59", desc: "Épiaison" }, { code: "60-69", desc: "Floraison" }]
+    fr: {
+        "Maïs": [
+            { code: "00-09", desc: "Germination & Levée" },
+            { code: "10-19", desc: "Développement des feuilles" },
+            { code: "30-39", desc: "Élongation de la tige" },
+            { code: "51-59", desc: "Apparition de l'inflorescence" },
+            { code: "61-69", desc: "Floraison" },
+            { code: "71-79", desc: "Développement des grains" },
+            { code: "81-89", desc: "Maturation" },
+            { code: "91-99", desc: "Sénescence" }
+        ],
+        "Tournesol": [
+            { code: "00-09", desc: "Germination & Levée" },
+            { code: "10-19", desc: "Développement des feuilles" },
+            { code: "30-39", desc: "Élongation de la tige" },
+            { code: "51-59", desc: "Apparition du bouton floral" },
+            { code: "61-69", desc: "Floraison" },
+            { code: "71-79", desc: "Développement des fruits" },
+            { code: "81-89", desc: "Maturation" }
+        ],
+        "Colza": [
+            { code: "00-09", desc: "Germination & Levée" },
+            { code: "10-19", desc: "Développement des feuilles" },
+            { code: "20-29", desc: "Formation des pousses latérales" },
+            { code: "30-39", desc: "Montaison" },
+            { code: "50-59", desc: "Apparition des boutons" },
+            { code: "60-69", desc: "Floraison" },
+            { code: "71-79", desc: "Développement des siliques" },
+            { code: "81-89", desc: "Maturation" }
+        ],
+        "Soja": [
+            { code: "00-09", desc: "Germination & Levée" },
+            { code: "10-19", desc: "Développement des feuilles" },
+            { code: "30-39", desc: "Ramification" },
+            { code: "51-59", desc: "Inflorescence" },
+            { code: "60-69", desc: "Floraison" },
+            { code: "71-79", desc: "Formation des gousses" },
+            { code: "81-89", desc: "Maturation" }
+        ],
+        "Sorgho": [
+            { code: "00-09", desc: "Germination & Levée" },
+            { code: "10-19", desc: "Développement des feuilles" },
+            { code: "20-29", desc: "Tallage" },
+            { code: "30-39", desc: "Élongation de la tige" },
+            { code: "51-59", desc: "Épiaison" },
+            { code: "61-69", desc: "Floraison" },
+            { code: "71-79", desc: "Développement des grains" },
+            { code: "81-89", desc: "Maturation" }
+        ]
+    },
+    en: {
+        "Maïs": [
+            { code: "00-09", desc: "Germination & Emergence" },
+            { code: "10-19", desc: "Leaf development" },
+            { code: "30-39", desc: "Stem elongation" },
+            { code: "51-59", desc: "Inflorescence emergence" },
+            { code: "61-69", desc: "Flowering" },
+            { code: "71-79", desc: "Development of grains" },
+            { code: "81-89", desc: "Ripening" },
+            { code: "91-99", desc: "Senescence" }
+        ],
+        "Tournesol": [
+            { code: "00-09", desc: "Germination & Emergence" },
+            { code: "10-19", desc: "Leaf development" },
+            { code: "30-39", desc: "Stem elongation" },
+            { code: "51-59", desc: "Flower bud development" },
+            { code: "61-69", desc: "Flowering" },
+            { code: "71-79", desc: "Development of fruit" },
+            { code: "81-89", desc: "Ripening" }
+        ],
+        "Colza": [
+            { code: "00-09", desc: "Germination & Emergence" },
+            { code: "10-19", desc: "Leaf development" },
+            { code: "20-29", desc: "Side shoot formation" },
+            { code: "30-39", desc: "Stem elongation" },
+            { code: "50-59", desc: "Budding" },
+            { code: "60-69", desc: "Flowering" },
+            { code: "71-79", desc: "Development of pods" },
+            { code: "81-89", desc: "Ripening" }
+        ],
+        "Soja": [
+            { code: "00-09", desc: "Germination & Emergence" },
+            { code: "10-19", desc: "Leaf development" },
+            { code: "30-39", desc: "Branching" },
+            { code: "51-59", desc: "Inflorescence emergence" },
+            { code: "60-69", desc: "Flowering" },
+            { code: "71-79", desc: "Development of pods" },
+            { code: "81-89", desc: "Ripening" }
+        ],
+        "Sorgho": [
+            { code: "00-09", desc: "Germination & Emergence" },
+            { code: "10-19", desc: "Leaf development" },
+            { code: "20-29", desc: "Tillering" },
+            { code: "30-39", desc: "Stem elongation" },
+            { code: "51-59", desc: "Heading" },
+            { code: "61-69", desc: "Flowering" },
+            { code: "71-79", desc: "Development of grains" },
+            { code: "81-89", desc: "Ripening" }
+        ]
+    },
+    es: {
+        "Maïs": [
+            { code: "00-09", desc: "Germinación y Emergencia" },
+            { code: "10-19", desc: "Desarrollo de las hojas" },
+            { code: "30-39", desc: "Alargamiento del tallo" },
+            { code: "51-59", desc: "Aparición de la inflorescencia" },
+            { code: "61-69", desc: "Floración" },
+            { code: "71-79", desc: "Desarrollo de granos" },
+            { code: "81-89", desc: "Maduración" },
+            { code: "91-99", desc: "Senescencia" }
+        ],
+        "Tournesol": [
+            { code: "00-09", desc: "Germinación y Emergencia" },
+            { code: "10-19", desc: "Desarrollo de las hojas" },
+            { code: "30-39", desc: "Alargamiento del tallo" },
+            { code: "51-59", desc: "Aparición del botón floral" },
+            { code: "61-69", desc: "Floración" },
+            { code: "71-79", desc: "Desarrollo de los frutos" },
+            { code: "81-89", desc: "Maduración" }
+        ],
+        "Colza": [
+            { code: "00-09", desc: "Germinación y Emergencia" },
+            { code: "10-19", desc: "Desarrollo de las hojas" },
+            { code: "20-29", desc: "Formación de brotes laterales" },
+            { code: "30-39", desc: "Alargamiento del tallo" },
+            { code: "50-59", desc: "Aparición de botones" },
+            { code: "60-69", desc: "Floración" },
+            { code: "71-79", desc: "Desarrollo de las vainas" },
+            { code: "81-89", desc: "Maduración" }
+        ],
+        "Soja": [
+            { code: "00-09", desc: "Germinación y Emergencia" },
+            { code: "10-19", desc: "Desarrollo de las hojas" },
+            { code: "30-39", desc: "Ramificación" },
+            { code: "51-59", desc: "Aparición de la inflorescencia" },
+            { code: "60-69", desc: "Floración" },
+            { code: "71-79", desc: "Desarrollo de las vainas" },
+            { code: "81-89", desc: "Maduración" }
+        ],
+        "Sorgho": [
+            { code: "00-09", desc: "Germinación y Emergencia" },
+            { code: "10-19", desc: "Desarrollo de las hojas" },
+            { code: "20-29", desc: "Ahijamiento" },
+            { code: "30-39", desc: "Alargamiento del tallo" },
+            { code: "51-59", desc: "Espigado" },
+            { code: "61-69", desc: "Floración" },
+            { code: "71-79", desc: "Desarrollo de granos" },
+            { code: "81-89", desc: "Maduración" }
+      ]
+    },
+  
+pl: {
+            "Maïs": [{ code: "00-09", desc: "Kiełkowanie i wschody" }, { code: "10-19", desc: "Rozwój liści" }, { code: "30-39", desc: "Wydłużanie źdźbła" }, { code: "61-69", desc: "Kwitnienie" }, { code: "81-89", desc: "Dojrzewanie" }],
+            "Tournesol": [{ code: "00-09", desc: "Kiełkowanie" }, { code: "10-19", desc: "Rozwój liści" }, { code: "51-59", desc: "Rozwój pąka" }, { code: "61-69", desc: "Kwitnienie" }],
+            "Colza": [{ code: "10-19", desc: "Rozwój liści" }, { code: "30-39", desc: "Wzrost pędu głównego" }, { code: "50-59", desc: "Pąkowanie" }, { code: "60-69", desc: "Kwitnienie" }],
+            "Soja": [{ code: "10-19", desc: "Rozwój liści" }, { code: "51-59", desc: "Rozwój kwiatostanu" }, { code: "60-69", desc: "Kwitnienie" }],
+            "Sorgho": [{ code: "10-19", desc: "Rozwój liści" }, { code: "51-59", desc: "Kłoszenie" }, { code: "60-69", desc: "Kwitnienie" }]
         },
-        en: {
-            "Mais": [{ code: "00-09", desc: "Germination & Emergence" }, { code: "10-19", desc: "Leaf development" }, { code: "61-69", desc: "Flowering" }],
-            "Tournesol": [{ code: "00-09", desc: "Germination" }, { code: "10-19", desc: "Leaf development" }, { code: "51-59", desc: "Bud stage" }, { code: "61-69", desc: "Flowering" }],
-            "Colza": [{ code: "10-19", desc: "Leaf development" }, { code: "30-39", desc: "Stem elongation" }, { code: "50-59", desc: "Budding" }, { code: "60-69", desc: "Flowering" }],
-            "Soja": [{ code: "10-19", desc: "Leaf development" }, { code: "51-59", desc: "Inflorescence" }, { code: "60-69", desc: "Flowering" }],
-            "Sorgho": [{ code: "10-19", desc: "Leaf development" }, { code: "51-59", desc: "Heading" }, { code: "60-69", desc: "Flowering" }]
+        ro: {
+            "Maïs": [{ code: "00-09", desc: "Germinare și Răsărire" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "61-69", desc: "Înflorire" }, { code: "81-89", desc: "Coacere" }],
+            "Tournesol": [{ code: "00-09", desc: "Germinare" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "51-59", desc: "Apariția butonului floral" }, { code: "61-69", desc: "Înflorire" }],
+            "Colza": [{ code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "50-59", desc: "Apariția butonilor" }, { code: "60-69", desc: "Înflorire" }],
+            "Soja": [{ code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "51-59", desc: "Apariția inflorescenței" }, { code: "60-69", desc: "Înflorire" }],
+            "Sorgho": [{ code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "51-59", desc: "Înspicare" }, { code: "60-69", desc: "Înflorire" }]
         },
-        es: {
-            "Mais": [{ code: "00-09", desc: "Germinación y Emergencia" }, { code: "10-19", desc: "Desarrollo de hojas" }, { code: "61-69", desc: "Floración" }],
-            "Tournesol": [{ code: "00-09", desc: "Germinación" }, { code: "10-19", desc: "Hojas" }, { code: "51-59", desc: "Botón" }, { code: "61-69", desc: "Floración" }],
-            "Colza": [{ code: "10-19", desc: "Hojas" }, { code: "30-39", desc: "Alargamiento del tallo" }, { code: "50-59", desc: "Botones" }, { code: "60-69", desc: "Floración" }],
-            "Soja": [{ code: "10-19", desc: "Hojas" }, { code: "51-59", desc: "Inflorescencia" }, { code: "60-69", desc: "Floración" }],
-            "Sorgho": [{ code: "10-19", desc: "Desarrollo de hojas" }, { code: "51-59", desc: "Espigado" }, { code: "60-69", desc: "Floración" }]
+        uk: {
+            "Maïs": [{ code: "00-09", desc: "Проростання та сходи" }, { code: "10-19", desc: "Розвиток листя" }, { code: "30-39", desc: "Подовження стебла" }, { code: "61-69", desc: "Цвітіння" }, { code: "81-89", desc: "Дозрівання" }],
+            "Tournesol": [{ code: "00-09", desc: "Проростання" }, { code: "10-19", desc: "Розвиток листя" }, { code: "51-59", desc: "Розвиток бутона" }, { code: "61-69", desc: "Цвітіння" }],
+            "Colza": [{ code: "10-19", desc: "Розвиток листя" }, { code: "30-39", desc: "Ріст стебла" }, { code: "50-59", desc: "Бутонізація" }, { code: "60-69", desc: "Цвітіння" }],
+            "Soja": [{ code: "10-19", desc: "Розвиток листя" }, { code: "51-59", desc: "Поява суцвіть" }, { code: "60-69", desc: "Цвітіння" }],
+            "Sorgho": [{ code: "10-19", desc: "Розвиток листя" }, { code: "51-59", desc: "Вихід колосу" }, { code: "60-69", desc: "Цвітіння" }]
         }
-    };
+};
     
     let varieteData = [], appObservations = [], currentEssai = null, currentParcelleDigits = { d1: '0', d2: '0', d3: '0' }, selectedPlotCodeForNavigation = null, currentEspece = null, currentGps = null, parcelleValideeCode = null, currentPlotOrder = [], simpleNotationsConfig = [];
 
@@ -1126,7 +1565,6 @@ html {
         });
     }
 
-    /* --- LOGIQUE DE DEPLACEMENT CORRIGEE (IMAGE S, Z, U, N) --- */
     function generatePlotOrder() {
         currentPlotOrder = [];
         if (!currentEssai) return;
@@ -1245,7 +1683,7 @@ html {
 
         const floDiv = document.getElementById('flo-buttons');
         for(let i=0; i<=100; i+=10) {
-            const b = document.createElement('div'); b.className = 'square-btn'; b.style.width = '40px'; b.textContent = i;
+            const b = document.createElement('div'); b.className = 'square-btn'; b.style.width = '32px'; b.textContent = i;
             b.onclick = () => {
                 floDiv.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
                 b.classList.add('selected');
@@ -1324,7 +1762,7 @@ html {
         currentEspece = plot ? plot.Espece : null;
         currentGps = plot ? plot.Gps : null;
         
-        document.getElementById('espece-text').textContent = currentEspece ? currentEspece.toUpperCase() : "";
+        document.getElementById('espece-text').textContent = currentEspece ? (translations[localStorage.getItem('selected_lang') || 'fr'][currentEspece] || currentEspece).toUpperCase() : "";
         document.body.className = currentEspece ? `theme-${currentEspece.toLowerCase()}` : '';
         
         document.getElementById('voir-sur-carte').style.display = (currentGps && currentGps.length > 3) ? 'inline-block' : 'none';
@@ -1333,30 +1771,64 @@ html {
         document.getElementById('valider-parcelle').style.display = (parcelleValideeCode === padded) ? 'none' : 'block';
     }
 
-    /* --- PLAN DE SEMIS AXES FIXES --- */
-    function openSowingPlan() {
-        const plots = varieteData.filter(p => p.Essai === currentEssai);
-        if (!plots[0].Plan_X) return alert(getT("alert-no-plan"));
-        let maxX = Math.max(...plots.map(p => parseInt(p.Plan_X))), maxY = Math.max(...plots.map(p => parseInt(p.Plan_Y)));
-        
-        let html = '<table><thead><tr><th class="sticky-corner">Y\\X</th>';
-        for(let c=1; c<=maxX; c++) html += `<th class="sticky-x">${c}</th>`;
-        html += '</tr></thead><tbody>';
-        
-        for(let r=1; r<=maxY; r++) {
-            html += `<tr><td class="sticky-y">${r}</td>`;
-            for(let c=1; c<=maxX; c++) {
-                const p = plots.find(plot => parseInt(plot.Plan_X) === c && parseInt(plot.Plan_Y) === r);
-                let code = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
-                let css = code ? "cursor:pointer;" : "background:#eee;";
-                if(code === String(selectedPlotCodeForNavigation).padStart(3,'0')) css += "background-color:var(--theme-primary-color);color:white;font-weight:bold;";
-                html += `<td style="${css}" onclick="${code ? `selectFromPlan('${code}')` : ''}">${code}</td>`;
-            }
-            html += '</tr>';
+       function openSowingPlan() {
+    const plots = varieteData.filter(p => p.Essai === currentEssai);
+    if (!plots.length || !plots[0].Plan_X) return alert(getT("alert-no-plan"));
+
+    let maxX = Math.max(...plots.map(p => parseInt(p.Plan_X))), 
+        maxY = Math.max(...plots.map(p => parseInt(p.Plan_Y)));
+    
+       let html = `
+    <style>
+        #sowing-plan-grid-container table { border: 1px solid #444; width: 100%; border-collapse: collapse; }
+        #sowing-plan-grid-container th, #sowing-plan-grid-container td { 
+            border: 1px solid #ccc; 
+            text-align: center; 
+            padding: 8px; 
+            font-size: 0.9em;
         }
-        document.getElementById('sowing-plan-grid-container').innerHTML = html + '</tbody></table>';
-        document.getElementById('sowingPlanModal').style.display = 'block';
+        #sowing-plan-grid-container th { 
+            background-color: var(--theme-secondary-color); 
+            color: white; 
+        }
+        .current-plot-cell { 
+            background-color: var(--theme-primary-color) !important; 
+            color: white !important; 
+            font-weight: bold; 
+            box-shadow: inset 0 0 0 2px #fff;
+        }
+    </style>
+    <table>
+        <thead>
+            <tr><th class="sticky-corner">Y\\X</th>`;
+    
+    
+    for(let c=1; c<=maxX; c++) html += `<th class="sticky-x">${c}</th>`;
+    html += '</tr></thead><tbody>';
+    
+
+    for(let r=1; r<=maxY; r++) {
+        html += `<tr><td class="sticky-y" style="background-color: var(--theme-secondary-color); color:white; font-weight:bold;">${r}</td>`;
+        for(let c=1; c<=maxX; c++) {
+            const p = plots.find(plot => parseInt(plot.Plan_X) === c && parseInt(plot.Plan_Y) === r);
+            
+            let codeOriginal = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
+            let codeAffiche = p ? parseInt(p.Code_Essai_Parcelle) : ""; 
+            
+            let isSelected = (codeOriginal === String(selectedPlotCodeForNavigation).padStart(3,'0'));
+            let cellClass = isSelected ? 'class="current-plot-cell"' : '';
+            let style = codeOriginal ? "cursor:pointer;" : "background:#f9f9f9; color:#ccc;";
+            
+            html += `<td ${cellClass} style="${style}" onclick="${codeOriginal ? `selectFromPlan('${codeOriginal}')` : ''}">
+                        ${codeAffiche}
+                     </td>`;
+        }
+        html += '</tr>';
     }
+    
+    document.getElementById('sowing-plan-grid-container').innerHTML = html + '</tbody></table>';
+    document.getElementById('sowingPlanModal').style.display = 'block';
+}
     
     window.selectFromPlan = (code) => {
         selectedPlotCodeForNavigation = code; updateUIForSelectedPlot(code);
@@ -1467,5 +1939,6 @@ html {
 </script>
 </body>
 </html>
+
 
 
