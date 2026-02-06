@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0.3">
        <link rel="icon" href="data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E.plant-stem-icon { stroke: var(--theme-secondary-color, %234CAF50); stroke-width: 1.5; stroke-linecap: round; }.plant-leaf-icon { fill: var(--theme-secondary-color, %2366BB6A); }.n-stylized-icon { fill: var(--theme-heading-color, %23227A49); }.icon-background { fill: var(--theme-card-background-color, white); stroke: var(--theme-secondary-color, %23DDD); stroke-width:1; }%3C/style%3E%3Ccircle class='icon-background' cx='40' cy='40' r='38'/%3E%3Cpath d='M30 55 L30 25 M30 25 L50 55 M50 55 L50 25' stroke='var(--theme-heading-color, %23227A49)' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cg transform='translate(40, 15) scale(0.45)'%3E%3Cline class='plant-stem-icon' x1='0' y1='10' x2='0' y2='-3'/%3E%3Cellipse cx='0' cy='-8' rx='5' ry='7' fill='var(--theme-sorgho-primary-color, %23C0392B)'/%3E%3C/g%3E%3Cg transform='translate(18, 38) scale(0.45)'%3E%3Cline class='plant-stem-icon' x1='0' y1='12' x2='0' y2='-3'/%3E%3Ccircle cx='0' cy='-8' r='5' fill='var(--theme-primary-color, %23FFD700)'/%3E%3Ccircle cx='0' cy='-8' r='2' fill='var(--theme-secondary-color, %23A0522D)'/%3E%3C/g%3E%3Cg transform='translate(62, 38) scale(0.45)'%3E%3Crect class='plant-leaf-icon' x='-2' y='-10' width='4' height='18' rx='1'/%3E%3Cpath stroke='var(--theme-primary-color, %23E6B800)' stroke-width='1.5' fill='none' d='M-1.5,-10 Q0,-14 1.5,-10 M0,-10 Q-2.5,-13 -3,-9 M0,-10 Q2.5,-13 3,-9'/%3E%3C/g%3E%3Cg transform='translate(25, 60) scale(0.4)'%3E%3Cline class='plant-stem-icon' x1='0' y1='10' x2='0' y2='-1'/%3E%3Ccircle cx='0' cy='-3' r='2' fill='var(--theme-colza-primary-color, %23FFEB3B)'/%3E%3Ccircle cx='-3' cy='-5' r='2' fill='var(--theme-colza-primary-color, %23FFEB3B)'/%3E%3Ccircle cx='3' cy='-5' r='2' fill='var(--theme-colza-primary-color, %23FFEB3B)'/%3E%3C/g%3E%3Cg transform='translate(55, 60) scale(0.4)'%3E%3Cpath class='plant-leaf-icon' d='M0,12 Q-8,3 -4,-4 Q0,-8 4,-4 Q8,3 0,12 Z'/%3E%3Ccircle cx='-2' cy='-1' r='1' fill='var(--theme-soja-primary-color, %23E1BEE7)'/%3E%3Ccircle cx='2' cy='-1' r='1' fill='var(--theme-soja-primary-color, %23E1BEE7)'/%3E%3C/g%3E%3C/svg%3E">
-    <title>Notations v29</title>
+    <title>Notea</title>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -97,8 +97,7 @@ html {
     #bbch-table th, #bbch-table td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 0.9em; }
     #bbch-table th { background-color: #f2f2f2; font-weight: bold; }
 
-    /* --- NOUVEAUX STYLES PLAN --- */
-    #sowing-plan-grid-container { max-height: 60vh; overflow: auto; border: 1px solid #ccc; position: relative; }
+       #sowing-plan-grid-container { max-height: 60vh; overflow: auto; border: 1px solid #ccc; position: relative; }
     #sowing-plan-grid-container table { border-collapse: separate; border-spacing: 0; }
     .sticky-x { position: sticky; top: 0; background: #eee; z-index: 10; font-weight: bold; border-bottom: 2px solid #999 !important; }
     .sticky-y { position: sticky; left: 0; background: #eee; z-index: 9; font-weight: bold; border-right: 2px solid #999 !important; }
@@ -235,8 +234,11 @@ html {
                     </div>
                     
                     <hr>
-                    <label for="obs" data-i18n="observations">Observations:</label>
-                    <textarea id="obs" rows="2"></textarea>
+                    <div style="position: relative; margin-top: 15px;">
+    <label for="obs" data-i18n="observations">Observations:</label>
+    <textarea id="obs" rows="2" style="padding-right: 30px;"></textarea>
+    <span id="clear-obs" style="position: absolute; right: 10px; bottom: 22px; cursor: pointer; color: #e74c3c; font-weight: bold; font-size: 1.2em; display: none;">&times;</span>
+</div>
 
                     <div class="save-buttons-container">
                         <button id="enregistrer" class="btn-primary" data-i18n="enregistrer">Enregistrer</button>
@@ -1539,15 +1541,40 @@ pl: {
         }
         return objects;
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
         const savedLang = localStorage.getItem('selected_lang') || 'fr';
-        document.getElementById('lang-select').value = savedLang;
+        
+        // On applique la langue aux sélecteurs
+        const langSelect = document.getElementById('lang-select');
+        const langSelectInit = document.getElementById('lang-select-init');
+        if (langSelect) langSelect.value = savedLang;
+        if (langSelectInit) langSelectInit.value = savedLang;
+        
         applyTranslations(savedLang);
         varieteData = parseCSVToObjects(rawCsvData);
         initEssaiSelector();
         loadLocalObservations();
         setupEventListeners();
+
+        // --- Logique de la croix pour effacer les observations ---
+        const obsInput = document.getElementById('obs');
+        const clearObsBtn = document.getElementById('clear-obs');
+
+        if (obsInput && clearObsBtn) {
+            // Affiche la croix seulement s'il y a déjà du texte
+            clearObsBtn.style.display = obsInput.value ? 'block' : 'none';
+
+            obsInput.addEventListener('input', () => {
+                clearObsBtn.style.display = obsInput.value ? 'block' : 'none';
+            });
+
+            clearObsBtn.onclick = () => {
+                obsInput.value = '';
+                clearObsBtn.style.display = 'none';
+                obsInput.focus();
+            };
+        }
+
         const now = new Date();
         document.getElementById('custom-date').valueAsDate = now;
         document.getElementById('custom-time').value = now.toTimeString().substring(0,5);
@@ -1836,43 +1863,62 @@ pl: {
     };
 
     function enregistrerObservation(andNext) {
-        if (!parcelleValideeCode) return alert(getT("alert-valider-parcelle"));
-        let obs = {
-            id: Date.now(), Type_Not: document.getElementById('type-notation-session').value,
-            ESSAI: currentEssai, Parcelle: parcelleValideeCode,
-            Variete: document.getElementById('variete-text').textContent.split(':').pop().trim(),
-            Date: document.getElementById('custom-date').value, Heure: document.getElementById('custom-time').value,
-            Meteo: document.getElementById('meteo-select').value, Rep: document.getElementById('rep').value,
-            Observations: document.getElementById('obs').value,
-        };
-        if(document.getElementById('stade').value) obs.Stade = document.getElementById('stade').value;
-        const floSel = document.querySelector('#flo-buttons .selected'); if(floSel) obs.Floraison = floSel.textContent + "%";
-        const phytoSel = document.querySelector('#phyto-buttons .selected'); if(phytoSel) obs.Phyto = phytoSel.textContent;
-        
-        if (document.getElementById('lettres-analyse').value !== "") {
-            obs.Code_Ech = (document.getElementById('lettres-analyse').value + document.getElementById('numero-analyse').value).toUpperCase();
-            document.getElementById('numero-analyse').value++;
-        }
+    if (!parcelleValideeCode) return alert(getT("alert-valider-parcelle"));
+    let obs = {
+        id: Date.now(), 
+        Type_Not: document.getElementById('type-notation-session').value,
+        ESSAI: currentEssai, 
+        Parcelle: parcelleValideeCode,
+        Variete: document.getElementById('variete-text').textContent.split(':').pop().trim(),
+        Date: document.getElementById('custom-date').value, 
+        Heure: document.getElementById('custom-time').value,
+        Meteo: document.getElementById('meteo-select').value, 
+        Rep: document.getElementById('rep').value,
+        Observations: document.getElementById('obs').value,
+    };
 
-        simpleNotationsConfig.forEach(s => {
-            let v = document.getElementById('not-simple-'+s.code).value;
-            if(v) { obs['Titre_Not_'+s.code] = s.label; obs['Not_'+s.code] = v; }
-        });
+    // Stade
+    if(document.getElementById('stade').value) obs.Stade = document.getElementById('stade').value;
+    
+    // Floraison
+    const floSel = document.querySelector('#flo-buttons .selected'); 
+    if(floSel) obs.Floraison = floSel.textContent + "%";
 
-        appObservations.unshift(obs);
-        localStorage.setItem('observations_v12', JSON.stringify(appObservations));
-        renderRecapTable();
-        
-        if(andNext) {
-            handleNavigate(1);
-            parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
-            updateUIForSelectedPlot(selectedPlotCodeForNavigation);
-            document.getElementById('rep').value = 'A';
-        } else {
-            let r = document.getElementById('rep');
-            r.value = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1);
-        }
+    // --- CORRECTION : AJOUT NEC ET EP ---
+    obs.NEC = document.getElementById('nec-display').textContent;
+    obs.EP = document.getElementById('ep-display').textContent;
+    // ------------------------------------
+
+    // Phyto
+    const phytoSel = document.querySelector('#phyto-buttons .selected'); 
+    if(phytoSel) obs.Phyto = phytoSel.textContent;
+    
+    // Code Echantillon
+    if (document.getElementById('lettres-analyse').value !== "") {
+        obs.Code_Ech = (document.getElementById('lettres-analyse').value + document.getElementById('numero-analyse').value).toUpperCase();
+        document.getElementById('numero-analyse').value++;
     }
+
+    // Notations simples dynamiques
+    simpleNotationsConfig.forEach(s => {
+        let v = document.getElementById('not-simple-'+s.code).value;
+        if(v) { obs['Titre_Not_'+s.code] = s.label; obs['Not_'+s.code] = v; }
+    });
+
+    appObservations.unshift(obs);
+    localStorage.setItem('observations_v12', JSON.stringify(appObservations));
+    renderRecapTable();
+    
+    if(andNext) {
+        handleNavigate(1);
+        parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
+        updateUIForSelectedPlot(selectedPlotCodeForNavigation);
+        document.getElementById('rep').value = 'A';
+    } else {
+        let r = document.getElementById('rep');
+        r.value = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1);
+    }
+}
     
     function renderRecapTable() {
         const tbody = document.querySelector('#recap-table tbody');
