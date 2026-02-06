@@ -1,6 +1,6 @@
 {
-  "name": "Notation Agricole v29",
-  "short_name": "Notations",
+  "name": "Notea",
+  "short_name": "Notea",
   "description": "Outil de saisie de notations aux champs",
   "start_url": "index.html",
   "display": "standalone",
