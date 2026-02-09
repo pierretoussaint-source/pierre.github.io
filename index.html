@@ -52,7 +52,13 @@ html {
     #session-setup, .sidebar, .main-panel, #Configuration div { padding: 20px; background-color: var(--theme-card-background-color); border-radius: 10px; box-shadow: var(--theme-card-shadow); margin-bottom:25px; }
     #app-container { max-width: 1400px; margin: 0 auto; }
     #app-content { display: flex; flex-wrap: wrap; gap: 25px; }
-    
+    .date-input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px; /* Évite le zoom automatique sur iPhone */
+}
     .sidebar { flex: 1.3; min-width: 480px; } 
     .main-panel { flex: 2; min-width: 450px; }
     
@@ -81,8 +87,8 @@ html {
     .input-inc-dec input { width: 75px !important; margin: 0 6px; text-align: center; display: inline-block !important; }
     .input-inc-dec button { width: auto !important; padding: 6px 12px; margin: 0; display: inline-block !important; }
 
-    .save-buttons-container { display: flex; gap: 10px; margin-top: 15px; }
-    .save-buttons-container button { flex: 1; padding: 15px 5px; font-size: 1em; line-height: 1.2; }
+    .save-buttons-container { display: flex; gap: 5px; margin-top: 15px; }
+    .save-buttons-container button { flex: 1; padding: 15px 2px; font-size: 0.9em; line-height: 1.2; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .hidden-section { display: none !important; }
     .notation-group-container { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 15px; background-color: #fdfdfd; }
@@ -102,6 +108,11 @@ html {
     .sticky-x { position: sticky; top: 0; background: #eee; z-index: 10; font-weight: bold; border-bottom: 2px solid #999 !important; }
     .sticky-y { position: sticky; left: 0; background: #eee; z-index: 9; font-weight: bold; border-right: 2px solid #999 !important; }
     .sticky-corner { position: sticky; top: 0; left: 0; z-index: 11; background: #ddd; }
+    
+    .type-M { background-color: #e3f2fd; } /* Bleu très clair */
+    .type-F { background-color: #e8f5e9; } /* Vert très clair */
+    .type-H { background-color: #fff9c4; } /* Jaune/Doré très clair */
+    .variete-highlight { font-weight: 900; box-shadow: inset 0 0 0 3px #333; border-radius: 4px; }
 </style>
 <body>
 
@@ -117,15 +128,15 @@ html {
 
     <h1 data-i18n="title">Notations</h1>
 
-    <div id="session-setup">
-        <label for="choix-essai" data-i18n="choix-essai">Choix de l'essai :</label>
-        <select id="choix-essai"></select>
-        
-        <label for="type-notation-session" style="margin-top:15px;" data-i18n="type-notation">Type de notations (ex: Sortie Hiver) :</label>
-        <input type="text" id="type-notation-session" data-i18n-placeholder="type-notation-placeholder" placeholder="Indiquer le type...">
-        
-        <button id="confirmer-essai" class="btn-primary" data-i18n="confirmer">Confirmer</button>
-    </div>
+   <div id="session-setup">
+    <label for="choix-essai" data-i18n="choix-essai">Choix de l'essai :</label>
+    <select id="choix-essai"></select>
+    
+    <label for="type-notation-session" style="margin-top:15px;" data-i18n="notateur">Votre Nom / Notateur :</label>
+    <input type="text" id="type-notation-session" data-i18n-placeholder="notateur-placeholder" placeholder="Nom du notateur...">
+    
+    <button id="confirmer-essai" class="btn-primary" data-i18n="confirmer">Confirmer</button>
+</div>
 
     <div id="app-container" style="display:none;">
         <div class="tabs">
@@ -179,12 +190,11 @@ html {
                     
                     <div id="central-notations-container" style="display:block; margin-top:10px;">
                         <div id="notation-menu-row" class="not-buttons-row" style="display:none;">
+                            <button type="button" class="not-btn-choix" data-target="not-simple" data-i18n="not-diverses">Diverses</button>
                             <button type="button" class="not-btn-choix" data-target="not-stade" data-i18n="not-stade">Stade</button>
                             <button type="button" class="not-btn-choix" data-target="not-flo" data-i18n="not-flo">Flo</button>
+                            <button type="button" class="not-btn-choix" data-target="not-receptivite" data-i18n="not-receptivite">Récept.</button>
                             <button type="button" class="not-btn-choix" data-target="not-prlvmt" data-i18n="not-prlvmt">Prlvmt</button>
-                            <button type="button" class="not-btn-choix" data-target="not-visuelle" data-i18n="not-visuelle">Visuelle</button>
-                            <button type="button" class="not-btn-choix" data-target="not-phyto" data-i18n="not-phyto">Phyto</button>
-                            <button type="button" class="not-btn-choix" data-target="not-simple" data-i18n="not-simple">Simple</button>
                         </div>
 
                         <div id="not-stade" class="notation-group-container hidden-section">
@@ -203,6 +213,15 @@ html {
                             <h4 data-i18n="taux-flo">Taux de floraison (%) <span id="flo-display">0</span></h4>
                             <div id="flo-buttons" class="square-btn-group"></div>
                         </div>
+                        
+                        <div id="not-receptivite" class="notation-group-container hidden-section">
+                             <h4 data-i18n="receptivite-label">Réceptivité (Nb)</h4>
+                             <div class="input-inc-dec">
+                                 <button type="button" id="minus-receptivite" class="btn-secondary">-</button>
+                                 <input type="number" id="receptivite" placeholder="0">
+                                 <button type="button" id="plus-receptivite" class="btn-secondary">+</button>
+                             </div>
+                        </div>
 
                         <div id="not-prlvmt" class="notation-group-container hidden-section">
                             <h4 data-i18n="prelevements">Prélèvements / Échantillons</h4>
@@ -213,18 +232,6 @@ html {
                                 <button type="button" id="minus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">-</button>
                                 <button type="button" id="plus-analyse" class="btn-secondary" style="margin:0; padding:2px 8px;">+</button>
                             </div>
-                        </div>
-
-                        <div id="not-visuelle" class="notation-group-container hidden-section">
-                            <h4>NEC (0-9) <span id="nec-display">0</span></h4>
-                            <div id="nec-buttons" class="square-btn-group"></div>
-                            <h4>EP (0-9) <span id="ep-display">0</span></h4>
-                            <div id="ep-buttons" class="square-btn-group"></div>
-                        </div>
-
-                        <div id="not-phyto" class="notation-group-container hidden-section">
-                            <h4 data-i18n="impact-phyto">Impact Phyto (0-9) <span id="phyto-display">0</span></h4>
-                            <div id="phyto-buttons" class="square-btn-group"></div>
                         </div>
 
                         <div id="not-simple" class="notation-group-container hidden-section">
@@ -241,8 +248,9 @@ html {
 </div>
 
                     <div class="save-buttons-container">
+                        <button id="enregistrer-prec" class="btn-accent" data-i18n="enregistrer-prec">← Enr. Préc.</button>
                         <button id="enregistrer" class="btn-primary" data-i18n="enregistrer">Enregistrer</button>
-                        <button id="enregistrer-suivant" class="btn-accent" data-i18n="enregistrer-suivant">Enregistrer & Suivant</button>
+                        <button id="enregistrer-suivant" class="btn-accent" data-i18n="enregistrer-suivant">Enr. Suiv. →</button>
                     </div>
                 </div>
                 
@@ -251,7 +259,7 @@ html {
                     <h4 data-i18n="derniers-enregistrements">Derniers enregistrements</h4>
                     <div style="overflow-x:auto;">
                         <table id="recap-table">
-                            <thead><tr><th data-i18n="th-essai">Essai</th><th data-i18n="th-parc">Parc.</th><th data-i18n="th-rep">Rep</th><th data-i18n="th-code">Code Ech.</th><th data-i18n="th-stade">Stade</th><th data-i18n="th-flo">Flo%</th><th data-i18n="th-phyto">Phyto</th><th data-i18n="th-act">Act.</th></tr></thead>
+                            <thead><tr><th data-i18n="th-essai">Essai</th><th data-i18n="th-parc">Parc.</th><th data-i18n="th-rep">Rep</th><th data-i18n="th-code">Code Ech.</th><th data-i18n="th-stade">Stade</th><th data-i18n="th-flo">Flo%</th><th data-i18n="th-act">Act.</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -291,18 +299,20 @@ html {
         </div>
     </div>
 
-    <div id="choiceSimpleNotModal" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <h3 data-i18n="prompt-title-simple">Type de notation</h3>
-            <input type="text" id="new-simple-title-modal" placeholder="Ex: Rayon cap">
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
-                <button id="btn-choice-num" class="btn-primary">123 (Num)</button>
-                <button id="btn-choice-text" class="btn-accent">ABC (Txt)</button>
-                <button id="btn-choice-percent" class="btn-secondary" style="grid-column: span 2; background-color: #f1c40f; color: #333;">% (10%-10%)</button>
-            </div>
-            <button onclick="document.getElementById('choiceSimpleNotModal').style.display='none'" class="btn-secondary" style="margin-top:20px; width:100%;">Annuler</button>
+   <div id="choiceSimpleNotModal" class="modal">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <h3 data-i18n="prompt-title-simple">Type de notation</h3>
+        <input type="text" id="new-simple-title-modal" placeholder="Ex: Date Floraison">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
+            <button id="btn-choice-num" class="btn-primary">123 (Num)</button>
+            <button id="btn-choice-text" class="btn-accent">ABC (Txt)</button>
+            <button id="btn-choice-percent" class="btn-secondary" style="background-color: #f1c40f; color: #333;">% (5-100)</button>
+            <button id="btn-choice-date" class="btn-secondary" style="background-color: #9b59b6; color: white;">📅 Date (JJ/MM)</button>
+            <button id="btn-choice-scale" class="btn-accent" style="background-color: #e67e22; color: white; grid-column: span 2;">1-9 (Échelle)</button>
         </div>
+        <button onclick="document.getElementById('choiceSimpleNotModal').style.display='none'" class="btn-secondary" style="margin-top:20px; width:100%;">Annuler</button>
     </div>
+</div>
 
     <div id="bbchModal" class="modal"><div class="modal-content"><span class="close-button" id="closeBbchModal" style="float:right; font-size:24px; cursor:pointer;">×</span><h2 data-i18n="h2-bbch">Stades BBCH</h2><div id="bbch-modal-body"></div></div></div>
     <div id="sowingPlanModal" class="modal">
@@ -322,8 +332,8 @@ html {
         // --- Interface ---
         "title": "Notations",
         "choix-essai": "Choix de l'essai :",
-        "type-notation": "Type de notations (ex: Sortie Hiver) :",
-        "type-notation-placeholder": "Indiquer le type...",
+        "notateur": "Votre Nom / Notateur :",
+        "notateur-placeholder": "Nom...",
         "confirmer": "Confirmer",
         "tab-Note": "Note",
         "tab-Configuration": "Configuration",
@@ -340,19 +350,22 @@ html {
         "menus-open": "► MENUS (Ouvrir)",
         "not-stade": "Stade",
         "not-flo": "Floraison",
+        "not-receptivite": "Récept.",
+        "receptivite-label": "Réceptivité (Nb) :",
         "not-prlvmt": "Prélèvement",
         "not-visuelle": "Visuelle",
         "not-phyto": "Phyto",
-        "not-simple": "Simple",
+        "not-diverses": "Diverses",
         "stade-bbch": "Stade (BBCH) :",
         "taux-flo": "Taux de floraison (%) ",
         "prelevements": "Prélèvements / Échantillons",
         "code": "Code :",
-        "impact-phyto": "Impact Phyto (0-9) ",
+        "impact-phyto": "Impact Phyto (1-9) ",
         "ajouter-ligne": "+ Ajouter ligne",
         "observations": "Observations :",
         "enregistrer": "Enregistrer",
-        "enregistrer-suivant": "Enregistrer & Suivant",
+        "enregistrer-suivant": "Enr. Suiv. →",
+        "enregistrer-prec": "← Enr. Préc.",
         "derniers-enregistrements": "Derniers enregistrements",
         "th-essai": "Essai",
         "th-parc": "Parc.",
@@ -403,8 +416,8 @@ html {
     en: {
         "title": "Notes",
         "choix-essai": "Trial Choice:",
-        "type-notation": "Note Type (e.g. Winter Exit):",
-        "type-notation-placeholder": "Enter type...",
+        "notateur": "Your Name / Scorer:",
+        "notateur-placeholder": "Name...",
         "confirmer": "Confirm",
         "tab-Note": "Note",
         "tab-Configuration": "Setup",
@@ -421,19 +434,22 @@ html {
         "menus-open": "► MENUS (Open)",
         "not-stade": "Stage",
         "not-flo": "Bloom",
+        "not-receptivite": "Recept.",
+        "receptivite-label": "Receptivity (Nb):",
         "not-prlvmt": "Sampling",
         "not-visuelle": "Visual",
         "not-phyto": "Phyto",
-        "not-simple": "Simple",
+        "not-diverses": "Misc.",
         "stade-bbch": "Stage (BBCH):",
         "taux-flo": "Bloom Rate (%) ",
         "prelevements": "Sampling / Samples",
         "code": "Code:",
-        "impact-phyto": "Phyto Impact (0-9) ",
+        "impact-phyto": "Phyto Impact (1-9) ",
         "ajouter-ligne": "+ Add line",
         "observations": "Observations:",
         "enregistrer": "Save",
-        "enregistrer-suivant": "Save & Next",
+        "enregistrer-suivant": "Save Next →",
+        "enregistrer-prec": "← Save Prev.",
         "derniers-enregistrements": "Recent Records",
         "th-essai": "Trial",
         "th-parc": "Plot",
@@ -484,8 +500,8 @@ html {
     es: {
         "title": "Notas",
         "choix-essai": "Elegir Ensayo:",
-        "type-notation": "Tipo de nota (ej: Salida Invierno):",
-        "type-notation-placeholder": "Indicar tipo...",
+        "notateur": "Su Nombre / Anotador:",
+        "notateur-placeholder": "Nombre...",
         "confirmer": "Confirmar",
         "tab-Note": "Nota",
         "tab-Configuration": "Configuración",
@@ -502,19 +518,22 @@ html {
         "menus-open": "► MENÚS (Abrir)",
         "not-stade": "Estadio",
         "not-flo": "Floración",
+        "not-receptivite": "Recept.",
+        "receptivite-label": "Receptividad (Nb):",
         "not-prlvmt": "Muestreo",
         "not-visuelle": "Visual",
         "not-phyto": "Fito",
-        "not-simple": "Simple",
+        "not-diverses": "Diversas",
         "stade-bbch": "Estadio (BBCH):",
         "taux-flo": "Floración (%) ",
         "prelevements": "Muestreo / Muestras",
         "code": "Cód:",
-        "impact-phyto": "Impacto Fito (0-9) ",
+        "impact-phyto": "Impacto Fito (1-9) ",
         "ajouter-ligne": "+ Añadir línea",
         "observations": "Observaciones:",
         "enregistrer": "Guardar",
-        "enregistrer-suivant": "Guardar y Sig.",
+        "enregistrer-suivant": "Guardar Sig →",
+        "enregistrer-prec": "← Guardar Ant",
         "derniers-enregistrements": "Registros",
         "th-essai": "Ensayo",
         "th-parc": "Parc.",
@@ -563,12 +582,12 @@ html {
         "Sorgho": "Sorgo"
     },
     pl: {
-        "title": "Notatki", "choix-essai": "Wybór próby:", "type-notation": "Typ oceny (np. Wyjście zimowe):", "type-notation-placeholder": "Wpisz typ...", "confirmer": "Potwierdź",
+        "title": "Notatki", "choix-essai": "Wybór próby:", "notateur": "Twoje Imię:", "notateur-placeholder": "Imię...", "confirmer": "Potwierdź",
         "tab-Note": "Notatka", "tab-Configuration": "Konfiguracja", "num-parcelle": "Numer poletka", "mode": "Tryb:", "prec": "← Poprz.", "valider": "Zatwierdź poletko", "suiv": "Nast. →",
         "lignee": "Linia:", "plan-semis": "Plan siewu", "rep": "Powtórzenie:", "menus": "► MENU (Otwórz/Zamknij)", "menus-close": "▼ MENU (Zamknij)", "menus-open": "► MENU (Otwórz)",
-        "not-stade": "Faza", "not-flo": "Kwitnienie", "not-prlvmt": "Próba", "not-visuelle": "Wizualna", "not-phyto": "Fito", "not-simple": "Prosta",
-        "stade-bbch": "Faza (BBCH):", "taux-flo": "Stopień kwitnienia (%)", "prelevements": "Pobieranie próbek", "code": "Kod:", "impact-phyto": "Wpływ fito (0-9)",
-        "ajouter-ligne": "+ Dodaj linię", "observations": "Obserwacje:", "enregistrer": "Zapisz", "enregistrer-suivant": "Zapisz i następny", "derniers-enregistrements": "Ostatnie rekordy",
+        "not-stade": "Faza", "not-flo": "Kwitnienie", "not-receptivite": "Recept.", "receptivite-label": "Receptywność (Nb):", "not-prlvmt": "Próba", "not-visuelle": "Wizualna", "not-phyto": "Fito", "not-diverses": "Różne",
+        "stade-bbch": "Faza (BBCH):", "taux-flo": "Stopień kwitnienia (%)", "prelevements": "Pobieranie próbek", "code": "Kod:", "impact-phyto": "Wpływ fito (1-9)",
+        "ajouter-ligne": "+ Dodaj linię", "observations": "Obserwacje:", "enregistrer": "Zapisz", "enregistrer-suivant": "Zap. Nast. →", "enregistrer-prec": "← Zap. Poprz.", "derniers-enregistrements": "Ostatnie rekordy",
         "th-essai": "Próba", "th-parc": "Pol.", "th-rep": "Powt.", "th-code": "Kod prób.", "th-stade": "Faza", "th-flo": "Kwit%", "th-phyto": "Fito", "th-act": "Akcja",
         "choix-langue": "Język:", "changer-essai": "Zmień próbę", "reset-donnees": "Resetuj dane", "date-obs": "Data:", "heure-obs": "Godzina:",
         "meteo": "Pogoda:", "meteo-soleil": "Słońce", "meteo-eclaircies": "Przejaśnienia", "meteo-nuageux": "Zachmurzenie", "meteo-couvert": "Pochmurno", "meteo-vent": "Wiatr", "meteo-pluie": "Deszcz",
@@ -579,12 +598,12 @@ html {
         "Mais": "Kukurydza", "Tournesol": "Słonecznik", "Colza": "Rzepak", "Soja": "Soja", "Sorgho": "Sorgo"
     },
     ro: {
-        "title": "Notații", "choix-essai": "Alegere test:", "type-notation": "Tip notație (ex: Ieșire iarnă):", "type-notation-placeholder": "Introduceți tipul...", "confirmer": "Confirmă",
+        "title": "Notații", "choix-essai": "Alegere test:", "notateur": "Numele Tău:", "notateur-placeholder": "Nume...", "confirmer": "Confirmă",
         "tab-Note": "Notă", "tab-Configuration": "Configurare", "num-parcelle": "Număr parcelă", "mode": "Mod:", "prec": "← Prec.", "valider": "Validează parcela", "suiv": "Urm. →",
         "lignee": "Linie:", "plan-semis": "Plan semănat", "rep": "Repetiție:", "menus": "► MENIURI (Deschide/Închide)", "menus-close": "▼ MENIURI (Închide)", "menus-open": "► MENIURI (Deschide)",
-        "not-stade": "Stadiu", "not-flo": "Înflorire", "not-prlvmt": "Prelevare", "not-visuelle": "Vizuală", "not-phyto": "Fito", "not-simple": "Simplă",
-        "stade-bbch": "Stadiu (BBCH):", "taux-flo": "Rata de înflorire (%)", "prelevements": "Prelevări / Probe", "code": "Cod:", "impact-phyto": "Impact Fito (0-9)",
-        "ajouter-ligne": "+ Adaugă linie", "observations": "Observații:", "enregistrer": "Salvează", "enregistrer-suivant": "Salvează și următorul", "derniers-enregistrements": "Ultimele înregistrări",
+        "not-stade": "Stadiu", "not-flo": "Înflorire", "not-receptivite": "Recept.", "receptivite-label": "Receptivitate (Nb):", "not-prlvmt": "Prelevare", "not-visuelle": "Vizuală", "not-phyto": "Fito", "not-diverses": "Diverse",
+        "stade-bbch": "Stadiu (BBCH):", "taux-flo": "Rata de înflorire (%)", "prelevements": "Prelevări / Probe", "code": "Cod:", "impact-phyto": "Impact Fito (1-9)",
+        "ajouter-ligne": "+ Adaugă linie", "observations": "Observații:", "enregistrer": "Salvează", "enregistrer-suivant": "Salv. Urm. →", "enregistrer-prec": "← Salv. Prec.", "derniers-enregistrements": "Ultimele înregistrări",
         "th-essai": "Test", "th-parc": "Parc.", "th-rep": "Rep.", "th-code": "Cod probă", "th-stade": "Stadiu", "th-flo": "Înfl.%", "th-phyto": "Fito", "th-act": "Act.",
         "choix-langue": "Limbă:", "changer-essai": "Schimbă testul", "reset-donnees": "Resetează datele", "date-obs": "Data:", "heure-obs": "Ora:",
         "meteo": "Meteo:", "meteo-soleil": "Soare", "meteo-eclaircies": "Senin cu nori", "meteo-nuageux": "Noros", "meteo-couvert": "Acoperit", "meteo-vent": "Vânt", "meteo-pluie": "Ploaie",
@@ -595,12 +614,12 @@ html {
         "Mais": "Porumb", "Tournesol": "Floarea-soarelui", "Colza": "Rapiță", "Soja": "Soia", "Sorgho": "Sorg"
     },
     uk: {
-        "title": "Нотатки", "choix-essai": "Вибір випробування:", "type-notation": "Тип оцінки (напр: Вихід з зими):", "type-notation-placeholder": "Введіть тип...", "confirmer": "Підтвердити",
+        "title": "Нотатки", "choix-essai": "Вибір випробування:", "notateur": "Ваше Ім'я:", "notateur-placeholder": "Ім'я...", "confirmer": "Підтвердити",
         "tab-Note": "Нотатка", "tab-Configuration": "Конфігурація", "num-parcelle": "Номер ділянки", "mode": "Режим:", "prec": "← Поп.", "valider": "Підтвердити ділянку", "suiv": "Наст. →",
         "lignee": "Лінія:", "plan-semis": "План посіву", "rep": "Повтор:", "menus": "► МЕНЮ (Відкрити/Закрити)", "menus-close": "▼ МЕНЮ (Закрити)", "menus-open": "► МЕНЮ (Відкрити)",
-        "not-stade": "Стадія", "not-flo": "Цвітіння", "not-prlvmt": "Відбір", "not-visuelle": "Візуальна", "not-phyto": "Фіто", "not-simple": "Проста",
-        "stade-bbch": "Стадія (BBCH):", "taux-flo": "Рівень цвітіння (%)", "prelevements": "Зразки / Проби", "code": "Код:", "impact-phyto": "Фіто вплив (0-9)",
-        "ajouter-ligne": "+ Додати рядок", "observations": "Примітки:", "enregistrer": "Зберегти", "enregistrer-suivant": "Зберегти і далі", "derniers-enregistrements": "Останні записи",
+        "not-stade": "Стадія", "not-flo": "Цвітіння", "not-receptivite": "Сприйн.", "receptivite-label": "Сприйнятливість (Nb):", "not-prlvmt": "Відбір", "not-visuelle": "Візуальна", "not-phyto": "Фіто", "not-diverses": "Різне",
+        "stade-bbch": "Стадія (BBCH):", "taux-flo": "Рівень цвітіння (%)", "prelevements": "Зразки / Проби", "code": "Код:", "impact-phyto": "Фіто вплив (1-9)",
+        "ajouter-ligne": "+ Додати рядок", "observations": "Примітки:", "enregistrer": "Зберегти", "enregistrer-suivant": "Збер. Далі →", "enregistrer-prec": "← Збер. Поп.", "derniers-enregistrements": "Останні записи",
         "th-essai": "Випроб.", "th-parc": "Діл.", "th-rep": "Повт.", "th-code": "Код зразка", "th-stade": "Стадія", "th-flo": "Цвіт%", "th-phyto": "Фіто", "th-act": "Дія",
         "choix-langue": "Мова:", "changer-essai": "Змінити випробування", "reset-donnees": "Скинути дані", "date-obs": "Дата:", "heure-obs": "Час:",
         "meteo": "Погода:", "meteo-soleil": "Сонце", "meteo-eclaircies": "Мінлива хмарність", "meteo-nuageux": "Хмарно", "meteo-couvert": "Похмуро", "meteo-vent": "Вітер", "meteo-pluie": "Дощ",
@@ -624,724 +643,725 @@ html {
         localStorage.setItem('selected_lang', lang);
     }
 
-    const rawCsvData = `Code_Essai_Parcelle,variete,Essai,Espece,Gps,Plan_X,Plan_Y
-001,LID 5053L SU,Test,Tournesol,"43.69,1.27",1,1
-002,MYLADY,Test,Mais,"43.47,-0.34",2,1
-003,LID PANDORE,Test,Sorgho,"41.75,-0.79",3,1
-004,ISIDOR,Test,Soja,"43.65,1.65",1,2
-005,LID TRETO,Test,Colza,"44.39,1.39",2,2
-006,VarTest006,Test,Tournesol,"0.0,0.0",3,2
-007,VarTest007,Test,Tournesol,"0.0,0.0",1,3
-008,VarTest008,Test,Tournesol,"0.0,0.0",2,3
-009,VarTest009,Test,Tournesol,"0.0,0.0",3,3
-001,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",1,1
-002,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",2,1
-003,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",3,1
-004,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",4,1
-005,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",5,1
-006,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",6,1
-007,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",7,1
-008,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",8,1
-009,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",9,1
-010,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",10,1
-011,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",11,1
-012,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",12,1
-013,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",13,1
-014,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",14,1
-015,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",15,1
-016,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",16,1
-017,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",17,1
-018,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",18,1
-019,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",19,1
-020,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",20,1
-021,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",21,1
-022,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",22,1
-023,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",23,1
-024,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",24,1
-025,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",25,1
-026,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",26,1
-027,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",27,1
-028,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",28,1
-029,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",29,1
-030,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",30,1
-031,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",31,1
-032,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",32,1
-033,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",33,1
-034,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",34,1
-035,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",35,1
-036,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",36,1
-037,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",37,1
-038,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",38,1
-039,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",39,1
-040,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",40,1
-041,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",41,1
-042,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",42,1
-043,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",43,1
-044,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",44,1
-045,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",45,1
-046,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",46,1
-047,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",47,1
-048,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",48,1
-049,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",49,1
-050,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",50,1
-051,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",51,1
-052,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",52,1
-053,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",53,1
-054,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",54,1
-055,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",55,1
-056,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",56,1
-057,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",57,1
-058,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",58,1
-059,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",59,1
-060,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",60,1
-061,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",61,1
-062,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",62,1
-063,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",63,1
-064,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",64,1
-065,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",65,1
-066,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",66,1
-067,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",67,1
-068,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",68,1
-069,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",69,1
-070,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",70,1
-071,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",71,1
-072,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",72,1
-073,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",73,1
-074,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",74,1
-075,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",75,1
-076,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",76,1
-077,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",77,1
-078,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",78,1
-079,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",79,1
-080,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",80,1
-081,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",81,1
-082,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",82,1
-083,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",83,1
-084,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",84,1
-085,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",85,1
-086,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",86,1
-087,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",87,1
-088,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",88,1
-089,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",89,1
-090,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",90,1
-091,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",91,1
-092,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",92,1
-093,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",93,1
-094,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",94,1
-095,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",95,1
-096,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",96,1
-097,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",97,1
-098,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",98,1
-099,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",1,2
-100,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",2,2
-101,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",3,2
-102,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",4,2
-103,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",5,2
-104,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",6,2
-105,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",7,2
-106,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",8,2
-107,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",9,2
-108,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",10,2
-109,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",11,2
-110,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",12,2
-111,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",13,2
-112,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",14,2
-113,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",15,2
-114,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",16,2
-115,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",17,2
-116,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",18,2
-117,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",19,2
-118,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",20,2
-119,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",21,2
-120,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",22,2
-121,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",23,2
-122,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",24,2
-123,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",25,2
-124,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",26,2
-125,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",27,2
-126,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",28,2
-127,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",29,2
-128,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",30,2
-129,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",31,2
-130,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",32,2
-131,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",33,2
-132,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",34,2
-133,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",35,2
-134,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",36,2
-135,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",37,2
-136,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",38,2
-137,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",39,2
-138,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",40,2
-139,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",41,2
-140,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",42,2
-141,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",43,2
-142,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",44,2
-143,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",45,2
-144,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",46,2
-145,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",47,2
-146,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",48,2
-147,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",49,2
-148,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",50,2
-149,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",51,2
-150,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",52,2
-151,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",53,2
-152,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",54,2
-153,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",55,2
-154,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",56,2
-155,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",57,2
-156,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",58,2
-157,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",59,2
-158,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",60,2
-159,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",61,2
-160,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",62,2
-161,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",63,2
-162,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",64,2
-163,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",65,2
-164,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",66,2
-165,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",67,2
-166,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",68,2
-167,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",69,2
-168,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",70,2
-169,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",71,2
-170,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",72,2
-171,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",73,2
-172,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",74,2
-173,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",75,2
-174,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",76,2
-175,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",77,2
-176,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",78,2
-177,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",79,2
-178,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",80,2
-179,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",81,2
-180,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",82,2
-181,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",83,2
-182,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",84,2
-183,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",85,2
-184,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",86,2
-185,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",87,2
-186,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",88,2
-187,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",89,2
-188,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",90,2
-189,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",91,2
-190,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",92,2
-191,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",93,2
-192,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",94,2
-193,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",95,2
-194,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,2
-195,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,2
-196,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,2
-197,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",1,3
-198,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",2,3
-199,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",3,3
-200,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",4,3
-201,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",5,3
-202,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",6,3
-203,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",7,3
-204,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",8,3
-205,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",9,3
-206,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",10,3
-207,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",11,3
-208,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",12,3
-209,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",13,3
-210,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",14,3
-211,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",15,3
-212,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",16,3
-213,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",17,3
-214,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",18,3
-215,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",19,3
-216,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",20,3
-217,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",21,3
-218,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",22,3
-219,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",23,3
-220,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",24,3
-221,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",25,3
-222,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",26,3
-223,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",27,3
-224,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",28,3
-225,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",29,3
-226,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",30,3
-227,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",31,3
-228,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",32,3
-229,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",33,3
-230,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",34,3
-231,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",35,3
-232,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",36,3
-233,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",37,3
-234,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",38,3
-235,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",39,3
-236,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",40,3
-237,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",41,3
-238,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",42,3
-239,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",43,3
-240,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",44,3
-241,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",45,3
-242,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",46,3
-243,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",47,3
-244,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",48,3
-245,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",49,3
-246,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",50,3
-247,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",51,3
-248,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",52,3
-249,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",53,3
-250,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",54,3
-251,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",55,3
-252,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",56,3
-253,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",57,3
-254,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",58,3
-255,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",59,3
-256,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",60,3
-257,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",61,3
-258,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",62,3
-259,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",63,3
-260,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",64,3
-261,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",65,3
-262,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",66,3
-263,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",67,3
-264,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",68,3
-265,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",69,3
-266,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",70,3
-267,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",71,3
-268,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",72,3
-269,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",73,3
-270,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",74,3
-271,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",75,3
-272,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",76,3
-273,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",77,3
-274,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",78,3
-275,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",79,3
-276,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",80,3
-277,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",81,3
-278,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",82,3
-279,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",83,3
-280,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",84,3
-281,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",85,3
-282,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",86,3
-283,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",87,3
-284,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",88,3
-285,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",89,3
-286,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",90,3
-287,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",91,3
-288,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",92,3
-289,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",93,3
-290,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",94,3
-291,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",95,3
-292,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",96,3
-293,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",97,3
-294,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",98,3
-295,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",1,4
-296,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",2,4
-297,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",3,4
-298,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",4,4
-299,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",5,4
-300,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",6,4
-301,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",7,4
-302,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",8,4
-303,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",9,4
-304,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",10,4
-305,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",11,4
-306,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",12,4
-307,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",13,4
-308,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",14,4
-309,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",15,4
-310,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",16,4
-311,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",17,4
-312,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",18,4
-313,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",19,4
-314,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",20,4
-315,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",21,4
-316,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",22,4
-317,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",23,4
-318,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",24,4
-319,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",25,4
-320,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",26,4
-321,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",27,4
-322,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",28,4
-323,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",29,4
-324,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",30,4
-325,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",31,4
-326,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",32,4
-327,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",33,4
-328,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",34,4
-329,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",35,4
-330,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",36,4
-331,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",37,4
-332,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",38,4
-333,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",39,4
-334,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",40,4
-335,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",41,4
-336,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",42,4
-337,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",43,4
-338,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",44,4
-339,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",45,4
-340,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",46,4
-341,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",47,4
-342,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",48,4
-343,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",49,4
-344,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",50,4
-345,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",51,4
-346,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",52,4
-347,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",53,4
-348,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",54,4
-349,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",55,4
-350,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",56,4
-351,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",57,4
-352,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",58,4
-353,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",59,4
-354,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",60,4
-355,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",61,4
-356,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",62,4
-357,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",63,4
-358,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",64,4
-359,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",65,4
-360,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",66,4
-361,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",67,4
-362,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",68,4
-363,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",69,4
-364,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",70,4
-365,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",71,4
-366,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",72,4
-367,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",73,4
-368,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",74,4
-369,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",75,4
-370,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",76,4
-371,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",77,4
-372,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",78,4
-373,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",79,4
-374,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",80,4
-375,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",81,4
-376,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",82,4
-377,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",83,4
-378,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",84,4
-379,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",85,4
-380,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",86,4
-381,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",87,4
-382,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",88,4
-383,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",89,4
-384,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",90,4
-385,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",91,4
-386,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",92,4
-387,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",93,4
-388,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",94,4
-389,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",95,4
-390,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",96,4
-391,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",97,4
-392,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",98,4
-393,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",1,5
-394,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",2,5
-395,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",3,5
-396,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",4,5
-397,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",5,5
-398,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",6,5
-399,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",7,5
-400,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",8,5
-401,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",9,5
-402,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",10,5
-403,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",11,5
-404,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",12,5
-405,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",13,5
-406,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",14,5
-407,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",15,5
-408,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",16,5
-409,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",17,5
-410,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",18,5
-411,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",19,5
-412,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",20,5
-413,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",21,5
-414,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",22,5
-415,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",23,5
-416,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",24,5
-417,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",25,5
-418,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",26,5
-419,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",27,5
-420,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",28,5
-421,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",29,5
-422,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",30,5
-423,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",31,5
-424,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",32,5
-425,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",33,5
-426,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",34,5
-427,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",35,5
-428,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",36,5
-429,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",37,5
-430,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",38,5
-431,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",39,5
-432,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",40,5
-433,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",41,5
-434,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",42,5
-435,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",43,5
-436,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",44,5
-437,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",45,5
-438,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",46,5
-439,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",47,5
-440,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",48,5
-441,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",49,5
-442,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",50,5
-443,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",51,5
-444,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",52,5
-445,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",53,5
-446,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",54,5
-447,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",55,5
-448,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",56,5
-449,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",57,5
-450,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",58,5
-451,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",59,5
-452,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",60,5
-453,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",61,5
-454,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",62,5
-455,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",63,5
-456,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",64,5
-457,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",65,5
-458,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",66,5
-459,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",67,5
-460,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",68,5
-461,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",69,5
-462,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",70,5
-463,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",71,5
-464,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",72,5
-465,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",73,5
-466,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",74,5
-467,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",75,5
-468,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",76,5
-469,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",77,5
-470,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",78,5
-471,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",79,5
-472,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",80,5
-473,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",81,5
-474,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",82,5
-475,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",83,5
-476,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",84,5
-477,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",85,5
-478,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",86,5
-479,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",87,5
-480,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",88,5
-481,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",89,5
-482,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",90,5
-483,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",91,5
-484,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",92,5
-485,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",93,5
-486,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",94,5
-487,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",95,5
-488,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",96,5
-489,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",97,5
-490,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",98,5
-491,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",1,6
-492,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",2,6
-493,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",3,6
-494,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",4,6
-495,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",5,6
-496,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",6,6
-497,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",7,6
-498,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",8,6
-499,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",9,6
-500,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",10,6
-501,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",11,6
-502,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",12,6
-503,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",13,6
-504,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",14,6
-505,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",15,6
-506,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",16,6
-507,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",17,6
-508,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",18,6
-509,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",19,6
-510,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",20,6
-511,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",21,6
-512,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",22,6
-513,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",23,6
-514,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",24,6
-515,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",25,6
-516,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",26,6
-517,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",27,6
-518,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",28,6
-519,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",29,6
-520,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",30,6
-521,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",31,6
-522,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",32,6
-523,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",33,6
-524,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",34,6
-525,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",35,6
-526,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",36,6
-527,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",37,6
-528,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",38,6
-529,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",39,6
-530,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",40,6
-531,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",41,6
-532,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",42,6
-533,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",43,6
-534,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",44,6
-535,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",45,6
-536,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",46,6
-537,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",47,6
-538,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",48,6
-539,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",49,6
-540,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",50,6
-541,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",51,6
-542,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",52,6
-543,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",53,6
-544,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",54,6
-545,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",55,6
-546,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",56,6
-547,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",57,6
-548,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",58,6
-549,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",59,6
-550,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",60,6
-551,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",61,6
-552,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",62,6
-553,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",63,6
-554,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",64,6
-555,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",65,6
-556,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",66,6
-557,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",67,6
-558,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",68,6
-559,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",69,6
-560,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",70,6
-561,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",71,6
-562,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",72,6
-563,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",73,6
-564,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",74,6
-565,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",75,6
-566,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",76,6
-567,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",77,6
-568,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",78,6
-569,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",79,6
-570,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",80,6
-571,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",81,6
-572,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",82,6
-573,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",83,6
-574,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",84,6
-575,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",85,6
-576,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",86,6
-577,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",87,6
-578,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",88,6
-579,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",89,6
-580,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",90,6
-581,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",91,6
-582,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",92,6
-583,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",93,6
-584,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",94,6
-585,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",95,6
-586,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,6
-587,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,6
-588,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,6
-1,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,1
-2,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,1
-3,R12BQ3MI-Influx-plenaris-XCLG589630T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,1
-4,R13SG1MJO-Influx-plenaris-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1
-5,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1
-6,R13SG1MJO-Influx-plenaris-F0440F606583T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,1
-7,R13SG1MJO-Influx-plenaris-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1
-8,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1
-9,R14WD1M-Influx-plenaris-XRCH24MA82335T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,1
-10,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,1
-11,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,1
-12,R21DW2JS-Influx-plenaris-F0440F597914T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,1
-13,R4NA1MK-Influx-plenaris-F0440F610406T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,1
-14,R4NA1MK-Influx-plenaris-F0440F610791T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,1
-15,R4NA1MK-Influx-plenaris-XESF601666T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,1
-16,R4NO4M-Influx-plenaris-XESG559541TT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,1
-17,R4NO4MJ-Influx-plenaris-F0440D474497T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,1
-18,R469MJKO-Influx-plenaris-F0440F597862T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,2
-19,R469MJSO-Influx-plenaris-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2
-20,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2
-21,R469MJSO-Influx-plenaris-F0440F597559T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,2
-22,R469MJSO-Influx-plenaris-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2
-23,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2
-24,R469MJSO-Influx-plenaris-F0440F597563T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,2
-25,R469MJSO-Influx-plenaris-XRCH25MA84934T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,2
-26,R4NA1MJ-Influx-plenaris-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2
-27,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2
-28,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,2
-29,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,2
-30,R4NA1MJO-Influx-plenaris-F0440F609634T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,2
-31,R4NA1MJO-Influx-plenaris-XCLG590786T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,2
-32,R8035MJ-Influx-plenaris-F0440F597569T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,2
-33,R8035MJI-Influx-plenaris-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2
-34,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2
-35,R5PE4MS-Influx-plenaris-F0440F610782T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,3
-36,R5PE4MS-Influx-plenaris-F0440G554644T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,3
-37,R5PG6MJS-Influx-plenaris-F0440F610784T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,3
-38,R5PG6MJS-Influx-plenaris-F0440G547818T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,3
-39,R8035M1JS-Influx-plenaris-F0440F597387T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,3
-40,R8035M1JS-Influx-plenaris-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3
-41,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3
-42,R8035M1JS-Influx-plenaris-F0440F597390T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,3
-43,R8035M1JS-Influx-plenaris-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3
-44,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3
-45,R8035M1JS-Influx-plenaris-XESF598972T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,3
-46,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,3
-47,R890JP-Influx-plenaris-F0440D472278T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,3
-48,R890JP-Influx-plenaris-F0440D472306T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,3
-49,R890JP-Influx-plenaris-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3
-50,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3
-51,SR1087MS-Influx-plenaris-XRCHE67458T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,3
-52,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,4
-53,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,4
-54,R14WD1M-Influx-plenaris-XRCH24MA82335T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,4
-55,R21DW2JS-Influx-plenaris-F0440F597914T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,4
-56,R4NA1MK-Influx-plenaris-XESF601666T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,4
-57,R4NA1MK-Influx-plenaris-F0440F610406T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,4
-58,R4NO4M-Influx-plenaris-XESG559541TT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,4
-59,R4NA1MK-Influx-plenaris-F0440F610791T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,4
-60,R13SG1MJO-Influx-plenaris-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4
-61,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4
-62,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4
-63,R13SG1MJO-Influx-plenaris-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4
-64,R13SG1MJO-Influx-plenaris-F0440F606583T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,4
-65,R12BQ3MI-Influx-plenaris-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4
-66,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4
-67,R12BQ3MI-Influx-plenaris-XCLG589630T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,4
-68,R4NO4MJ-Influx-plenaris-F0440D474497T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,4
-69,R469MJSO-Influx-plenaris-F0440F597559T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,5
-70,R469MJSO-Influx-plenaris-F0440F597563T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,5
-71,R469MJKO-Influx-plenaris-F0440F597862T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,5
-72,R469MJSO-Influx-plenaris-XRCH25MA84934T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,5
-73,R469MJSO-Influx-plenaris-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5
-74,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5
-75,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5
-76,R469MJSO-Influx-plenaris-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5
-77,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5
-78,R4NA1MJ-Influx-plenaris-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5
-79,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5
-80,R8035MJI-Influx-plenaris-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5
-81,R8035MJ-Influx-plenaris-F0440F597569T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,5
-82,R4NA1MJO-Influx-plenaris-XCLG590786T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,5
-83,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,5
-84,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,5
-85,R4NA1MJO-Influx-plenaris-F0440F609634T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,5
-86,R890JP-Influx-plenaris-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6
-87,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6
-88,R8035M1JS-Influx-plenaris-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6
-89,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6
-90,R8035M1JS-Influx-plenaris-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6
-91,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6
-92,R8035M1JS-Influx-plenaris-XESF598972T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,6
-93,R8035M1JS-Influx-plenaris-F0440F597390T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,6
-94,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,6
-95,R8035M1JS-Influx-plenaris-F0440F597387T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,6
-96,R5PG6MJS-Influx-plenaris-F0440F610784T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,6
-97,R5PG6MJS-Influx-plenaris-F0440G547818T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,6
-98,R5PE4MS-Influx-plenaris-F0440F610782T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,6
-99,SR1087MS-Influx-plenaris-XRCHE67458T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,6
-100,R890JP-Influx-plenaris-F0440D472306T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,6
-101,R890JP-Influx-plenaris-F0440D472278T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,6
-102,R5PE4MS-Influx-plenaris-F0440G554644T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,6
-103,R12BQ3MI-Influx-plenaris-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7
-104,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7
-105,R12BQ3MI-Influx-plenaris-XCLG589630T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",3,7
-106,R13SG1MJO-Influx-plenaris-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7
-107,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7
-108,R13SG1MJO-Influx-plenaris-F0440F606583T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",6,7
-109,R13SG1MJO-Influx-plenaris-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7
-110,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7
-111,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",9,7
-112,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",10,7
-113,R469MJKO-Influx-plenaris-F0440F597862T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",11,7
-114,R469MJSO-Influx-plenaris-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7
-115,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7
-116,R469MJSO-Influx-plenaris-F0440F597559T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",14,7
-117,R469MJSO-Influx-plenaris-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7
-118,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7
-119,R469MJSO-Influx-plenaris-F0440F597563T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",17,7
-120,R469MJSO-Influx-plenaris-XRCH25MA84934T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7`
+    const rawCsvData = `Code_Essai_Parcelle,variete,Essai,Espece,Gps,Plan_X,Plan_Y,Type
+1,LID 5053L SU,Test,Tournesol,"43.69,1.27",1,1,H
+2,MYLADY,Test,Mais,"43.47,-0.34",2,1,F
+3,LID PANDORE,Test,Sorgho,"41.75,-0.79",3,1,M
+4,ISIDOR,Test,Soja,"43.65,1.65",1,2,F
+5,LID TRETO,Test,Colza,"44.39,1.39",2,2,H
+6,VarTest006,Test,Tournesol,"0.0,0.0",3,2,M
+7,VarTest007,Test,Tournesol,"0.0,0.0",1,3,M
+8,VarTest008,Test,Tournesol,"0.0,0.0",2,3,F
+9,VarTest009,Test,Tournesol,"0.0,0.0",3,3,H
+1,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",1,1,H
+2,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",2,1,H
+3,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",3,1,H
+4,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",4,1,
+5,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",5,1,
+6,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",6,1,
+7,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",7,1,H
+8,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",8,1,
+9,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",9,1,
+10,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",10,1,
+11,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",11,1,H
+12,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",12,1,
+13,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",13,1,
+14,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",14,1,
+15,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",15,1,H
+16,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",16,1,
+17,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",17,1,
+18,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",18,1,
+19,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",19,1,H
+20,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",20,1,
+21,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",21,1,
+22,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",22,1,
+23,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",23,1,H
+24,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",24,1,
+25,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",25,1,
+26,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",26,1,
+27,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",27,1,H
+28,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",28,1,
+29,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",29,1,
+30,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",30,1,
+31,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",31,1,H
+32,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",32,1,
+33,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",33,1,
+34,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",34,1,
+35,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",35,1,H
+36,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",36,1,
+37,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",37,1,
+38,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",38,1,
+39,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",39,1,H
+40,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",40,1,
+41,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",41,1,
+42,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",42,1,
+43,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",43,1,H
+44,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",44,1,
+45,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",45,1,
+46,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",46,1,
+47,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",47,1,H
+48,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",48,1,H
+49,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",49,1,H
+50,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",50,1,H
+51,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",51,1,H
+52,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",52,1,H
+53,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",53,1,
+54,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",54,1,
+55,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",55,1,
+56,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",56,1,H
+57,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",57,1,
+58,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",58,1,
+59,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",59,1,
+60,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",60,1,H
+61,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",61,1,
+62,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",62,1,
+63,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",63,1,
+64,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",64,1,H
+65,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",65,1,
+66,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",66,1,
+67,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",67,1,
+68,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",68,1,H
+69,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",69,1,
+70,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",70,1,
+71,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",71,1,
+72,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",72,1,H
+73,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",73,1,
+74,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",74,1,
+75,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",75,1,
+76,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",76,1,H
+77,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",77,1,
+78,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",78,1,
+79,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",79,1,
+80,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",80,1,H
+81,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",81,1,
+82,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",82,1,
+83,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",83,1,
+84,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",84,1,H
+85,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",85,1,
+86,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",86,1,
+87,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",87,1,
+88,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",88,1,H
+89,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",89,1,
+90,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",90,1,
+91,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",91,1,
+92,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",92,1,H
+93,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",93,1,
+94,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",94,1,
+95,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",95,1,
+96,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",96,1,H
+97,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",97,1,H
+98,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",98,1,H
+99,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",1,2,H
+100,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",2,2,H
+101,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",3,2,H
+102,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",4,2,
+103,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",5,2,
+104,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",6,2,
+105,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",7,2,H
+106,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",8,2,
+107,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",9,2,
+108,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",10,2,
+109,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",11,2,H
+110,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",12,2,
+111,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",13,2,
+112,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",14,2,
+113,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",15,2,H
+114,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",16,2,
+115,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",17,2,
+116,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",18,2,
+117,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",19,2,H
+118,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",20,2,
+119,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",21,2,
+120,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",22,2,
+121,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",23,2,H
+122,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",24,2,
+123,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",25,2,
+124,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",26,2,
+125,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",27,2,H
+126,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",28,2,
+127,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",29,2,
+128,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",30,2,
+129,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",31,2,H
+130,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",32,2,
+131,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",33,2,
+132,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",34,2,
+133,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",35,2,H
+134,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",36,2,
+135,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",37,2,
+136,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",38,2,
+137,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",39,2,H
+138,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",40,2,
+139,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",41,2,
+140,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",42,2,
+141,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",43,2,H
+142,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",44,2,
+143,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",45,2,
+144,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",46,2,
+145,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",47,2,H
+146,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",48,2,H
+147,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",49,2,H
+148,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",50,2,H
+149,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",51,2,H
+150,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",52,2,H
+151,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",53,2,
+152,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",54,2,
+153,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",55,2,
+154,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",56,2,H
+155,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",57,2,
+156,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",58,2,
+157,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",59,2,
+158,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",60,2,H
+159,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",61,2,
+160,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",62,2,
+161,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",63,2,
+162,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",64,2,H
+163,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",65,2,
+164,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",66,2,
+165,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",67,2,
+166,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",68,2,H
+167,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",69,2,
+168,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",70,2,
+169,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",71,2,
+170,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",72,2,H
+171,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",73,2,
+172,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",74,2,
+173,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",75,2,
+174,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",76,2,H
+175,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",77,2,
+176,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",78,2,
+177,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",79,2,
+178,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",80,2,H
+179,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",81,2,
+180,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",82,2,
+181,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",83,2,
+182,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",84,2,H
+183,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",85,2,
+184,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",86,2,
+185,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",87,2,
+186,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",88,2,H
+187,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",89,2,
+188,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",90,2,
+189,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",91,2,
+190,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",92,2,H
+191,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",93,2,
+192,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",94,2,
+193,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",95,2,
+194,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,2,H
+195,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,2,H
+196,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,2,H
+197,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",1,3,H
+198,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",2,3,H
+199,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",3,3,H
+200,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",4,3,
+201,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",5,3,
+202,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",6,3,
+203,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",7,3,H
+204,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",8,3,
+205,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",9,3,
+206,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",10,3,
+207,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",11,3,H
+208,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",12,3,
+209,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",13,3,
+210,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",14,3,
+211,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",15,3,H
+212,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",16,3,
+213,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",17,3,
+214,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",18,3,
+215,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",19,3,H
+216,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",20,3,
+217,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",21,3,
+218,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",22,3,
+219,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",23,3,H
+220,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",24,3,
+221,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",25,3,
+222,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",26,3,
+223,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",27,3,H
+224,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",28,3,
+225,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",29,3,
+226,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",30,3,
+227,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",31,3,H
+228,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",32,3,
+229,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",33,3,
+230,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",34,3,
+231,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",35,3,H
+232,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",36,3,
+233,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",37,3,
+234,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",38,3,
+235,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",39,3,H
+236,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",40,3,
+237,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",41,3,
+238,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",42,3,
+239,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",43,3,H
+240,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",44,3,
+241,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",45,3,
+242,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",46,3,
+243,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",47,3,H
+244,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",48,3,H
+245,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",49,3,H
+246,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",50,3,H
+247,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",51,3,H
+248,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",52,3,H
+249,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",53,3,
+250,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",54,3,
+251,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",55,3,
+252,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",56,3,H
+253,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",57,3,
+254,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",58,3,
+255,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",59,3,
+256,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",60,3,H
+257,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",61,3,
+258,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",62,3,
+259,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",63,3,
+260,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",64,3,H
+261,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",65,3,
+262,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",66,3,
+263,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",67,3,
+264,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",68,3,H
+265,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",69,3,
+266,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",70,3,
+267,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",71,3,
+268,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",72,3,H
+269,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",73,3,
+270,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",74,3,
+271,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",75,3,
+272,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",76,3,H
+273,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",77,3,
+274,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",78,3,
+275,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",79,3,
+276,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",80,3,H
+277,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",81,3,
+278,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",82,3,
+279,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",83,3,
+280,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",84,3,H
+281,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",85,3,
+282,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",86,3,
+283,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",87,3,
+284,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",88,3,H
+285,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",89,3,
+286,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",90,3,
+287,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",91,3,
+288,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",92,3,H
+289,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",93,3,
+290,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",94,3,
+291,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",95,3,
+292,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",96,3,H
+293,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",97,3,H
+294,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",98,3,H
+295,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",1,4,H
+296,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",2,4,H
+297,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",3,4,H
+298,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",4,4,
+299,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",5,4,
+300,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",6,4,
+301,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",7,4,H
+302,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",8,4,
+303,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",9,4,
+304,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",10,4,
+305,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",11,4,H
+306,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",12,4,
+307,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",13,4,
+308,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",14,4,
+309,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",15,4,H
+310,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",16,4,
+311,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",17,4,
+312,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",18,4,
+313,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",19,4,H
+314,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",20,4,
+315,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",21,4,
+316,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",22,4,
+317,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",23,4,H
+318,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",24,4,
+319,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",25,4,
+320,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",26,4,
+321,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",27,4,H
+322,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",28,4,
+323,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",29,4,
+324,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",30,4,
+325,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",31,4,H
+326,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",32,4,
+327,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",33,4,
+328,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",34,4,
+329,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",35,4,H
+330,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",36,4,
+331,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",37,4,
+332,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",38,4,
+333,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",39,4,H
+334,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",40,4,
+335,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",41,4,
+336,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",42,4,
+337,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",43,4,H
+338,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",44,4,
+339,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",45,4,
+340,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",46,4,
+341,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",47,4,H
+342,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",48,4,H
+343,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",49,4,H
+344,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",50,4,H
+345,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",51,4,H
+346,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",52,4,H
+347,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",53,4,
+348,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",54,4,
+349,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",55,4,
+350,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",56,4,H
+351,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",57,4,
+352,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",58,4,
+353,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",59,4,
+354,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",60,4,H
+355,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",61,4,
+356,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",62,4,
+357,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",63,4,
+358,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",64,4,H
+359,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",65,4,
+360,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",66,4,
+361,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",67,4,
+362,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",68,4,H
+363,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",69,4,
+364,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",70,4,
+365,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",71,4,
+366,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",72,4,H
+367,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",73,4,
+368,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",74,4,
+369,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",75,4,
+370,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",76,4,H
+371,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",77,4,
+372,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",78,4,
+373,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",79,4,
+374,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",80,4,H
+375,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",81,4,
+376,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",82,4,
+377,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",83,4,
+378,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",84,4,H
+379,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",85,4,
+380,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",86,4,
+381,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",87,4,
+382,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",88,4,H
+383,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",89,4,
+384,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",90,4,
+385,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",91,4,
+386,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",92,4,H
+387,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",93,4,
+388,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",94,4,
+389,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",95,4,
+390,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",96,4,H
+391,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",97,4,H
+392,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",98,4,H
+393,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",1,5,H
+394,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",2,5,H
+395,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",3,5,H
+396,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",4,5,
+397,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",5,5,
+398,1-ESR1095-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",6,5,
+399,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",7,5,H
+400,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",8,5,
+401,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",9,5,
+402,2-4PPGP33A-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",10,5,
+403,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",11,5,H
+404,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",12,5,
+405,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",13,5,
+406,3-ESR1135-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",14,5,
+407,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",15,5,H
+408,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",16,5,
+409,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",17,5,
+410,4-RNX198006-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",18,5,
+411,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",19,5,H
+412,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",20,5,
+413,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",21,5,
+414,5-ESF2044 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",22,5,
+415,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",23,5,H
+416,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",24,5,
+417,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",25,5,
+418,6-ESR1070-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",26,5,
+419,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",27,5,H
+420,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",28,5,
+421,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",29,5,
+422,7-ESF2077 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",30,5,
+423,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",31,5,H
+424,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",32,5,
+425,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",33,5,
+426,8-ESR1136-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",34,5,
+427,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",35,5,H
+428,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",36,5,
+429,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",37,5,
+430,9-AC08AC016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",38,5,
+431,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",39,5,H
+432,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",40,5,
+433,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",41,5,
+434,10-LSR3016-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",42,5,
+435,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",43,5,H
+436,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",44,5,
+437,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",45,5,
+438,11-ESF2048 CMS-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",46,5,
+439,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",47,5,H
+440,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",48,5,H
+441,FILL-FILL-FONGI HIVER,25COL001,Colza,"43.734344, 1.240952",49,5,H
+442,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",50,5,H
+443,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",51,5,H
+444,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",52,5,H
+445,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",53,5,
+446,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",54,5,
+447,11-ESF2048 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",55,5,
+448,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",56,5,H
+449,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",57,5,
+450,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",58,5,
+451,10-LSR3016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",59,5,
+452,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",60,5,H
+453,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",61,5,
+454,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",62,5,
+455,9-AC08AC016-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",63,5,
+456,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",64,5,H
+457,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",65,5,
+458,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",66,5,
+459,8-ESR1136-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",67,5,
+460,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",68,5,H
+461,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",69,5,
+462,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",70,5,
+463,7-ESF2077 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",71,5,
+464,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",72,5,H
+465,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",73,5,
+466,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",74,5,
+467,6-ESR1070-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",75,5,
+468,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",76,5,H
+469,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",77,5,
+470,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",78,5,
+471,5-ESF2044 CMS-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",79,5,
+472,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",80,5,H
+473,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",81,5,
+474,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",82,5,
+475,4-RNX198006-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",83,5,
+476,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",84,5,H
+477,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",85,5,
+478,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",86,5,
+479,3-ESR1135-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",87,5,
+480,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",88,5,H
+481,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",89,5,
+482,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",90,5,
+483,2-4PPGP33A-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",91,5,
+484,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",92,5,H
+485,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",93,5,
+486,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",94,5,
+487,1-ESR1095-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",95,5,
+488,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",96,5,H
+489,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",97,5,H
+490,FILL-FILL-FERTI BINAGE,25COL001,Colza,"43.734344, 1.240952",98,5,H
+491,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",1,6,H
+492,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",2,6,H
+493,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",3,6,H
+494,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",4,6,
+495,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",5,6,
+496,1-ESR1095-TEMOIN,25COL001,Colza,"43.734344, 1.240952",6,6,
+497,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",7,6,H
+498,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",8,6,
+499,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",9,6,
+500,2-4PPGP33A-TEMOIN,25COL001,Colza,"43.734344, 1.240952",10,6,
+501,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",11,6,H
+502,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",12,6,
+503,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",13,6,
+504,3-ESR1135-TEMOIN,25COL001,Colza,"43.734344, 1.240952",14,6,
+505,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",15,6,H
+506,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",16,6,
+507,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",17,6,
+508,4-RNX198006-TEMOIN,25COL001,Colza,"43.734344, 1.240952",18,6,
+509,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",19,6,H
+510,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",20,6,
+511,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",21,6,
+512,5-ESF2044 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",22,6,
+513,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",23,6,H
+514,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",24,6,
+515,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",25,6,
+516,6-ESR1070-TEMOIN,25COL001,Colza,"43.734344, 1.240952",26,6,
+517,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",27,6,H
+518,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",28,6,
+519,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",29,6,
+520,7-ESF2077 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",30,6,
+521,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",31,6,H
+522,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",32,6,
+523,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",33,6,
+524,8-ESR1136-TEMOIN,25COL001,Colza,"43.734344, 1.240952",34,6,
+525,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",35,6,H
+526,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",36,6,
+527,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",37,6,
+528,9-AC08AC016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",38,6,
+529,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",39,6,H
+530,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",40,6,
+531,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",41,6,
+532,10-LSR3016-TEMOIN,25COL001,Colza,"43.734344, 1.240952",42,6,
+533,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",43,6,H
+534,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",44,6,
+535,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",45,6,
+536,11-ESF2048 CMS-TEMOIN,25COL001,Colza,"43.734344, 1.240952",46,6,
+537,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",47,6,H
+538,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",48,6,H
+539,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",49,6,H
+540,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",50,6,H
+541,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",51,6,H
+542,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",52,6,H
+543,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",53,6,
+544,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",54,6,
+545,11-ESF2048 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",55,6,
+546,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",56,6,H
+547,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",57,6,
+548,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",58,6,
+549,10-LSR3016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",59,6,
+550,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",60,6,H
+551,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",61,6,
+552,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",62,6,
+553,9-AC08AC016-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",63,6,
+554,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",64,6,H
+555,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",65,6,
+556,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",66,6,
+557,8-ESR1136-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",67,6,
+558,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",68,6,H
+559,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",69,6,
+560,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",70,6,
+561,7-ESF2077 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",71,6,
+562,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",72,6,H
+563,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",73,6,
+564,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",74,6,
+565,6-ESR1070-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",75,6,
+566,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",76,6,H
+567,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",77,6,
+568,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",78,6,
+569,5-ESF2044 CMS-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",79,6,
+570,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",80,6,H
+571,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",81,6,
+572,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",82,6,
+573,4-RNX198006-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",83,6,
+574,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",84,6,H
+575,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",85,6,
+576,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",86,6,
+577,3-ESR1135-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",87,6,
+578,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",88,6,H
+579,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",89,6,
+580,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",90,6,
+581,2-4PPGP33A-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",91,6,
+582,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",92,6,H
+583,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",93,6,
+584,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",94,6,
+585,1-ESR1095-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",95,6,
+586,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,6,H
+587,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,6,H
+588,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,6,H
+1,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",1,1,M
+2,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",2,1,M
+3,R12BQ3MI-Influx plenaris-XCLG589630T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,1,M
+4,R13SG1MJO-Influx plenaris-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1,M
+5,R13SG1MJO-Influx plenaris+Lalrise-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1,M
+6,R13SG1MJO-Influx plenaris-F0440F606583T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,1,M
+7,R13SG1MJO-Influx plenaris-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1,M
+8,R13SG1MJO-Influx plenaris+Lalrise-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1,M
+9,R14WD1M-Influx plenaris-XRCH24MA82335T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,1,M
+10,R16DG2MJSO-Influx plenaris-XRCHLMA78119BT0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,1,M
+11,R16DG2MJSO-Influx plenaris-XRCHLMA78119T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,1,M
+12,R21DW2JS-Influx plenaris-F0440F597914T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,1,M
+13,R4NA1MK-Influx plenaris-F0440F610406T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,1,M
+14,R4NA1MK-Influx plenaris-F0440F610791T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,1,M
+15,R4NA1MK-Influx plenaris-XESF601666T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,1,M
+16,R4NO4M-Influx plenaris-XESG559541TT0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,1,M
+17,R4NO4MJ-Influx plenaris-F0440D474497T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,1,M
+18,R469MJKO-Influx plenaris-F0440F597862T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,2,M
+19,R469MJSO-Influx plenaris-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2,M
+20,R469MJSO-Influx plenaris+Lalrise-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2,M
+21,R469MJSO-Influx plenaris-F0440F597559T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,2,M
+22,R469MJSO-Influx plenaris-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2,M
+23,R469MJSO-Influx plenaris+Lalrise-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2,M
+24,R469MJSO-Influx plenaris-F0440F597563T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,2,M
+25,R469MJSO-Influx plenaris-XRCH25MA84934T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,2,M
+26,R4NA1MJ-Influx plenaris-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2,M
+27,R4NA1MJ-Influx plenaris+Lalrise-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2,M
+28,R4NA1MJ-Influx plenaris-XRCHLMA77990T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,2,M
+29,R4NA1MJ-Influx plenaris-XRCHLMA78403T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,2,M
+30,R4NA1MJO-Influx plenaris-F0440F609634T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,2,M
+31,R4NA1MJO-Influx plenaris-XCLG590786T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,2,M
+32,R8035MJ-Influx plenaris-F0440F597569T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,2,M
+33,R8035MJI-Influx plenaris-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2,M
+34,R8035MJI-Influx plenaris+Lalrise-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2,M
+35,R5PE4MS-Influx plenaris-F0440F610782T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,3,M
+36,R5PE4MS-Influx plenaris-F0440G554644T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,3,M
+37,R5PG6MJS-Influx plenaris-F0440F610784T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,3,M
+38,R5PG6MJS-Influx plenaris-F0440G547818T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,3,M
+39,R8035M1JS-Influx plenaris-F0440F597387T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,3,M
+40,R8035M1JS-Influx plenaris-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3,M
+41,R8035M1JS-Influx plenaris+Lalrise-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3,M
+42,R8035M1JS-Influx plenaris-F0440F597390T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,3,M
+43,R8035M1JS-Influx plenaris-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3,M
+44,R8035M1JS-Influx plenaris+Lalrise-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3,M
+45,R8035M1JS-Influx plenaris-XESF598972T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,3,M
+46,R8035M1JS-Influx plenaris-XRCH24MA82418T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,3,M
+47,R890JP-Influx plenaris-F0440D472278T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,3,M
+48,R890JP-Influx plenaris-F0440D472306T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,3,M
+49,R890JP-Influx plenaris-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3,M
+50,R890JP-Influx plenaris+Lalrise-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3,M
+51,SR1087MS-Influx plenaris-XRCHE67458T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,3,M
+52,R16DG2MJSO-Influx plenaris-XRCHLMA78119BT0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,4,M
+53,R16DG2MJSO-Influx plenaris-XRCHLMA78119T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,4,M
+54,R14WD1M-Influx plenaris-XRCH24MA82335T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,4,M
+55,R21DW2JS-Influx plenaris-F0440F597914T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,4,M
+56,R4NA1MK-Influx plenaris-XESF601666T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,4,M
+57,R4NA1MK-Influx plenaris-F0440F610406T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,4,M
+58,R4NO4M-Influx plenaris-XESG559541TT0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,4,M
+59,R4NA1MK-Influx plenaris-F0440F610791T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,4,M
+60,R13SG1MJO-Influx plenaris-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4,M
+61,R13SG1MJO-Influx plenaris+Lalrise-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4,M
+62,R13SG1MJO-Influx plenaris+Lalrise-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4,M
+63,R13SG1MJO-Influx plenaris-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4,M
+64,R13SG1MJO-Influx plenaris-F0440F606583T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,4,M
+65,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4,M
+66,R12BQ3MI-Influx plenaris+Lalrise-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4,M
+67,R12BQ3MI-Influx plenaris-XCLG589630T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,4,M
+68,R4NO4MJ-Influx plenaris-F0440D474497T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,4,M
+69,R469MJSO-Influx plenaris-F0440F597559T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,5,M
+70,R469MJSO-Influx plenaris-F0440F597563T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,5,M
+71,R469MJKO-Influx plenaris-F0440F597862T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,5,M
+72,R469MJSO-Influx plenaris-XRCH25MA84934T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,5,M
+73,R469MJSO-Influx plenaris-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5,M
+74,R469MJSO-Influx plenaris+Lalrise-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5,M
+75,R469MJSO-Influx plenaris+Lalrise-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5,M
+76,R469MJSO-Influx plenaris-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5,M
+77,R4NA1MJ-Influx plenaris+Lalrise-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5,M
+78,R4NA1MJ-Influx plenaris-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5,M
+79,R8035MJI-Influx plenaris+Lalrise-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5,M
+80,R8035MJI-Influx plenaris-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5,M
+81,R8035MJ-Influx plenaris-F0440F597569T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,5,M
+82,R4NA1MJO-Influx plenaris-XCLG590786T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,5,M
+83,R4NA1MJ-Influx plenaris-XRCHLMA78403T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,5,M
+84,R4NA1MJ-Influx plenaris-XRCHLMA77990T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,5,M
+85,R4NA1MJO-Influx plenaris-F0440F609634T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,5,M
+86,R890JP-Influx plenaris-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6,M
+87,R890JP-Influx plenaris+Lalrise-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6,M
+88,R8035M1JS-Influx plenaris-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6,M
+89,R8035M1JS-Influx plenaris+Lalrise-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6,M
+90,R8035M1JS-Influx plenaris-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6,M
+91,R8035M1JS-Influx plenaris+Lalrise-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6,M
+92,R8035M1JS-Influx plenaris-XESF598972T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,6,M
+93,R8035M1JS-Influx plenaris-F0440F597390T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,6,M
+94,R8035M1JS-Influx plenaris-XRCH24MA82418T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,6,M
+95,R8035M1JS-Influx plenaris-F0440F597387T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,6,M
+96,R5PG6MJS-Influx plenaris-F0440F610784T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,6,M
+97,R5PG6MJS-Influx plenaris-F0440G547818T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,6,M
+98,R5PE4MS-Influx plenaris-F0440F610782T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,6,M
+99,SR1087MS-Influx plenaris-XRCHE67458T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,6,M
+100,R890JP-Influx plenaris-F0440D472306T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,6,M
+101,R890JP-Influx plenaris-F0440D472278T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,6,M
+102,R5PE4MS-Influx plenaris-F0440G554644T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,6,M
+103,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7,M
+104,R12BQ3MI-Influx plenaris+Lalrise-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7,M
+105,R12BQ3MI-Influx plenaris-XCLG589630T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,7,M
+106,R13SG1MJO-Influx plenaris-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7,M
+107,R13SG1MJO-Influx plenaris+Lalrise-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7,M
+108,R13SG1MJO-Influx plenaris-F0440F606583T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,7,M
+109,R13SG1MJO-Influx plenaris-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7,M
+110,R13SG1MJO-Influx plenaris+Lalrise-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7,M
+111,R16DG2MJSO-Influx plenaris-XRCHLMA78119BT0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,7,M
+112,R16DG2MJSO-Influx plenaris-XRCHLMA78119T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,7,M
+113,R469MJKO-Influx plenaris-F0440F597862T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,7,M
+114,R469MJSO-Influx plenaris-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7,M
+115,R469MJSO-Influx plenaris+Lalrise-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7,M
+116,R469MJSO-Influx plenaris-F0440F597559T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,7,M
+117,R469MJSO-Influx plenaris-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7,M
+118,R469MJSO-Influx plenaris+Lalrise-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7,M
+119,R469MJSO-Influx plenaris-F0440F597563T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,7,M
+120,R469MJSO-Influx plenaris-XRCH25MA84934T0,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7,M
+`
 
    const bbchInfoData = {
     fr: {
@@ -1577,6 +1597,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const now = new Date();
         document.getElementById('custom-date').valueAsDate = now;
+        document.getElementById('btn-choice-date').onclick = () => addSimpleLine('date');
+        document.getElementById('btn-choice-scale').onclick = () => addSimpleLine('scale19');
         document.getElementById('custom-time').value = now.toTimeString().substring(0,5);
     });
 
@@ -1695,21 +1717,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById(this.dataset.target).classList.toggle('hidden-section');
         });
         
-        ['nec','ep','phyto'].forEach(k => {
-            const div = document.getElementById(k+'-buttons');
-            for(let i=0; i<=9; i++){
-                const b = document.createElement('div'); b.className = 'square-btn'; b.textContent = i;
-                b.onclick = () => { 
-                    div.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected')); 
-                    b.classList.add('selected'); 
-                    document.getElementById(k+'-display').textContent = i; 
-                };
-                div.appendChild(b);
-            }
-        });
+        // Removed NEC / EP / Phyto buttons generation loop
 
         const floDiv = document.getElementById('flo-buttons');
-        for(let i=0; i<=100; i+=10) {
+        // Modification: Pas de 5% au lieu de 10%
+        for(let i=0; i<=100; i+=5) {
             const b = document.createElement('div'); b.className = 'square-btn'; b.style.width = '32px'; b.textContent = i;
             b.onclick = () => {
                 floDiv.querySelectorAll('.selected').forEach(s=>s.classList.remove('selected'));
@@ -1719,8 +1731,11 @@ document.addEventListener('DOMContentLoaded', () => {
             floDiv.appendChild(b);
         }
 
-        document.getElementById('enregistrer').onclick = () => enregistrerObservation(false);
-        document.getElementById('enregistrer-suivant').onclick = () => enregistrerObservation(true);
+        // Modification des boutons enregistrer
+        document.getElementById('enregistrer').onclick = () => enregistrerObservation(0);
+        document.getElementById('enregistrer-suivant').onclick = () => enregistrerObservation(1);
+        document.getElementById('enregistrer-prec').onclick = () => enregistrerObservation(-1);
+        
         document.getElementById('telecharger-csv').onclick = telechargerCSV;
         document.getElementById('changer-essai').onclick = () => location.reload();
         
@@ -1749,6 +1764,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('minus-stade').onclick = () => document.getElementById('stade').value = Math.max(0, document.getElementById('stade').value - 1);
         document.getElementById('plus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(el.value.charCodeAt(0)+1); };
         document.getElementById('minus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(Math.max(65, el.value.charCodeAt(0)-1)); };
+        
+        // --- RECEPTIVITE BOUTONS ---
+        document.getElementById('plus-receptivite').onclick = () => document.getElementById('receptivite').value++;
+        document.getElementById('minus-receptivite').onclick = () => document.getElementById('receptivite').value = Math.max(0, document.getElementById('receptivite').value - 1);
+
 
         document.getElementById('btn-add-simple-line').onclick = () => {
             document.getElementById('choiceSimpleNotModal').style.display = 'block';
@@ -1759,17 +1779,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('btn-choice-percent').onclick = () => addSimpleLine('percent');
     }
 
-    function addSimpleLine(type) {
-        const title = document.getElementById('new-simple-title-modal').value;
-        if(!title) return;
-        const used = new Set(simpleNotationsConfig.map(s => s.code));
-        let charCode = 65; while (used.has(String.fromCharCode(charCode))) charCode++;
-        simpleNotationsConfig.push({label: title, code: String.fromCharCode(charCode), type: type});
-        localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig));
-        initSimpleNotationsUI();
-        document.getElementById('choiceSimpleNotModal').style.display = 'none';
-        document.getElementById('new-simple-title-modal').value = '';
-    }
+   function addSimpleLine(type) {
+    const title = document.getElementById('new-simple-title-modal').value.trim();
+    if (!title) return;
+    const code = title.toLowerCase().replace(/\s+/g, '_');
+    // On ajoute le type (num, text, percent, date, ou scale19)
+    simpleNotationsConfig.push({ label: title, code: code, type: type }); 
+    document.getElementById('choiceSimpleNotModal').style.display = 'none';
+    document.getElementById('new-simple-title-modal').value = "";
+    initSimpleNotationsUI();
+}
 
     function updateUIForSelectedPlot(code) {
         const padded = String(code).padStart(3,'0');
@@ -1801,6 +1820,14 @@ document.addEventListener('DOMContentLoaded', () => {
        function openSowingPlan() {
     const plots = varieteData.filter(p => p.Essai === currentEssai);
     if (!plots.length || !plots[0].Plan_X) return alert(getT("alert-no-plan"));
+
+    // --- LOGIQUE HIGHLIGHT VARIETE ---
+    // On récupère la parcelle courante sélectionnée
+    const selectedPadded = String(selectedPlotCodeForNavigation).padStart(3,'0');
+    const currentPlot = plots.find(p => String(p.Code_Essai_Parcelle).padStart(3,'0') === selectedPadded);
+    // On récupère le nom de la variété courante pour le mettre en gras partout
+    const highlightVariete = currentPlot ? currentPlot.variete : null;
+    // ---------------------------------
 
     let maxX = Math.max(...plots.map(p => parseInt(p.Plan_X))), 
         maxY = Math.max(...plots.map(p => parseInt(p.Plan_Y)));
@@ -1842,12 +1869,36 @@ document.addEventListener('DOMContentLoaded', () => {
             let codeOriginal = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
             let codeAffiche = p ? parseInt(p.Code_Essai_Parcelle) : ""; 
             
-            let isSelected = (codeOriginal === String(selectedPlotCodeForNavigation).padStart(3,'0'));
-            let cellClass = isSelected ? 'class="current-plot-cell"' : '';
-            let style = codeOriginal ? "cursor:pointer;" : "background:#f9f9f9; color:#ccc;";
+            let isSelected = (codeOriginal === selectedPadded);
             
-            html += `<td ${cellClass} style="${style}" onclick="${codeOriginal ? `selectFromPlan('${codeOriginal}')` : ''}">
-                        ${codeAffiche}
+            // Gestion des classes CSS dynamiques
+            let classes = [];
+            let style = "";
+
+            if (p) {
+                // Background color selon Type
+                if (p.Type === 'M') classes.push('type-M');
+                else if (p.Type === 'F') classes.push('type-F');
+                else if (p.Type === 'H') classes.push('type-H');
+
+                // Highlight Variété (Gras) si c'est la même variété que la sélectionnée
+                if (highlightVariete && p.variete === highlightVariete) {
+                     classes.push('variete-highlight');
+                }
+                
+                // Cellule sélectionnée (Prime sur les autres fonds)
+                if (isSelected) classes.push('current-plot-cell');
+
+                style = "cursor:pointer;";
+            } else {
+                style = "background:#f9f9f9; color:#ccc;";
+            }
+
+            let classAttr = classes.length ? `class="${classes.join(' ')}"` : '';
+            
+            html += `<td ${classAttr} style="${style}" onclick="${codeOriginal ? `selectFromPlan('${codeOriginal}')` : ''}">
+                        ${codeAffiche}<br>
+                        <span style="font-size:0.75em; color:#555;">${(p && p.Type) ? p.Type : ''}</span>
                      </td>`;
         }
         html += '</tr>';
@@ -1862,11 +1913,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('sowingPlanModal').style.display = 'none';
     };
 
-    function enregistrerObservation(andNext) {
+    function enregistrerObservation(moveDir) {
     if (!parcelleValideeCode) return alert(getT("alert-valider-parcelle"));
     let obs = {
         id: Date.now(), 
-        Type_Not: document.getElementById('type-notation-session').value,
+        Notateur: document.getElementById('type-notation-session').value,
         ESSAI: currentEssai, 
         Parcelle: parcelleValideeCode,
         Variete: document.getElementById('variete-text').textContent.split(':').pop().trim(),
@@ -1884,33 +1935,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const floSel = document.querySelector('#flo-buttons .selected'); 
     if(floSel) obs.Floraison = floSel.textContent + "%";
 
-    // --- CORRECTION : AJOUT NEC ET EP ---
-    obs.NEC = document.getElementById('nec-display').textContent;
-    obs.EP = document.getElementById('ep-display').textContent;
-    // ------------------------------------
+    // Réceptivité
+    if(document.getElementById('receptivite').value) obs.Receptivite = document.getElementById('receptivite').value;
 
-    // Phyto
-    const phytoSel = document.querySelector('#phyto-buttons .selected'); 
-    if(phytoSel) obs.Phyto = phytoSel.textContent;
     
     // Code Echantillon
     if (document.getElementById('lettres-analyse').value !== "") {
         obs.Code_Ech = (document.getElementById('lettres-analyse').value + document.getElementById('numero-analyse').value).toUpperCase();
         document.getElementById('numero-analyse').value++;
     }
-
+    
     // Notations simples dynamiques
     simpleNotationsConfig.forEach(s => {
-        let v = document.getElementById('not-simple-'+s.code).value;
-        if(v) { obs['Titre_Not_'+s.code] = s.label; obs['Not_'+s.code] = v; }
+        const el = document.getElementById('not-simple-'+s.code);
+        if(el && el.value) obs['Not_' + s.label] = el.value;
     });
 
     appObservations.unshift(obs);
     localStorage.setItem('observations_v12', JSON.stringify(appObservations));
     renderRecapTable();
     
-    if(andNext) {
-        handleNavigate(1);
+    // moveDir : -1 (Prev), 0 (Stay), 1 (Next)
+    if(moveDir !== 0) {
+        handleNavigate(moveDir);
         parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
         updateUIForSelectedPlot(selectedPlotCodeForNavigation);
         document.getElementById('rep').value = 'A';
@@ -1924,7 +1971,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.querySelector('#recap-table tbody');
         if(!tbody) return;
         tbody.innerHTML = appObservations.map(o => 
-            `<tr><td>${o.ESSAI}</td><td>${o.Parcelle}</td><td>${o.Rep}</td><td>${o.Code_Ech||'-'}</td><td>${o.Stade||'-'}</td><td>${o.Floraison||'-'}</td><td>${o.Phyto||'-'}</td><td><button onclick="delObs(${o.id})" class="btn-danger" style="margin:0;padding:2px;">X</button></td></tr>`
+            `<tr><td>${o.ESSAI}</td><td>${o.Parcelle}</td><td>${o.Rep}</td><td>${o.Code_Ech||'-'}</td><td>${o.Stade||'-'}</td><td>${o.Floraison||'-'}</td><td><button onclick="delObs(${o.id})" class="btn-danger" style="margin:0;padding:2px;">X</button></td></tr>`
         ).join('');
     }
 
@@ -1935,8 +1982,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function initSimpleNotationsUI() {
-        const div = document.getElementById('simple-notations-list'); div.innerHTML='';
+    function initSimpleNotationsUI() {        const div = document.getElementById('simple-notations-list'); div.innerHTML='';
         simpleNotationsConfig = simpleNotationsConfig.filter(s => typeof s === 'object' && s.code);
         simpleNotationsConfig.forEach(s => {
             let inputField = "";
@@ -1944,17 +1990,75 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputField = `<div class="simple-not-controls"><button class="btn-secondary" style="padding:5px 10px;" onclick="cV('${s.code}',-1)">-</button><input type="number" id="not-simple-${s.code}" value="0" style="margin:0; text-align:center;"><button class="btn-secondary" style="padding:5px 10px;" onclick="cV('${s.code}',1)">+</button></div>`;
             } else if (s.type === 'percent') {
                 let buttonsHtml = `<div class="square-btn-group" id="group-perc-${s.code}">`;
-                for (let i = 0; i <= 100; i += 10) {
+                // Modification ici : de 5 en 5
+                for (let i = 0; i <= 100; i += 5) {
                     buttonsHtml += `<div class="square-btn" style="width:32px;" onclick="setPercValue('${s.code}', '${i}', this)">${i}</div>`;
                 }
                 buttonsHtml += `</div><input type="hidden" id="not-simple-${s.code}" value="">`;
                 inputField = buttonsHtml;
+            } else if (s.type === 'scale19') {
+                let buttonsHtml = `<div class="square-btn-group" id="group-scale-${s.code}">`;
+                for (let i = 1; i <= 9; i++) {
+                    buttonsHtml += `<div class="square-btn" onclick="setScaleValue('${s.code}', '${i}', this)">${i}</div>`;
+                }
+                buttonsHtml += `</div><input type="hidden" id="not-simple-${s.code}" value="">`;
+                inputField = buttonsHtml;
+            } else if (s.type === 'date') {
+                // --- AJOUT DATE PAR DEFAUT + BOUTONS +/- ---
+                const today = new Date().toISOString().split('T')[0];
+                const [y,m,d] = today.split('-');
+                const defaultHidden = `${d}/${m}`;
+                inputField = `
+                <div style="display:flex; align-items:center; gap:5px; width:100%;">
+                    <input type="date" id="date-input-${s.code}" class="date-input-field" value="${today}" onchange="updateDateValue('${s.code}', this.value)" style="flex-grow:1;">
+                    <button class="btn-secondary" style="padding:10px 15px;" onclick="changeDate('${s.code}', -1)">-</button>
+                    <button class="btn-secondary" style="padding:10px 15px;" onclick="changeDate('${s.code}', 1)">+</button>
+                </div>
+                <input type="hidden" id="not-simple-${s.code}" value="${defaultHidden}">`;
             } else {
                 inputField = `<input type="text" id="not-simple-${s.code}" placeholder="..." style="margin:0">`;
             }
             div.innerHTML += `<div class="simple-notation-line"><div class="simple-not-header"><span>${s.label}</span><button class="btn-danger" style="padding:2px 6px; font-size:0.7em;" onclick="removeSimpleLine('${s.code}')">X</button></div>${inputField}</div>`;
         });
     }
+
+function updateDateValue(code, fullDate) {
+    if(!fullDate) return;
+    const parts = fullDate.split('-'); // [AAAA, MM, JJ]
+    const formatted = parts[2] + "/" + parts[1]; // JJ/MM
+    document.getElementById('not-simple-' + code).value = formatted;
+}
+
+// --- FONCTION POUR CHANGER LA DATE AVEC +/- ---
+window.changeDate = (code, days) => {
+    const input = document.getElementById(`date-input-${code}`);
+    if (!input) return;
+    
+    // Récupérer la date actuelle de l'input
+    let currentDate = new Date(input.value);
+    
+    // Si la date est invalide (ex: champ vide), prendre aujourd'hui
+    if (isNaN(currentDate.getTime())) currentDate = new Date();
+    
+    // Ajouter/Retirer des jours
+    currentDate.setDate(currentDate.getDate() + days);
+    
+    // Formater en YYYY-MM-DD
+    const newDateStr = currentDate.toISOString().split('T')[0];
+    input.value = newDateStr;
+    
+    // Mettre à jour le champ caché (JJ/MM)
+    updateDateValue(code, newDateStr);
+};
+
+
+    window.setScaleValue = (code, val, btn) => {
+        const parent = document.getElementById(`group-scale-${code}`);
+        parent.querySelectorAll('.selected').forEach(s => s.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById(`not-simple-${code}`).value = val;
+    };
+
 
     window.setPercValue = (code, val, btn) => {
         const parent = document.getElementById(`group-perc-${code}`);
@@ -1974,17 +2078,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function telechargerCSV() {
         if(!appObservations.length) return alert(getT("alert-rien"));
-        const fixedHeaders = ["Type_Not", "ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Code_Ech", "NEC", "EP", "Phyto", "Observations"];
+        // Fixed headers updated: Added Receptivite
+        const fixedHeaders = ["Notateur", "ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Receptivite", "Code_Ech", "Observations"];
         let dynamicKeys = new Set();
         appObservations.forEach(o => Object.keys(o).forEach(k => { if(k.startsWith('Titre_Not_') || k.startsWith('Not_')) dynamicKeys.add(k); }));
-        const finalHeaders = [...fixedHeaders, ...Array.from(dynamicKeys).sort()];
-        let csv = "\uFEFF" + finalHeaders.join(";") + "\n";
-        appObservations.forEach(o => { csv += finalHeaders.map(k => o[k] === undefined ? "" : o[k]).join(";") + "\n"; });
+        const finalKeys = [...fixedHeaders, ...Array.from(dynamicKeys).sort()];
+        
+        // Remove 'Not_' prefix for the header row only
+        const headerRow = finalKeys.map(k => k.startsWith('Not_') ? k.substring(4) : k);
+        
+        let csv = "\uFEFF" + headerRow.join(";") + "\n";
+        appObservations.forEach(o => { csv += finalKeys.map(k => o[k] === undefined ? "" : o[k]).join(";") + "\n"; });
         const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download="Export_Notations.csv"; a.click();
     }
 </script>
 </body>
 </html>
-
-
-
