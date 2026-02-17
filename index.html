@@ -52,13 +52,7 @@ html {
     #session-setup, .sidebar, .main-panel, #Configuration div { padding: 20px; background-color: var(--theme-card-background-color); border-radius: 10px; box-shadow: var(--theme-card-shadow); margin-bottom:25px; }
     #app-container { max-width: 1400px; margin: 0 auto; }
     #app-content { display: flex; flex-wrap: wrap; gap: 25px; }
-    .date-input-field {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px; /* Évite le zoom automatique sur iPhone */
-}
+    .date-input-field { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
     .sidebar { flex: 1.3; min-width: 480px; } 
     .main-panel { flex: 2; min-width: 450px; }
     
@@ -87,6 +81,13 @@ html {
     .input-inc-dec input { width: 75px !important; margin: 0 6px; text-align: center; display: inline-block !important; }
     .input-inc-dec button { width: auto !important; padding: 6px 12px; margin: 0; display: inline-block !important; }
 
+    /* New styles for big buttons and relative clear button */
+    .input-group-big { display: flex; align-items: center; gap: 5px; width: 100%; margin-bottom: 15px; }
+    .input-wrapper-relative { position: relative; flex-grow: 1; }
+    .input-big-text { width: 100% !important; text-align: center; padding-right: 30px; font-size: 1.2em; font-weight: bold; margin:0 !important; }
+    .btn-xl { padding: 10px 0 !important; font-size: 1.5em !important; font-weight: bold !important; width: 60px !important; margin: 0 !important; display: flex !important; justify-content: center; align-items: center; }
+    .clear-icon-inside { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #e74c3c; font-weight: bold; font-size: 1.4em; display: none; z-index: 5; }
+
     .save-buttons-container { display: flex; gap: 5px; margin-top: 15px; }
     .save-buttons-container button { flex: 1; padding: 15px 2px; font-size: 0.9em; line-height: 1.2; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
@@ -103,7 +104,7 @@ html {
     #bbch-table th, #bbch-table td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 0.9em; }
     #bbch-table th { background-color: #f2f2f2; font-weight: bold; }
 
-       #sowing-plan-grid-container { max-height: 60vh; overflow: auto; border: 1px solid #ccc; position: relative; }
+    #sowing-plan-grid-container { max-height: 60vh; overflow: auto; border: 1px solid #ccc; position: relative; }
     #sowing-plan-grid-container table { border-collapse: separate; border-spacing: 0; }
     .sticky-x { position: sticky; top: 0; background: #eee; z-index: 10; font-weight: bold; border-bottom: 2px solid #999 !important; }
     .sticky-y { position: sticky; left: 0; background: #eee; z-index: 9; font-weight: bold; border-right: 2px solid #999 !important; }
@@ -113,6 +114,53 @@ html {
     .type-F { background-color: #e8f5e9; } /* Vert très clair */
     .type-H { background-color: #fff9c4; } /* Jaune/Doré très clair */
     .variete-highlight { font-weight: 900; box-shadow: inset 0 0 0 3px #333; border-radius: 4px; }
+    .hatched-pattern {
+        background-image: linear-gradient(45deg, rgba(0,0,0,0.15) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.15) 75%, transparent 75%, transparent);
+        background-size: 8px 8px;
+    }
+
+    /* Interactive Plan Styles */
+    .interactive-controls {
+        background-color: #f1f8e9;
+        border: 1px solid #c8e6c9;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        display: none; /* Hidden by default */
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .interactive-controls.active { display: flex; }
+    .interactive-label { font-weight: bold; color: var(--theme-secondary-color); font-size: 0.9em; margin-right:5px;}
+    .interactive-val { 
+        font-weight: bold; 
+        color: #333; /* Text dark for contrast */
+        background: rgba(255,255,255,0.8); 
+        padding: 1px 4px; 
+        border-radius: 3px; 
+        font-size: 1.1em; 
+        display:block; 
+        margin-top:2px; 
+        border: 1px solid rgba(0,0,0,0.1);
+        text-shadow: 0 0 2px white;
+    }
+    .switch { position: relative; display: inline-block; width: 40px; height: 20px; margin-right: 10px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
+    .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--theme-secondary-color); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Progress Bar */
+    .progress-container { width: 100%; background-color: #e0e0e0; border-radius: 5px; margin-bottom: 15px; height: 20px; overflow: hidden; position: relative; }
+    .progress-bar { height: 100%; background-color: var(--theme-secondary-color); width: 0%; transition: width 0.5s ease; }
+    .progress-text { position: absolute; width: 100%; text-align: center; top: 0; line-height: 20px; font-size: 0.8em; color: #333; font-weight: bold; text-shadow: 0 0 2px white; }
+    
+    /* Microphone Button */
+    .mic-btn { position: absolute; right: 10px; bottom: 50px; background-color: white; border: 1px solid #ccc; border-radius: 50%; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 1.2em; }
+    .mic-btn.listening { background-color: #e74c3c; color: white; animation: pulse 1.5s infinite; border-color: #c0392b; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 </style>
 <body>
 
@@ -147,6 +195,13 @@ html {
         <div id="Note" class="tabcontent" style="display:block;">
             <div id="app-content">
                 <div class="sidebar">
+                    
+                    <!-- PROGRESS BAR -->
+                    <div class="progress-container">
+                        <div id="trial-progress-bar" class="progress-bar"></div>
+                        <div id="trial-progress-text" class="progress-text">0 / 0 (0%)</div>
+                    </div>
+
                     <div class="selector-group"> 
                         <h4 data-i18n="num-parcelle">Numéro de parcelle</h4>
                         <div id="d1-buttons" class="square-btn-group"></div>
@@ -200,7 +255,7 @@ html {
                         <div id="not-stade" class="notation-group-container hidden-section">
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
                                 <label for="stade" style="width:auto; margin:0;" data-i18n="stade-bbch">Stade (BBCH) :</label>
-                                <button type="button" id="bbch-info-button" class="btn-secondary" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
+                                <button type="button" id="bbch-info-button" class="btn-secondary" data-i18n="btn-info" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
                             </div>
                             <div class="input-inc-dec">
                                 <button type="button" id="minus-stade" class="btn-secondary">-</button>
@@ -216,10 +271,14 @@ html {
                         
                         <div id="not-receptivite" class="notation-group-container hidden-section">
                              <h4 data-i18n="receptivite-label">Réceptivité (Nb)</h4>
-                             <div class="input-inc-dec">
-                                 <button type="button" id="minus-receptivite" class="btn-secondary">-</button>
-                                 <input type="number" id="receptivite" placeholder="0">
-                                 <button type="button" id="plus-receptivite" class="btn-secondary">+</button>
+                             <!-- Nouveau Design Gros Boutons + Reset -->
+                             <div class="input-group-big">
+                                 <button type="button" id="minus-receptivite" class="btn-secondary btn-xl">-</button>
+                                 <div class="input-wrapper-relative">
+                                     <input type="number" id="receptivite" class="input-big-text" placeholder="0">
+                                     <span id="clear-receptivite" class="clear-icon-inside">&times;</span>
+                                 </div>
+                                 <button type="button" id="plus-receptivite" class="btn-secondary btn-xl">+</button>
                              </div>
                         </div>
 
@@ -243,8 +302,9 @@ html {
                     <hr>
                     <div style="position: relative; margin-top: 15px;">
     <label for="obs" data-i18n="observations">Observations:</label>
-    <textarea id="obs" rows="2" style="padding-right: 30px;"></textarea>
+    <textarea id="obs" rows="2" style="padding-right: 40px;"></textarea>
     <span id="clear-obs" style="position: absolute; right: 10px; bottom: 22px; cursor: pointer; color: #e74c3c; font-weight: bold; font-size: 1.2em; display: none;">&times;</span>
+    <div id="mic-btn" class="mic-btn" onclick="toggleDictation()">🎤</div>
 </div>
 
                     <div class="save-buttons-container">
@@ -294,7 +354,11 @@ html {
                 <option value="Pluie" data-i18n="meteo-pluie">Pluie</option>
             </select>
          <hr>
-<button id="telecharger-csv" class="btn-secondary" style="width:100%;" data-i18n="telecharger-donnees">Télécharger CSV Données</button>
+         <label style="color:#d35400; font-weight:bold;" data-i18n="label-import">Import Données Externes (Session uniquement) :</label>
+         <input type="file" id="import-external-csv" accept=".csv" style="border: 1px solid #d35400;">
+         <p style="font-size:0.8em; color:#666;" data-i18n="desc-import">Le fichier doit être un CSV au format Notea (séparateur point-virgule). Utile pour le mode interactif du plan de semis.</p>
+         <hr>
+        <button id="telecharger-csv" class="btn-secondary" style="width:100%;" data-i18n="telecharger-donnees">Télécharger CSV Données</button>
          
         </div>
     </div>
@@ -304,13 +368,13 @@ html {
         <h3 data-i18n="prompt-title-simple">Type de notation</h3>
         <input type="text" id="new-simple-title-modal" placeholder="Ex: Date Floraison">
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
-            <button id="btn-choice-num" class="btn-primary">123 (Num)</button>
-            <button id="btn-choice-text" class="btn-accent">ABC (Txt)</button>
-            <button id="btn-choice-percent" class="btn-secondary" style="background-color: #f1c40f; color: #333;">% (5-100)</button>
-            <button id="btn-choice-date" class="btn-secondary" style="background-color: #9b59b6; color: white;">📅 Date (JJ/MM)</button>
-            <button id="btn-choice-scale" class="btn-accent" style="background-color: #e67e22; color: white; grid-column: span 2;">1-9 (Échelle)</button>
+            <button id="btn-choice-num" class="btn-primary" data-i18n="btn-choice-num">123 (Num)</button>
+            <button id="btn-choice-text" class="btn-accent" data-i18n="btn-choice-text">ABC (Txt)</button>
+            <button id="btn-choice-percent" class="btn-secondary" style="background-color: #f1c40f; color: #333;" data-i18n="btn-choice-percent">% (5-100)</button>
+            <button id="btn-choice-date" class="btn-secondary" style="background-color: #9b59b6; color: white;" data-i18n="btn-choice-date">📅 Date (JJ/MM)</button>
+            <button id="btn-choice-scale" class="btn-accent" style="background-color: #e67e22; color: white; grid-column: span 2;" data-i18n="btn-choice-scale">1-9 (Échelle)</button>
         </div>
-        <button onclick="document.getElementById('choiceSimpleNotModal').style.display='none'" class="btn-secondary" style="margin-top:20px; width:100%;">Annuler</button>
+        <button onclick="document.getElementById('choiceSimpleNotModal').style.display='none'" class="btn-secondary" style="margin-top:20px; width:100%;" data-i18n="btn-cancel">Annuler</button>
     </div>
 </div>
 
@@ -318,8 +382,48 @@ html {
     <div id="sowingPlanModal" class="modal">
         <div class="modal-content"> 
             <span class="close-button" id="closeSowingPlanModal" style="float:right; font-size:24px; cursor:pointer;">×</span>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 data-i18n="h2-plan">Plan de Semis</h2>
+            <div style="display:flex; flex-direction:column; justify-content:flex-start;">
+                <h2 data-i18n="h2-plan" style="margin-bottom:10px;">Plan de Semis</h2>
+                
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:10px; background:#eee; padding:5px; border-radius:5px;">
+                    <!-- TO DO LIST TOGGLE -->
+                    <div style="display:flex; align-items:center;">
+                        <label style="font-size:0.8em; margin:0 5px 0 0; font-weight:bold;" data-i18n="avancement-hachure">Avancement (Hachuré) :</label>
+                        <label class="switch" style="transform:scale(0.8);">
+                            <input type="checkbox" id="todo-mode-toggle" onchange="openSowingPlan()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- NEW INTERACTIVE CONTROLS -->
+                <div id="plan-interactive-controls" class="interactive-controls">
+                    <div style="display:flex; align-items:center;">
+                        <span class="interactive-label" data-i18n="interactif">INTERACTIF</span>
+                        <label class="switch">
+                            <input type="checkbox" id="interactive-mode-toggle" onchange="openSowingPlan()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div id="interactive-filters" style="display:none; flex-grow:1; gap:10px; align-items:center; flex-wrap:wrap;">
+                        <div style="flex-grow:1;">
+                            <label style="font-size:0.8em; margin:0;" data-i18n="donnee">Donnée :</label>
+                            <select id="interactive-data-select" style="margin:0; padding:4px;" onchange="openSowingPlan()"></select>
+                        </div>
+                        <div style="flex-grow:1;">
+                            <label style="font-size:0.8em; margin:0;" data-i18n="filter-notateur">Notateur :</label>
+                            <select id="interactive-notator-select" style="margin:0; padding:4px;" onchange="openSowingPlan()">
+                                <option value="" data-i18n="option-tous">Tous</option>
+                            </select>
+                        </div>
+                        <div style="width:120px;">
+                            <label style="font-size:0.8em; margin:0;" data-i18n="jours-max">Jours max (Hier: 1) :</label>
+                            <input type="number" id="interactive-days-input" value="10" min="0" style="margin:0; padding:4px;" onchange="openSowingPlan()">
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <hr>
             <div id="sowing-plan-grid-container"></div>
@@ -329,309 +433,129 @@ html {
 <script>
    const translations = {
     fr: {
-        // --- Interface ---
-        "title": "Notations",
-        "choix-essai": "Choix de l'essai :",
-        "notateur": "Votre Nom / Notateur :",
-        "notateur-placeholder": "Nom...",
-        "confirmer": "Confirmer",
-        "tab-Note": "Note",
-        "tab-Configuration": "Configuration",
-        "num-parcelle": "Numéro de parcelle",
-        "mode": "Mode :",
-        "prec": "← Préc.",
-        "valider": "Valider Parcelle",
-        "suiv": "Suiv. →",
-        "lignee": "Lignée :",
-        "plan-semis": "Plan de Semis",
-        "rep": "Répétition :",
-        "menus": "► MENUS (Ouvrir/Fermer)",
-        "menus-close": "▼ MENUS (Fermer)",
-        "menus-open": "► MENUS (Ouvrir)",
-        "not-stade": "Stade",
-        "not-flo": "Floraison",
-        "not-receptivite": "Récept.",
-        "receptivite-label": "Réceptivité (Nb) :",
-        "not-prlvmt": "Prélèvement",
-        "not-visuelle": "Visuelle",
-        "not-phyto": "Phyto",
-        "not-diverses": "Diverses",
-        "stade-bbch": "Stade (BBCH) :",
-        "taux-flo": "Taux de floraison (%) ",
-        "prelevements": "Prélèvements / Échantillons",
-        "code": "Code :",
-        "impact-phyto": "Impact Phyto (1-9) ",
-        "ajouter-ligne": "+ Ajouter ligne",
-        "observations": "Observations :",
-        "enregistrer": "Enregistrer",
-        "enregistrer-suivant": "Enr. Suiv. →",
-        "enregistrer-prec": "← Enr. Préc.",
-        "derniers-enregistrements": "Derniers enregistrements",
-        "th-essai": "Essai",
-        "th-parc": "Parc.",
-        "th-rep": "Rép.",
-        "th-code": "Code Éch.",
-        "th-stade": "Stade",
-        "th-flo": "Flo%",
-        "th-phyto": "Phyto",
-        "th-act": "Act.",
-        "choix-langue": "Langue :",
-        "changer-essai": "Changer d'essai",
-        "reset-donnees": "Reset Données Locales",
-        "date-obs": "Date Obs :",
-        "heure-obs": "Heure :",
-        "meteo": "Météo (Condition) :",
-        "meteo-soleil": "Soleil",
-        "meteo-eclaircies": "Éclaircies",
-        "meteo-nuageux": "Nuageux",
-        "meteo-couvert": "Couvert",
-        "meteo-vent": "Vent",
-        "meteo-pluie": "Pluie",
-        "telecharger-donnees": "Télécharger CSV Données",
-        "h2-bbch": "Stades BBCH",
-        "h2-plan": "Plan de Semis",
-        "valider-parcelle-plan": "Valider la parcelle",
-        "prompt-title-simple": "Titre de la notation :",
-        "alert-choix-essai": "Veuillez choisir un essai",
-        "alert-valider-parcelle": "Veuillez d'abord valider la parcelle",
-        "alert-select-parcelle": "Sélectionnez une parcelle",
-        "alert-reset": "SÉCURITÉ : Un export CSV va être téléchargé. Effacer ensuite toutes les observations ?",
-        "alert-no-data": "Aucune donnée à effacer.",
-        "alert-no-plan": "Pas de plan défini pour cet essai",
-        "alert-delete-line": "Supprimer cette ligne ?",
-        "alert-rien": "Aucune donnée à exporter",
-        "btn-info": "Info",
-        "btn-cancel": "Annuler",
-        "label-trial-select": "-- Choisir --",
-        "placeholder-aaa": "ABC",
-        "unknown-variety": "INCONNUE",
-
-        // --- Espèces ---
-        "Mais": "Maïs",
-        "Tournesol": "Tournesol",
-        "Colza": "Colza",
-        "Soja": "Soja",
-        "Sorgho": "Sorgho"
+        "title": "Notations", "choix-essai": "Choix de l'essai :", "notateur": "Votre Nom / Notateur :", "notateur-placeholder": "Nom...", "confirmer": "Confirmer",
+        "tab-Note": "Note", "tab-Configuration": "Configuration", "num-parcelle": "Numéro de parcelle", "mode": "Mode :", "prec": "← Préc.", "valider": "Valider Parcelle",
+        "suiv": "Suiv. →", "lignee": "Lignée :", "plan-semis": "Plan de Semis", "rep": "Répétition :", "menus": "► MENUS (Ouvrir/Fermer)", "menus-close": "▼ MENUS (Fermer)", "menus-open": "► MENUS (Ouvrir)",
+        "not-stade": "Stade", "not-flo": "Floraison", "not-receptivite": "Récept.", "receptivite-label": "Réceptivité (Nb) :", "not-prlvmt": "Prélèvement", "not-visuelle": "Visuelle", "not-phyto": "Phyto", "not-diverses": "Diverses",
+        "stade-bbch": "Stade (BBCH) :", "taux-flo": "Taux de floraison (%) ", "prelevements": "Prélèvements / Échantillons", "code": "Code :", "impact-phyto": "Impact Phyto (1-9) ",
+        "ajouter-ligne": "+ Ajouter ligne", "observations": "Observations :", "enregistrer": "Enregistrer", "enregistrer-suivant": "Enr. Suiv. →", "enregistrer-prec": "← Enr. Préc.",
+        "derniers-enregistrements": "Derniers enregistrements", "th-essai": "Essai", "th-parc": "Parc.", "th-rep": "Rép.", "th-code": "Code Éch.", "th-stade": "Stade", "th-flo": "Flo%", "th-phyto": "Phyto", "th-act": "Act.",
+        "choix-langue": "Langue :", "changer-essai": "Changer d'essai", "reset-donnees": "Reset Données Locales", "date-obs": "Date Obs :", "heure-obs": "Heure :",
+        "meteo": "Météo (Condition) :", "meteo-soleil": "Soleil", "meteo-eclaircies": "Éclaircies", "meteo-nuageux": "Nuageux", "meteo-couvert": "Couvert", "meteo-vent": "Vent", "meteo-pluie": "Pluie",
+        "telecharger-donnees": "Télécharger CSV Données", "h2-bbch": "Stades BBCH", "h2-plan": "Plan de Semis", "valider-parcelle-plan": "Valider la parcelle", "prompt-title-simple": "Titre de la notation :",
+        "alert-choix-essai": "Veuillez choisir un essai", "alert-valider-parcelle": "Veuillez d'abord valider la parcelle", "alert-select-parcelle": "Sélectionnez une parcelle",
+        "alert-reset": "SÉCURITÉ : Un export CSV va être téléchargé. Effacer ensuite toutes les observations ?", "alert-no-data": "Aucune donnée à effacer.", "alert-no-plan": "Pas de plan défini pour cet essai",
+        "alert-delete-line": "Supprimer cette ligne ?", "alert-suppr-config": "Supprimer ce type de notation ?", "alert-rien": "Aucune donnée à exporter", "btn-info": "Info", "btn-cancel": "Annuler", "label-trial-select": "-- Choisir --", "placeholder-aaa": "ABC", "unknown-variety": "INCONNUE",
+        "Mais": "Maïs", "Tournesol": "Tournesol", "Colza": "Colza", "Soja": "Soja", "Sorgho": "Sorgho",
+        "label-import": "Import Données Externes (Session uniquement) :", "desc-import": "Le fichier doit être un CSV au format Notea (séparateur point-virgule). Utile pour le mode interactif du plan de semis.",
+        "avancement-hachure": "Avancement (Hachuré) :", "interactif": "INTERACTIF", "donnee": "Donnée :", "filter-notateur": "Notateur :", "jours-max": "Jours max (Hier: 1) :", "option-tous": "Tous",
+        "alert-import-success": "Données externes chargées avec succès ! ({n} lignes).", "alert-import-empty": "Erreur: Aucune donnée trouvée.", "alert-import-error": "Erreur lecture CSV.", "alert-voice-error": "La reconnaissance vocale n'est pas supportée par ce navigateur.",
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (JJ/MM)", "btn-choice-scale": "1-9 (Échelle)"
     },
     en: {
-        "title": "Notes",
-        "choix-essai": "Trial Choice:",
-        "notateur": "Your Name / Scorer:",
-        "notateur-placeholder": "Name...",
-        "confirmer": "Confirm",
-        "tab-Note": "Note",
-        "tab-Configuration": "Setup",
-        "num-parcelle": "Plot Number",
-        "mode": "Mode:",
-        "prec": "← Prev.",
-        "valider": "Validate Plot",
-        "suiv": "Next →",
-        "lignee": "Line:",
-        "plan-semis": "Planting Plan",
-        "rep": "Repetition:",
-        "menus": "► MENUS (Open/Close)",
-        "menus-close": "▼ MENUS (Close)",
-        "menus-open": "► MENUS (Open)",
-        "not-stade": "Stage",
-        "not-flo": "Bloom",
-        "not-receptivite": "Recept.",
-        "receptivite-label": "Receptivity (Nb):",
-        "not-prlvmt": "Sampling",
-        "not-visuelle": "Visual",
-        "not-phyto": "Phyto",
-        "not-diverses": "Misc.",
-        "stade-bbch": "Stage (BBCH):",
-        "taux-flo": "Bloom Rate (%) ",
-        "prelevements": "Sampling / Samples",
-        "code": "Code:",
-        "impact-phyto": "Phyto Impact (1-9) ",
-        "ajouter-ligne": "+ Add line",
-        "observations": "Observations:",
-        "enregistrer": "Save",
-        "enregistrer-suivant": "Save Next →",
-        "enregistrer-prec": "← Save Prev.",
-        "derniers-enregistrements": "Recent Records",
-        "th-essai": "Trial",
-        "th-parc": "Plot",
-        "th-rep": "Rep.",
-        "th-code": "Sample Code",
-        "th-stade": "Stage",
-        "th-flo": "Bloom%",
-        "th-phyto": "Phyto",
-        "th-act": "Act.",
-        "choix-langue": "Language:",
-        "changer-essai": "Change Trial",
-        "reset-donnees": "Reset Local Data",
-        "date-obs": "Date:",
-        "heure-obs": "Time:",
-        "meteo": "Weather:",
-        "meteo-soleil": "Sunny",
-        "meteo-eclaircies": "Partly Cloudy",
-        "meteo-nuageux": "Cloudy",
-        "meteo-couvert": "Overcast",
-        "meteo-vent": "Windy",
-        "meteo-pluie": "Rainy",
-        "telecharger-donnees": "Download CSV Data",
-        "h2-bbch": "BBCH Stages",
-        "h2-plan": "Planting Plan",
-        "valider-parcelle-plan": "Validate Plot",
-        "prompt-title-simple": "Notation Title:",
-        "alert-choix-essai": "Please choose a trial",
-        "alert-valider-parcelle": "Please validate the plot first",
-        "alert-select-parcelle": "Select a plot",
-        "alert-reset": "SECURITY: CSV will be downloaded. Clear all local data?",
-        "alert-no-data": "No data to clear.",
-        "alert-no-plan": "No plan defined for this trial",
-        "alert-delete-line": "Delete this record?",
-        "alert-rien": "No data to export",
-        "btn-info": "Info",
-        "btn-cancel": "Cancel",
-        "label-trial-select": "-- Select --",
-        "placeholder-aaa": "ABC",
-        "unknown-variety": "UNKNOWN",
-
-        // --- Species ---
-        "Mais": "Corn",
-        "Tournesol": "Sunflower",
-        "Colza": "Rapeseed",
-        "Soja": "Soybean",
-        "Sorgho": "Sorghum"
+        "title": "Notes", "choix-essai": "Trial Choice:", "notateur": "Your Name / Scorer:", "notateur-placeholder": "Name...", "confirmer": "Confirm",
+        "tab-Note": "Note", "tab-Configuration": "Setup", "num-parcelle": "Plot Number", "mode": "Mode:", "prec": "← Prev.", "valider": "Validate Plot",
+        "suiv": "Next →", "lignee": "Line:", "plan-semis": "Planting Plan", "rep": "Repetition:", "menus": "► MENUS (Open/Close)", "menus-close": "▼ MENUS (Close)", "menus-open": "► MENUS (Open)",
+        "not-stade": "Stage", "not-flo": "Bloom", "not-receptivite": "Recept.", "receptivite-label": "Receptivity (Nb):", "not-prlvmt": "Sampling", "not-visuelle": "Visual", "not-phyto": "Phyto", "not-diverses": "Misc.",
+        "stade-bbch": "Stage (BBCH):", "taux-flo": "Bloom Rate (%) ", "prelevements": "Sampling / Samples", "code": "Code:", "impact-phyto": "Phyto Impact (1-9) ",
+        "ajouter-ligne": "+ Add line", "observations": "Observations:", "enregistrer": "Save", "enregistrer-suivant": "Save Next →", "enregistrer-prec": "← Save Prev.",
+        "derniers-enregistrements": "Recent Records", "th-essai": "Trial", "th-parc": "Plot", "th-rep": "Rep.", "th-code": "Sample Code", "th-stade": "Stage", "th-flo": "Bloom%", "th-phyto": "Phyto", "th-act": "Act.",
+        "choix-langue": "Language:", "changer-essai": "Change Trial", "reset-donnees": "Reset Local Data", "date-obs": "Date:", "heure-obs": "Time:",
+        "meteo": "Weather:", "meteo-soleil": "Sunny", "meteo-eclaircies": "Partly Cloudy", "meteo-nuageux": "Cloudy", "meteo-couvert": "Overcast", "meteo-vent": "Windy", "meteo-pluie": "Rainy",
+        "telecharger-donnees": "Download CSV Data", "h2-bbch": "BBCH Stages", "h2-plan": "Planting Plan", "valider-parcelle-plan": "Validate Plot", "prompt-title-simple": "Notation Title:",
+        "alert-choix-essai": "Please choose a trial", "alert-valider-parcelle": "Please validate the plot first", "alert-select-parcelle": "Select a plot",
+        "alert-reset": "SECURITY: CSV will be downloaded. Clear all local data?", "alert-no-data": "No data to clear.", "alert-no-plan": "No plan defined for this trial",
+        "alert-delete-line": "Delete this record?", "alert-suppr-config": "Delete this notation type?", "alert-rien": "No data to export", "btn-info": "Info", "btn-cancel": "Cancel", "label-trial-select": "-- Select --", "placeholder-aaa": "ABC", "unknown-variety": "UNKNOWN",
+        "Mais": "Corn", "Tournesol": "Sunflower", "Colza": "Rapeseed", "Soja": "Soybean", "Sorgho": "Sorghum",
+        "label-import": "External Data Import (Session only):", "desc-import": "File must be CSV in Notea format (semicolon separator). Useful for interactive sowing plan mode.",
+        "avancement-hachure": "Progress (Hatched):", "interactif": "INTERACTIVE", "donnee": "Data:", "filter-notateur": "Scorer:", "jours-max": "Max Days (Yest: 1):", "option-tous": "All",
+        "alert-import-success": "External data loaded successfully! ({n} lines).", "alert-import-empty": "Error: No data found.", "alert-import-error": "Error reading CSV.", "alert-voice-error": "Voice recognition not supported by this browser.",
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (DD/MM)", "btn-choice-scale": "1-9 (Scale)"
     },
     es: {
-        "title": "Notas",
-        "choix-essai": "Elegir Ensayo:",
-        "notateur": "Su Nombre / Anotador:",
-        "notateur-placeholder": "Nombre...",
-        "confirmer": "Confirmar",
-        "tab-Note": "Nota",
-        "tab-Configuration": "Configuración",
-        "num-parcelle": "Número Parcela",
-        "mode": "Modo:",
-        "prec": "← Ant.",
-        "valider": "Validar Parcela",
-        "suiv": "Sig. →",
-        "lignee": "Línea:",
-        "plan-semis": "Plan de Siembra",
-        "rep": "Repetición:",
-        "menus": "► MENÚS (Abrir/Cerrar)",
-        "menus-close": "▼ MENÚS (Cerrar)",
-        "menus-open": "► MENÚS (Abrir)",
-        "not-stade": "Estadio",
-        "not-flo": "Floración",
-        "not-receptivite": "Recept.",
-        "receptivite-label": "Receptividad (Nb):",
-        "not-prlvmt": "Muestreo",
-        "not-visuelle": "Visual",
-        "not-phyto": "Fito",
-        "not-diverses": "Diversas",
-        "stade-bbch": "Estadio (BBCH):",
-        "taux-flo": "Floración (%) ",
-        "prelevements": "Muestreo / Muestras",
-        "code": "Cód:",
-        "impact-phyto": "Impacto Fito (1-9) ",
-        "ajouter-ligne": "+ Añadir línea",
-        "observations": "Observaciones:",
-        "enregistrer": "Guardar",
-        "enregistrer-suivant": "Guardar Sig →",
-        "enregistrer-prec": "← Guardar Ant",
-        "derniers-enregistrements": "Registros",
-        "th-essai": "Ensayo",
-        "th-parc": "Parc.",
-        "th-rep": "Rep.",
-        "th-code": "Cód. Muest.",
-        "th-stade": "Estadio",
-        "th-flo": "Flor%",
-        "th-phyto": "Fito",
-        "th-act": "Act.",
-        "choix-langue": "Idioma:",
-        "changer-essai": "Cambiar Ensayo",
-        "reset-donnees": "Borrar Memoria",
-        "date-obs": "Fecha:",
-        "heure-obs": "Hora:",
-        "meteo": "Clima:",
-        "meteo-soleil": "Sol",
-        "meteo-eclaircies": "Nubes y Claros",
-        "meteo-nuageux": "Nublado",
-        "meteo-couvert": "Cubierto",
-        "meteo-vent": "Viento",
-        "meteo-pluie": "Lluvia",
-        "telecharger-donnees": "Descargar CSV",
-        "h2-bbch": "Estadios BBCH",
-        "h2-plan": "Plan de Siembra",
-        "valider-parcelle-plan": "Validar parcela",
-        "prompt-title-simple": "Título de nota:",
-        "alert-choix-essai": "Por favor elija un ensayo",
-        "alert-valider-parcelle": "Primero valide la parcela",
-        "alert-select-parcelle": "Seleccione una parcela",
-        "alert-reset": "SEGURIDAD: Se descargará un CSV. ¿Borrar todos los datos locales?",
-        "alert-no-data": "Sin datos para borrar.",
-        "alert-no-plan": "Sin plan para este ensayo",
-        "alert-delete-line": "¿Eliminar este registro?",
-        "alert-rien": "Sin datos para exportar",
-        "btn-info": "Info",
-        "btn-cancel": "Cancelar",
-        "label-trial-select": "-- Elegir --",
-        "placeholder-aaa": "ABC",
-        "unknown-variety": "DESCONOCIDA",
-
-        // --- Especies ---
-        "Mais": "Maíz",
-        "Tournesol": "Girasol",
-        "Colza": "Colza",
-        "Soja": "Soja",
-        "Sorgho": "Sorgo"
+        "title": "Notas", "choix-essai": "Elegir Ensayo:", "notateur": "Su Nombre / Anotador:", "notateur-placeholder": "Nombre...", "confirmer": "Confirmar",
+        "tab-Note": "Nota", "tab-Configuration": "Configuración", "num-parcelle": "Número Parcela", "mode": "Modo:", "prec": "← Ant.", "valider": "Validar Parcela",
+        "suiv": "Sig. →", "lignee": "Línea:", "plan-semis": "Plan de Siembra", "rep": "Repetición:", "menus": "► MENÚS (Abrir/Cerrar)", "menus-close": "▼ MENÚS (Cerrar)", "menus-open": "► MENÚS (Abrir)",
+        "not-stade": "Estadio", "not-flo": "Floración", "not-receptivite": "Recept.", "receptivite-label": "Receptividad (Nb):", "not-prlvmt": "Muestreo", "not-visuelle": "Visual", "not-phyto": "Fito", "not-diverses": "Diversas",
+        "stade-bbch": "Estadio (BBCH):", "taux-flo": "Floración (%) ", "prelevements": "Muestreo / Muestras", "code": "Cód:", "impact-phyto": "Impacto Fito (1-9) ",
+        "ajouter-ligne": "+ Añadir línea", "observations": "Observaciones:", "enregistrer": "Guardar", "enregistrer-suivant": "Guardar Sig →", "enregistrer-prec": "← Guardar Ant",
+        "derniers-enregistrements": "Registros", "th-essai": "Ensayo", "th-parc": "Parc.", "th-rep": "Rep.", "th-code": "Cód. Muest.", "th-stade": "Estadio", "th-flo": "Flor%", "th-phyto": "Fito", "th-act": "Act.",
+        "choix-langue": "Idioma:", "changer-essai": "Cambiar Ensayo", "reset-donnees": "Borrar Memoria", "date-obs": "Fecha:", "heure-obs": "Hora:",
+        "meteo": "Clima:", "meteo-soleil": "Sol", "meteo-eclaircies": "Nubes y Claros", "meteo-nuageux": "Nublado", "meteo-couvert": "Cubierto", "meteo-vent": "Viento", "meteo-pluie": "Lluvia",
+        "telecharger-donnees": "Descargar CSV", "h2-bbch": "Estadios BBCH", "h2-plan": "Plan de Siembra", "valider-parcelle-plan": "Validar parcela", "prompt-title-simple": "Título de nota:",
+        "alert-choix-essai": "Por favor elija un ensayo", "alert-valider-parcelle": "Primero valide la parcela", "alert-select-parcelle": "Seleccione una parcela",
+        "alert-reset": "SEGURIDAD: Se descargará un CSV. ¿Borrar todos los datos locales?", "alert-no-data": "Sin datos para borrar.", "alert-no-plan": "Sin plan para este ensayo",
+        "alert-delete-line": "¿Eliminar este registro?", "alert-suppr-config": "¿Eliminar este tipo de nota?", "alert-rien": "Sin datos para exportar", "btn-info": "Info", "btn-cancel": "Cancelar", "label-trial-select": "-- Elegir --", "placeholder-aaa": "ABC", "unknown-variety": "DESCONOCIDA",
+        "Mais": "Maíz", "Tournesol": "Girasol", "Colza": "Colza", "Soja": "Soja", "Sorgho": "Sorgo",
+        "label-import": "Importar Datos Externos (Sesión):", "desc-import": "Archivo CSV formato Notea (separador ;). Útil para modo interactivo del plan.",
+        "avancement-hachure": "Progreso (Rayado):", "interactif": "INTERACTIVO", "donnee": "Dato:", "filter-notateur": "Anotador:", "jours-max": "Días máx (Ayer: 1):", "option-tous": "Todos",
+        "alert-import-success": "¡Datos cargados con éxito! ({n} líneas).", "alert-import-empty": "Error: No se encontraron datos.", "alert-import-error": "Error al leer CSV.", "alert-voice-error": "Reconocimiento de voz no soportado.",
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Fecha (DD/MM)", "btn-choice-scale": "1-9 (Escala)"
     },
     pl: {
         "title": "Notatki", "choix-essai": "Wybór próby:", "notateur": "Twoje Imię:", "notateur-placeholder": "Imię...", "confirmer": "Potwierdź",
-        "tab-Note": "Notatka", "tab-Configuration": "Konfiguracja", "num-parcelle": "Numer poletka", "mode": "Tryb:", "prec": "← Poprz.", "valider": "Zatwierdź poletko", "suiv": "Nast. →",
-        "lignee": "Linia:", "plan-semis": "Plan siewu", "rep": "Powtórzenie:", "menus": "► MENU (Otwórz/Zamknij)", "menus-close": "▼ MENU (Zamknij)", "menus-open": "► MENU (Otwórz)",
+        "tab-Note": "Notatka", "tab-Configuration": "Konfiguracja", "num-parcelle": "Numer poletka", "mode": "Tryb:", "prec": "← Poprz.", "valider": "Zatwierdź poletko",
+        "suiv": "Nast. →", "lignee": "Linia:", "plan-semis": "Plan siewu", "rep": "Powtórzenie:", "menus": "► MENU (Otwórz/Zamknij)", "menus-close": "▼ MENU (Zamknij)", "menus-open": "► MENU (Otwórz)",
         "not-stade": "Faza", "not-flo": "Kwitnienie", "not-receptivite": "Recept.", "receptivite-label": "Receptywność (Nb):", "not-prlvmt": "Próba", "not-visuelle": "Wizualna", "not-phyto": "Fito", "not-diverses": "Różne",
         "stade-bbch": "Faza (BBCH):", "taux-flo": "Stopień kwitnienia (%)", "prelevements": "Pobieranie próbek", "code": "Kod:", "impact-phyto": "Wpływ fito (1-9)",
-        "ajouter-ligne": "+ Dodaj linię", "observations": "Obserwacje:", "enregistrer": "Zapisz", "enregistrer-suivant": "Zap. Nast. →", "enregistrer-prec": "← Zap. Poprz.", "derniers-enregistrements": "Ostatnie rekordy",
-        "th-essai": "Próba", "th-parc": "Pol.", "th-rep": "Powt.", "th-code": "Kod prób.", "th-stade": "Faza", "th-flo": "Kwit%", "th-phyto": "Fito", "th-act": "Akcja",
+        "ajouter-ligne": "+ Dodaj linię", "observations": "Obserwacje:", "enregistrer": "Zapisz", "enregistrer-suivant": "Zap. Nast. →", "enregistrer-prec": "← Zap. Poprz.",
+        "derniers-enregistrements": "Ostatnie rekordy", "th-essai": "Próba", "th-parc": "Pol.", "th-rep": "Powt.", "th-code": "Kod prób.", "th-stade": "Faza", "th-flo": "Kwit%", "th-phyto": "Fito", "th-act": "Akcja",
         "choix-langue": "Język:", "changer-essai": "Zmień próbę", "reset-donnees": "Resetuj dane", "date-obs": "Data:", "heure-obs": "Godzina:",
         "meteo": "Pogoda:", "meteo-soleil": "Słońce", "meteo-eclaircies": "Przejaśnienia", "meteo-nuageux": "Zachmurzenie", "meteo-couvert": "Pochmurno", "meteo-vent": "Wiatr", "meteo-pluie": "Deszcz",
         "telecharger-donnees": "Pobierz dane CSV", "h2-bbch": "Fazy BBCH", "h2-plan": "Plan siewu", "valider-parcelle-plan": "Zatwierdź", "prompt-title-simple": "Tytuł oceny:",
         "alert-choix-essai": "Wybierz próbę", "alert-valider-parcelle": "Najpierw zatwierdź poletko", "alert-select-parcelle": "Wybierz poletko",
         "alert-reset": "BEZPIECZEŃSTWO: Plik CSV zostanie pobrany. Czy usunąć wszystkie dane lokalne?", "alert-no-data": "Brak danych do usunięcia.", "alert-no-plan": "Brak planu dla tej próby",
-        "alert-delete-line": "Usunąć ten rekord?", "alert-rien": "Brak danych do eksportu", "btn-info": "Info", "btn-cancel": "Anuluj", "label-trial-select": "-- Wybierz --", "placeholder-aaa": "ABC", "unknown-variety": "NIEZNANA",
-        "Mais": "Kukurydza", "Tournesol": "Słonecznik", "Colza": "Rzepak", "Soja": "Soja", "Sorgho": "Sorgo"
+        "alert-delete-line": "Usunąć ten rekord?", "alert-suppr-config": "Usunąć ten typ?", "alert-rien": "Brak danych do eksportu", "btn-info": "Info", "btn-cancel": "Anuluj", "label-trial-select": "-- Wybierz --", "placeholder-aaa": "ABC", "unknown-variety": "NIEZNANA",
+        "Mais": "Kukurydza", "Tournesol": "Słonecznik", "Colza": "Rzepak", "Soja": "Soja", "Sorgho": "Sorgo",
+        "label-import": "Import danych zewn. (Tylko sesja):", "desc-import": "Plik CSV w formacie Notea (średnik). Przydatne do interaktywnego planu.",
+        "avancement-hachure": "Postęp (Zakreskowane):", "interactif": "INTERAKTYWNY", "donnee": "Dane:", "filter-notateur": "Oceniający:", "jours-max": "Max dni (Wczoraj: 1):", "option-tous": "Wszyscy",
+        "alert-import-success": "Dane zewnętrzne załadowane! ({n} linii).", "alert-import-empty": "Błąd: Brak danych.", "alert-import-error": "Błąd odczytu CSV.", "alert-voice-error": "Rozpoznawanie mowy nieobsługiwane.",
+        "btn-choice-num": "123 (Liczba)", "btn-choice-text": "ABC (Tekst)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (DD/MM)", "btn-choice-scale": "1-9 (Skala)"
     },
     ro: {
         "title": "Notații", "choix-essai": "Alegere test:", "notateur": "Numele Tău:", "notateur-placeholder": "Nume...", "confirmer": "Confirmă",
-        "tab-Note": "Notă", "tab-Configuration": "Configurare", "num-parcelle": "Număr parcelă", "mode": "Mod:", "prec": "← Prec.", "valider": "Validează parcela", "suiv": "Urm. →",
-        "lignee": "Linie:", "plan-semis": "Plan semănat", "rep": "Repetiție:", "menus": "► MENIURI (Deschide/Închide)", "menus-close": "▼ MENIURI (Închide)", "menus-open": "► MENIURI (Deschide)",
+        "tab-Note": "Notă", "tab-Configuration": "Configurare", "num-parcelle": "Număr parcelă", "mode": "Mod:", "prec": "← Prec.", "valider": "Validează parcela",
+        "suiv": "Urm. →", "lignee": "Linie:", "plan-semis": "Plan semănat", "rep": "Repetiție:", "menus": "► MENIURI (Deschide/Închide)", "menus-close": "▼ MENIURI (Închide)", "menus-open": "► MENIURI (Deschide)",
         "not-stade": "Stadiu", "not-flo": "Înflorire", "not-receptivite": "Recept.", "receptivite-label": "Receptivitate (Nb):", "not-prlvmt": "Prelevare", "not-visuelle": "Vizuală", "not-phyto": "Fito", "not-diverses": "Diverse",
         "stade-bbch": "Stadiu (BBCH):", "taux-flo": "Rata de înflorire (%)", "prelevements": "Prelevări / Probe", "code": "Cod:", "impact-phyto": "Impact Fito (1-9)",
-        "ajouter-ligne": "+ Adaugă linie", "observations": "Observații:", "enregistrer": "Salvează", "enregistrer-suivant": "Salv. Urm. →", "enregistrer-prec": "← Salv. Prec.", "derniers-enregistrements": "Ultimele înregistrări",
-        "th-essai": "Test", "th-parc": "Parc.", "th-rep": "Rep.", "th-code": "Cod probă", "th-stade": "Stadiu", "th-flo": "Înfl.%", "th-phyto": "Fito", "th-act": "Act.",
+        "ajouter-ligne": "+ Adaugă linie", "observations": "Observații:", "enregistrer": "Salvează", "enregistrer-suivant": "Salv. Urm. →", "enregistrer-prec": "← Salv. Prec.",
+        "derniers-enregistrements": "Ultimele înregistrări", "th-essai": "Test", "th-parc": "Parc.", "th-rep": "Rep.", "th-code": "Cod probă", "th-stade": "Stadiu", "th-flo": "Înfl.%", "th-phyto": "Fito", "th-act": "Act.",
         "choix-langue": "Limbă:", "changer-essai": "Schimbă testul", "reset-donnees": "Resetează datele", "date-obs": "Data:", "heure-obs": "Ora:",
         "meteo": "Meteo:", "meteo-soleil": "Soare", "meteo-eclaircies": "Senin cu nori", "meteo-nuageux": "Noros", "meteo-couvert": "Acoperit", "meteo-vent": "Vânt", "meteo-pluie": "Ploaie",
         "telecharger-donnees": "Descărcați datele CSV", "h2-bbch": "Stadii BBCH", "h2-plan": "Plan semănat", "valider-parcelle-plan": "Validează", "prompt-title-simple": "Titlu notație:",
         "alert-choix-essai": "Vă rugăm să alegeți un test", "alert-valider-parcelle": "Vă rugăm să validați parcela mai întâi", "alert-select-parcelle": "Selectați o parcelă",
         "alert-reset": "SECURITATE: Se va descărca un fișier CSV. Ștergeți apoi toate datele locale?", "alert-no-data": "Nu există date de șters.", "alert-no-plan": "Nu există plan definit pentru acest test",
-        "alert-delete-line": "Ștergeți această linie?", "alert-rien": "Nu există date de exportat", "btn-info": "Info", "btn-cancel": "Anulează", "label-trial-select": "-- Alege --", "placeholder-aaa": "ABC", "unknown-variety": "NECUNOSCUTĂ",
-        "Mais": "Porumb", "Tournesol": "Floarea-soarelui", "Colza": "Rapiță", "Soja": "Soia", "Sorgho": "Sorg"
+        "alert-delete-line": "Ștergeți această linie?", "alert-suppr-config": "Ștergeți acest tip?", "alert-rien": "Nu există date de exportat", "btn-info": "Info", "btn-cancel": "Anulează", "label-trial-select": "-- Alege --", "placeholder-aaa": "ABC", "unknown-variety": "NECUNOSCUTĂ",
+        "Mais": "Porumb", "Tournesol": "Floarea-soarelui", "Colza": "Rapiță", "Soja": "Soia", "Sorgho": "Sorg",
+        "label-import": "Import Date Externe (Doar sesiune):", "desc-import": "Fișierul trebuie să fie CSV format Notea (separator punct și virgulă). Util pentru modul interactiv.",
+        "avancement-hachure": "Progres (Hașurat):", "interactif": "INTERACTIV", "donnee": "Date:", "filter-notateur": "Evaluator:", "jours-max": "Zile max (Ieri: 1):", "option-tous": "Toți",
+        "alert-import-success": "Date externe încărcate cu succes! ({n} linii).", "alert-import-empty": "Eroare: Nu s-au găsit date.", "alert-import-error": "Eroare citire CSV.", "alert-voice-error": "Recunoașterea vocală nu este suportată.",
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (ZZ/LL)", "btn-choice-scale": "1-9 (Scară)"
     },
     uk: {
         "title": "Нотатки", "choix-essai": "Вибір випробування:", "notateur": "Ваше Ім'я:", "notateur-placeholder": "Ім'я...", "confirmer": "Підтвердити",
-        "tab-Note": "Нотатка", "tab-Configuration": "Конфігурація", "num-parcelle": "Номер ділянки", "mode": "Режим:", "prec": "← Поп.", "valider": "Підтвердити ділянку", "suiv": "Наст. →",
-        "lignee": "Лінія:", "plan-semis": "План посіву", "rep": "Повтор:", "menus": "► МЕНЮ (Відкрити/Закрити)", "menus-close": "▼ МЕНЮ (Закрити)", "menus-open": "► МЕНЮ (Відкрити)",
+        "tab-Note": "Нотатка", "tab-Configuration": "Конфігурація", "num-parcelle": "Номер ділянки", "mode": "Режим:", "prec": "← Поп.", "valider": "Підтвердити ділянку",
+        "suiv": "Наст. →", "lignee": "Лінія:", "plan-semis": "План посіву", "rep": "Повтор:", "menus": "► МЕНЮ (Відкрити/Закрити)", "menus-close": "▼ МЕНЮ (Закрити)", "menus-open": "► МЕНЮ (Відкрити)",
         "not-stade": "Стадія", "not-flo": "Цвітіння", "not-receptivite": "Сприйн.", "receptivite-label": "Сприйнятливість (Nb):", "not-prlvmt": "Відбір", "not-visuelle": "Візуальна", "not-phyto": "Фіто", "not-diverses": "Різне",
         "stade-bbch": "Стадія (BBCH):", "taux-flo": "Рівень цвітіння (%)", "prelevements": "Зразки / Проби", "code": "Код:", "impact-phyto": "Фіто вплив (1-9)",
-        "ajouter-ligne": "+ Додати рядок", "observations": "Примітки:", "enregistrer": "Зберегти", "enregistrer-suivant": "Збер. Далі →", "enregistrer-prec": "← Збер. Поп.", "derniers-enregistrements": "Останні записи",
-        "th-essai": "Випроб.", "th-parc": "Діл.", "th-rep": "Повт.", "th-code": "Код зразка", "th-stade": "Стадія", "th-flo": "Цвіт%", "th-phyto": "Фіто", "th-act": "Дія",
+        "ajouter-ligne": "+ Додати рядок", "observations": "Примітки:", "enregistrer": "Зберегти", "enregistrer-suivant": "Збер. Далі →", "enregistrer-prec": "← Збер. Поп.",
+        "derniers-enregistrements": "Останні записи", "th-essai": "Випроб.", "th-parc": "Діл.", "th-rep": "Повт.", "th-code": "Код зразка", "th-stade": "Стадія", "th-flo": "Цвіт%", "th-phyto": "Фіто", "th-act": "Дія",
         "choix-langue": "Мова:", "changer-essai": "Змінити випробування", "reset-donnees": "Скинути дані", "date-obs": "Дата:", "heure-obs": "Час:",
         "meteo": "Погода:", "meteo-soleil": "Сонце", "meteo-eclaircies": "Мінлива хмарність", "meteo-nuageux": "Хмарно", "meteo-couvert": "Похмуро", "meteo-vent": "Вітер", "meteo-pluie": "Дощ",
         "telecharger-donnees": "Завантажити CSV дані", "h2-bbch": "Стадії BBCH", "h2-plan": "План посіву", "valider-parcelle-plan": "Підтвердити", "prompt-title-simple": "Заголовок оцінки:",
         "alert-choix-essai": "Будь ласка, виберіть випробування", "alert-valider-parcelle": "Будь ласка, спочатку підтвердіть ділянку", "alert-select-parcelle": "Виберіть ділянку",
         "alert-reset": "БЕЗПЕКА: Буде завантажено CSV-файл. Очистити всі локальні дані?", "alert-no-data": "Немає даних для очищення.", "alert-no-plan": "План для цього випробування не визначений",
-        "alert-delete-line": "Видалити цей запис?", "alert-rien": "Немає даних для експорту", "btn-info": "Інфо", "btn-cancel": "Скасувати", "label-trial-select": "-- Вибрати --", "placeholder-aaa": "ABC", "unknown-variety": "НЕВІДОМО",
-        "Mais": "Кукурудза", "Tournesol": "Соняшник", "Colza": "Ріпак", "Soja": "Соя", "Sorgho": "Сорго"
+        "alert-delete-line": "Видалити цей запис?", "alert-suppr-config": "Видалити цей тип?", "alert-rien": "Немає даних для експорту", "btn-info": "Інфо", "btn-cancel": "Скасувати", "label-trial-select": "-- Вибрати --", "placeholder-aaa": "ABC", "unknown-variety": "НЕВІДОМО",
+        "Mais": "Кукурудза", "Tournesol": "Соняшник", "Colza": "Ріпак", "Soja": "Соя", "Sorgho": "Сорго",
+        "label-import": "Імпорт зовн. даних (Тільки сесія):", "desc-import": "Файл має бути CSV у форматі Notea (роздільник крапка з комою). Для інтерактивного плану.",
+        "avancement-hachure": "Прогрес (Заштриховано):", "interactif": "ІНТЕРАКТИВ", "donnee": "Дані:", "filter-notateur": "Оцінювач:", "jours-max": "Макс днів (Вчора: 1):", "option-tous": "Всі",
+        "alert-import-success": "Зовнішні дані завантажено! ({n} рядків).", "alert-import-empty": "Помилка: Дані не знайдено.", "alert-import-error": "Помилка читання CSV.", "alert-voice-error": "Розпізнавання голосу не підтримується.",
+        "btn-choice-num": "123 (Число)", "btn-choice-text": "ABC (Текст)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Дата (ДД/ММ)", "btn-choice-scale": "1-9 (Шкала)"
     }
 };
 
     function applyTranslations(lang) {
+        if(!translations[lang]) lang = 'fr';
         document.querySelectorAll("[data-i18n]").forEach(el => {
             const key = el.getAttribute("data-i18n");
             if (translations[lang][key]) el.innerHTML = translations[lang][key];
@@ -649,10 +573,11 @@ html {
 3,LID PANDORE,Test,Sorgho,"41.75,-0.79",3,1,M
 4,ISIDOR,Test,Soja,"43.65,1.65",1,2,F
 5,LID TRETO,Test,Colza,"44.39,1.39",2,2,H
-6,VarTest006,Test,Tournesol,"0.0,0.0",3,2,M
-7,VarTest007,Test,Tournesol,"0.0,0.0",1,3,M
-8,VarTest008,Test,Tournesol,"0.0,0.0",2,3,F
-9,VarTest009,Test,Tournesol,"0.0,0.0",3,3,H
+6,LID 5053L SU,Test,Tournesol,"0.0,0.0",3,2,M
+7,ISIDOR,Test,Soja,"0.0,0.0",1,3,M
+8,MYLADY,Test,Mais,"0.0,0.0",2,3,F
+9,LID TRETO,Test,Colza,"0.0,0.0",3,3,H
+10,LID PANDORE,Test,Sorgho,"41.75,-0.79",5,6,M
 1,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",1,1,H
 2,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",2,1,H
 3,FILL-FILL-TEMOIN,25COL001,Colza,"43.734344, 1.240952",3,1,H
@@ -1241,315 +1166,187 @@ html {
 586,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,6,H
 587,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,6,H
 588,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,6,H
-1,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",1,1,M
-2,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",2,1,M
-3,R12BQ3MI-Influx plenaris-XCLG589630T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,1,M
-4,R13SG1MJO-Influx plenaris-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1,M
-5,R13SG1MJO-Influx plenaris+Lalrise-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1,M
-6,R13SG1MJO-Influx plenaris-F0440F606583T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,1,M
-7,R13SG1MJO-Influx plenaris-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1,M
-8,R13SG1MJO-Influx plenaris+Lalrise-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1,M
-9,R14WD1M-Influx plenaris-XRCH24MA82335T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,1,M
-10,R16DG2MJSO-Influx plenaris-XRCHLMA78119BT0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,1,M
-11,R16DG2MJSO-Influx plenaris-XRCHLMA78119T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,1,M
-12,R21DW2JS-Influx plenaris-F0440F597914T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,1,M
-13,R4NA1MK-Influx plenaris-F0440F610406T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,1,M
-14,R4NA1MK-Influx plenaris-F0440F610791T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,1,M
-15,R4NA1MK-Influx plenaris-XESF601666T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,1,M
-16,R4NO4M-Influx plenaris-XESG559541TT0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,1,M
-17,R4NO4MJ-Influx plenaris-F0440D474497T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,1,M
-18,R469MJKO-Influx plenaris-F0440F597862T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,2,M
-19,R469MJSO-Influx plenaris-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2,M
-20,R469MJSO-Influx plenaris+Lalrise-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2,M
-21,R469MJSO-Influx plenaris-F0440F597559T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,2,M
-22,R469MJSO-Influx plenaris-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2,M
-23,R469MJSO-Influx plenaris+Lalrise-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2,M
-24,R469MJSO-Influx plenaris-F0440F597563T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,2,M
-25,R469MJSO-Influx plenaris-XRCH25MA84934T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,2,M
-26,R4NA1MJ-Influx plenaris-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2,M
-27,R4NA1MJ-Influx plenaris+Lalrise-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2,M
-28,R4NA1MJ-Influx plenaris-XRCHLMA77990T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,2,M
-29,R4NA1MJ-Influx plenaris-XRCHLMA78403T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,2,M
-30,R4NA1MJO-Influx plenaris-F0440F609634T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,2,M
-31,R4NA1MJO-Influx plenaris-XCLG590786T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,2,M
-32,R8035MJ-Influx plenaris-F0440F597569T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,2,M
-33,R8035MJI-Influx plenaris-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2,M
-34,R8035MJI-Influx plenaris+Lalrise-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2,M
-35,R5PE4MS-Influx plenaris-F0440F610782T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,3,M
-36,R5PE4MS-Influx plenaris-F0440G554644T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,3,M
-37,R5PG6MJS-Influx plenaris-F0440F610784T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,3,M
-38,R5PG6MJS-Influx plenaris-F0440G547818T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,3,M
-39,R8035M1JS-Influx plenaris-F0440F597387T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,3,M
-40,R8035M1JS-Influx plenaris-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3,M
-41,R8035M1JS-Influx plenaris+Lalrise-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3,M
-42,R8035M1JS-Influx plenaris-F0440F597390T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,3,M
-43,R8035M1JS-Influx plenaris-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3,M
-44,R8035M1JS-Influx plenaris+Lalrise-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3,M
-45,R8035M1JS-Influx plenaris-XESF598972T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,3,M
-46,R8035M1JS-Influx plenaris-XRCH24MA82418T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,3,M
-47,R890JP-Influx plenaris-F0440D472278T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,3,M
-48,R890JP-Influx plenaris-F0440D472306T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,3,M
-49,R890JP-Influx plenaris-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3,M
-50,R890JP-Influx plenaris+Lalrise-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3,M
-51,SR1087MS-Influx plenaris-XRCHE67458T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,3,M
-52,R16DG2MJSO-Influx plenaris-XRCHLMA78119BT0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,4,M
-53,R16DG2MJSO-Influx plenaris-XRCHLMA78119T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,4,M
-54,R14WD1M-Influx plenaris-XRCH24MA82335T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,4,M
-55,R21DW2JS-Influx plenaris-F0440F597914T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,4,M
-56,R4NA1MK-Influx plenaris-XESF601666T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,4,M
-57,R4NA1MK-Influx plenaris-F0440F610406T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,4,M
-58,R4NO4M-Influx plenaris-XESG559541TT0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,4,M
-59,R4NA1MK-Influx plenaris-F0440F610791T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,4,M
-60,R13SG1MJO-Influx plenaris-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4,M
-61,R13SG1MJO-Influx plenaris+Lalrise-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4,M
-62,R13SG1MJO-Influx plenaris+Lalrise-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4,M
-63,R13SG1MJO-Influx plenaris-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4,M
-64,R13SG1MJO-Influx plenaris-F0440F606583T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,4,M
-65,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4,M
-66,R12BQ3MI-Influx plenaris+Lalrise-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4,M
-67,R12BQ3MI-Influx plenaris-XCLG589630T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,4,M
-68,R4NO4MJ-Influx plenaris-F0440D474497T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,4,M
-69,R469MJSO-Influx plenaris-F0440F597559T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,5,M
-70,R469MJSO-Influx plenaris-F0440F597563T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,5,M
-71,R469MJKO-Influx plenaris-F0440F597862T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,5,M
-72,R469MJSO-Influx plenaris-XRCH25MA84934T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,5,M
-73,R469MJSO-Influx plenaris-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5,M
-74,R469MJSO-Influx plenaris+Lalrise-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5,M
-75,R469MJSO-Influx plenaris+Lalrise-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5,M
-76,R469MJSO-Influx plenaris-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5,M
-77,R4NA1MJ-Influx plenaris+Lalrise-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5,M
-78,R4NA1MJ-Influx plenaris-F0440L419760T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5,M
-79,R8035MJI-Influx plenaris+Lalrise-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5,M
-80,R8035MJI-Influx plenaris-XRCHLMA78116T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5,M
-81,R8035MJ-Influx plenaris-F0440F597569T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,5,M
-82,R4NA1MJO-Influx plenaris-XCLG590786T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,5,M
-83,R4NA1MJ-Influx plenaris-XRCHLMA78403T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,5,M
-84,R4NA1MJ-Influx plenaris-XRCHLMA77990T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,5,M
-85,R4NA1MJO-Influx plenaris-F0440F609634T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,5,M
-86,R890JP-Influx plenaris-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6,M
-87,R890JP-Influx plenaris+Lalrise-F0440D495654T0,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6,M
-88,R8035M1JS-Influx plenaris-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6,M
-89,R8035M1JS-Influx plenaris+Lalrise-F0440F597388T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6,M
-90,R8035M1JS-Influx plenaris-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6,M
-91,R8035M1JS-Influx plenaris+Lalrise-F0440F597568T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6,M
-92,R8035M1JS-Influx plenaris-XESF598972T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,6,M
-93,R8035M1JS-Influx plenaris-F0440F597390T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,6,M
-94,R8035M1JS-Influx plenaris-XRCH24MA82418T0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,6,M
-95,R8035M1JS-Influx plenaris-F0440F597387T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,6,M
-96,R5PG6MJS-Influx plenaris-F0440F610784T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,6,M
-97,R5PG6MJS-Influx plenaris-F0440G547818T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,6,M
-98,R5PE4MS-Influx plenaris-F0440F610782T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,6,M
-99,SR1087MS-Influx plenaris-XRCHE67458T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,6,M
-100,R890JP-Influx plenaris-F0440D472306T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,6,M
-101,R890JP-Influx plenaris-F0440D472278T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,6,M
-102,R5PE4MS-Influx plenaris-F0440G554644T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,6,M
-103,R12BQ3MI-Influx plenaris-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7,M
-104,R12BQ3MI-Influx plenaris+Lalrise-F0440F597857T0A,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7,M
-105,R12BQ3MI-Influx plenaris-XCLG589630T0,2026Vigor test Spain,Tournesol,"0.0,0.0",3,7,M
-106,R13SG1MJO-Influx plenaris-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7,M
-107,R13SG1MJO-Influx plenaris+Lalrise-F0440F597555T0,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7,M
-108,R13SG1MJO-Influx plenaris-F0440F606583T0,2026Vigor test Spain,Tournesol,"0.0,0.0",6,7,M
-109,R13SG1MJO-Influx plenaris-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7,M
-110,R13SG1MJO-Influx plenaris+Lalrise-F0440G531148T0,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7,M
-111,R16DG2MJSO-Influx plenaris-XRCHLMA78119BT0,2026Vigor test Spain,Tournesol,"0.0,0.0",9,7,M
-112,R16DG2MJSO-Influx plenaris-XRCHLMA78119T0,2026Vigor test Spain,Tournesol,"0.0,0.0",10,7,M
-113,R469MJKO-Influx plenaris-F0440F597862T0,2026Vigor test Spain,Tournesol,"0.0,0.0",11,7,M
-114,R469MJSO-Influx plenaris-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7,M
-115,R469MJSO-Influx plenaris+Lalrise-F0440F597558T0,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7,M
-116,R469MJSO-Influx plenaris-F0440F597559T0,2026Vigor test Spain,Tournesol,"0.0,0.0",14,7,M
-117,R469MJSO-Influx plenaris-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7,M
-118,R469MJSO-Influx plenaris+Lalrise-F0440F597560T0,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7,M
-119,R469MJSO-Influx plenaris-F0440F597563T0,2026Vigor test Spain,Tournesol,"0.0,0.0",17,7,M
-120,R469MJSO-Influx plenaris-XRCH25MA84934T0,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7,M
+1,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,1,M
+2,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,1,M
+3,R12BQ3MI-Influx-plenaris-XCLG589630T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,1,M
+4,R13SG1MJO-Influx-plenaris-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1,M
+5,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1,M
+6,R13SG1MJO-Influx-plenaris-F0440F606583T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,1,M
+7,R13SG1MJO-Influx-plenaris-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1,M
+8,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1,M
+9,R14WD1M-Influx-plenaris-XRCH24MA82335T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,1,M
+10,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,1,M
+11,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,1,M
+12,R21DW2JS-Influx-plenaris-F0440F597914T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,1,M
+13,R4NA1MK-Influx-plenaris-F0440F610406T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,1,M
+14,R4NA1MK-Influx-plenaris-F0440F610791T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,1,M
+15,R4NA1MK-Influx-plenaris-XESF601666T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,1,M
+16,R4NO4M-Influx-plenaris-XESG559541TT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,1,M
+17,R4NO4MJ-Influx-plenaris-F0440D474497T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,1,M
+18,R469MJKO-Influx-plenaris-F0440F597862T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,2,M
+19,R469MJSO-Influx-plenaris-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2,M
+20,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2,M
+21,R469MJSO-Influx-plenaris-F0440F597559T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,2,M
+22,R469MJSO-Influx-plenaris-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2,M
+23,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2,M
+24,R469MJSO-Influx-plenaris-F0440F597563T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,2,M
+25,R469MJSO-Influx-plenaris-XRCH25MA84934T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,2,M
+26,R4NA1MJ-Influx-plenaris-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2,M
+27,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2,M
+28,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,2,M
+29,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,2,M
+30,R4NA1MJO-Influx-plenaris-F0440F609634T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,2,M
+31,R4NA1MJO-Influx-plenaris-XCLG590786T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,2,M
+32,R8035MJ-Influx-plenaris-F0440F597569T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,2,M
+33,R8035MJI-Influx-plenaris-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2,M
+34,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2,M
+35,R5PE4MS-Influx-plenaris-F0440F610782T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,3,M
+36,R5PE4MS-Influx-plenaris-F0440G554644T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,3,M
+37,R5PG6MJS-Influx-plenaris-F0440F610784T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,3,M
+38,R5PG6MJS-Influx-plenaris-F0440G547818T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,3,M
+39,R8035M1JS-Influx-plenaris-F0440F597387T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,3,M
+40,R8035M1JS-Influx-plenaris-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3,M
+41,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3,M
+42,R8035M1JS-Influx-plenaris-F0440F597390T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,3,M
+43,R8035M1JS-Influx-plenaris-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3,M
+44,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3,M
+45,R8035M1JS-Influx-plenaris-XESF598972T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,3,M
+46,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,3,M
+47,R890JP-Influx-plenaris-F0440D472278T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,3,M
+48,R890JP-Influx-plenaris-F0440D472306T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,3,M
+49,R890JP-Influx-plenaris-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3,M
+50,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3,M
+51,SR1087MS-Influx-plenaris-XRCHE67458T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,3,M
+52,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,4,M
+53,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,4,M
+54,R14WD1M-Influx-plenaris-XRCH24MA82335T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,4,M
+55,R21DW2JS-Influx-plenaris-F0440F597914T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,4,M
+56,R4NA1MK-Influx-plenaris-XESF601666T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,4,M
+57,R4NA1MK-Influx-plenaris-F0440F610406T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,4,M
+58,R4NO4M-Influx-plenaris-XESG559541TT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,4,M
+59,R4NA1MK-Influx-plenaris-F0440F610791T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,4,M
+60,R13SG1MJO-Influx-plenaris-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4,M
+61,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4,M
+62,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4,M
+63,R13SG1MJO-Influx-plenaris-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4,M
+64,R13SG1MJO-Influx-plenaris-F0440F606583T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,4,M
+65,R12BQ3MI-Influx-plenaris-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4,M
+66,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4,M
+67,R12BQ3MI-Influx-plenaris-XCLG589630T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,4,M
+68,R4NO4MJ-Influx-plenaris-F0440D474497T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,4,M
+69,R469MJSO-Influx-plenaris-F0440F597559T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,5,M
+70,R469MJSO-Influx-plenaris-F0440F597563T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,5,M
+71,R469MJKO-Influx-plenaris-F0440F597862T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,5,M
+72,R469MJSO-Influx-plenaris-XRCH25MA84934T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,5,M
+73,R469MJSO-Influx-plenaris-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5,M
+74,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5,M
+75,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5,M
+76,R469MJSO-Influx-plenaris-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5,M
+77,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5,M
+78,R4NA1MJ-Influx-plenaris-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5,M
+79,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5,M
+80,R8035MJI-Influx-plenaris-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5,M
+81,R8035MJ-Influx-plenaris-F0440F597569T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,5,M
+82,R4NA1MJO-Influx-plenaris-XCLG590786T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,5,M
+83,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,5,M
+84,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,5,M
+85,R4NA1MJO-Influx-plenaris-F0440F609634T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,5,M
+86,R890JP-Influx-plenaris-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6,M
+87,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6,M
+88,R8035M1JS-Influx-plenaris-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6,M
+89,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6,M
+90,R8035M1JS-Influx-plenaris-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6,M
+91,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6,M
+92,R8035M1JS-Influx-plenaris-XESF598972T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,6,M
+93,R8035M1JS-Influx-plenaris-F0440F597390T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,6,M
+94,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,6,M
+95,R8035M1JS-Influx-plenaris-F0440F597387T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,6,M
+96,R5PG6MJS-Influx-plenaris-F0440F610784T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,6,M
+97,R5PG6MJS-Influx-plenaris-F0440G547818T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,6,M
+98,R5PE4MS-Influx-plenaris-F0440F610782T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,6,M
+99,SR1087MS-Influx-plenaris-XRCHE67458T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,6,M
+100,R890JP-Influx-plenaris-F0440D472306T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,6,M
+101,R890JP-Influx-plenaris-F0440D472278T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,6,M
+102,R5PE4MS-Influx-plenaris-F0440G554644T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,6,M
+103,R12BQ3MI-Influx-plenaris-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7,M
+104,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7,M
+105,R12BQ3MI-Influx-plenaris-XCLG589630T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",3,7,M
+106,R13SG1MJO-Influx-plenaris-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7,M
+107,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7,M
+108,R13SG1MJO-Influx-plenaris-F0440F606583T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",6,7,M
+109,R13SG1MJO-Influx-plenaris-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7,M
+110,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7,M
+111,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",9,7,M
+112,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",10,7,M
+113,R469MJKO-Influx-plenaris-F0440F597862T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",11,7,M
+114,R469MJSO-Influx-plenaris-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7,M
+115,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7,M
+116,R469MJSO-Influx-plenaris-F0440F597559T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",14,7,M
+117,R469MJSO-Influx-plenaris-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7,M
+118,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7,M
+119,R469MJSO-Influx-plenaris-F0440F597563T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",17,7,M
+120,R469MJSO-Influx-plenaris-XRCH25MA84934T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7,M
 `
 
    const bbchInfoData = {
     fr: {
-        "Maïs": [
-            { code: "00-09", desc: "Germination & Levée" },
-            { code: "10-19", desc: "Développement des feuilles" },
-            { code: "30-39", desc: "Élongation de la tige" },
-            { code: "51-59", desc: "Apparition de l'inflorescence" },
-            { code: "61-69", desc: "Floraison" },
-            { code: "71-79", desc: "Développement des grains" },
-            { code: "81-89", desc: "Maturation" },
-            { code: "91-99", desc: "Sénescence" }
-        ],
-        "Tournesol": [
-            { code: "00-09", desc: "Germination & Levée" },
-            { code: "10-19", desc: "Développement des feuilles" },
-            { code: "30-39", desc: "Élongation de la tige" },
-            { code: "51-59", desc: "Apparition du bouton floral" },
-            { code: "61-69", desc: "Floraison" },
-            { code: "71-79", desc: "Développement des fruits" },
-            { code: "81-89", desc: "Maturation" }
-        ],
-        "Colza": [
-            { code: "00-09", desc: "Germination & Levée" },
-            { code: "10-19", desc: "Développement des feuilles" },
-            { code: "20-29", desc: "Formation des pousses latérales" },
-            { code: "30-39", desc: "Montaison" },
-            { code: "50-59", desc: "Apparition des boutons" },
-            { code: "60-69", desc: "Floraison" },
-            { code: "71-79", desc: "Développement des siliques" },
-            { code: "81-89", desc: "Maturation" }
-        ],
-        "Soja": [
-            { code: "00-09", desc: "Germination & Levée" },
-            { code: "10-19", desc: "Développement des feuilles" },
-            { code: "30-39", desc: "Ramification" },
-            { code: "51-59", desc: "Inflorescence" },
-            { code: "60-69", desc: "Floraison" },
-            { code: "71-79", desc: "Formation des gousses" },
-            { code: "81-89", desc: "Maturation" }
-        ],
-        "Sorgho": [
-            { code: "00-09", desc: "Germination & Levée" },
-            { code: "10-19", desc: "Développement des feuilles" },
-            { code: "20-29", desc: "Tallage" },
-            { code: "30-39", desc: "Élongation de la tige" },
-            { code: "51-59", desc: "Épiaison" },
-            { code: "61-69", desc: "Floraison" },
-            { code: "71-79", desc: "Développement des grains" },
-            { code: "81-89", desc: "Maturation" }
-        ]
+        "Maïs": [{ code: "00-09", desc: "Germination & Levée" }, { code: "10-19", desc: "Développement des feuilles" }, { code: "30-39", desc: "Élongation de la tige" }, { code: "51-59", desc: "Apparition de l'inflorescence" }, { code: "61-69", desc: "Floraison" }, { code: "71-79", desc: "Développement des grains" }, { code: "81-89", desc: "Maturation" }, { code: "91-99", desc: "Sénescence" }],
+        "Tournesol": [{ code: "00-09", desc: "Germination & Levée" }, { code: "10-19", desc: "Développement des feuilles" }, { code: "30-39", desc: "Élongation de la tige" }, { code: "51-59", desc: "Apparition du bouton floral" }, { code: "61-69", desc: "Floraison" }, { code: "71-79", desc: "Développement des fruits" }, { code: "81-89", desc: "Maturation" }],
+        "Colza": [{ code: "00-09", desc: "Germination & Levée" }, { code: "10-19", desc: "Développement des feuilles" }, { code: "20-29", desc: "Formation des pousses latérales" }, { code: "30-39", desc: "Montaison" }, { code: "50-59", desc: "Apparition des boutons" }, { code: "60-69", desc: "Floraison" }, { code: "71-79", desc: "Développement des siliques" }, { code: "81-89", desc: "Maturation" }],
+        "Soja": [{ code: "00-09", desc: "Germination & Levée" }, { code: "10-19", desc: "Développement des feuilles" }, { code: "30-39", desc: "Ramification" }, { code: "51-59", desc: "Inflorescence" }, { code: "60-69", desc: "Floraison" }, { code: "71-79", desc: "Formation des gousses" }, { code: "81-89", desc: "Maturation" }],
+        "Sorgho": [{ code: "00-09", desc: "Germination & Levée" }, { code: "10-19", desc: "Développement des feuilles" }, { code: "20-29", desc: "Tallage" }, { code: "30-39", desc: "Élongation de la tige" }, { code: "51-59", desc: "Épiaison" }, { code: "61-69", desc: "Floraison" }, { code: "71-79", desc: "Développement des grains" }, { code: "81-89", desc: "Maturation" }]
     },
     en: {
-        "Maïs": [
-            { code: "00-09", desc: "Germination & Emergence" },
-            { code: "10-19", desc: "Leaf development" },
-            { code: "30-39", desc: "Stem elongation" },
-            { code: "51-59", desc: "Inflorescence emergence" },
-            { code: "61-69", desc: "Flowering" },
-            { code: "71-79", desc: "Development of grains" },
-            { code: "81-89", desc: "Ripening" },
-            { code: "91-99", desc: "Senescence" }
-        ],
-        "Tournesol": [
-            { code: "00-09", desc: "Germination & Emergence" },
-            { code: "10-19", desc: "Leaf development" },
-            { code: "30-39", desc: "Stem elongation" },
-            { code: "51-59", desc: "Flower bud development" },
-            { code: "61-69", desc: "Flowering" },
-            { code: "71-79", desc: "Development of fruit" },
-            { code: "81-89", desc: "Ripening" }
-        ],
-        "Colza": [
-            { code: "00-09", desc: "Germination & Emergence" },
-            { code: "10-19", desc: "Leaf development" },
-            { code: "20-29", desc: "Side shoot formation" },
-            { code: "30-39", desc: "Stem elongation" },
-            { code: "50-59", desc: "Budding" },
-            { code: "60-69", desc: "Flowering" },
-            { code: "71-79", desc: "Development of pods" },
-            { code: "81-89", desc: "Ripening" }
-        ],
-        "Soja": [
-            { code: "00-09", desc: "Germination & Emergence" },
-            { code: "10-19", desc: "Leaf development" },
-            { code: "30-39", desc: "Branching" },
-            { code: "51-59", desc: "Inflorescence emergence" },
-            { code: "60-69", desc: "Flowering" },
-            { code: "71-79", desc: "Development of pods" },
-            { code: "81-89", desc: "Ripening" }
-        ],
-        "Sorgho": [
-            { code: "00-09", desc: "Germination & Emergence" },
-            { code: "10-19", desc: "Leaf development" },
-            { code: "20-29", desc: "Tillering" },
-            { code: "30-39", desc: "Stem elongation" },
-            { code: "51-59", desc: "Heading" },
-            { code: "61-69", desc: "Flowering" },
-            { code: "71-79", desc: "Development of grains" },
-            { code: "81-89", desc: "Ripening" }
-        ]
+        "Maïs": [{ code: "00-09", desc: "Germination & Emergence" }, { code: "10-19", desc: "Leaf development" }, { code: "30-39", desc: "Stem elongation" }, { code: "51-59", desc: "Inflorescence emergence" }, { code: "61-69", desc: "Flowering" }, { code: "71-79", desc: "Grain development" }, { code: "81-89", desc: "Ripening" }, { code: "91-99", desc: "Senescence" }],
+        "Tournesol": [{ code: "00-09", desc: "Germination & Emergence" }, { code: "10-19", desc: "Leaf development" }, { code: "30-39", desc: "Stem elongation" }, { code: "51-59", desc: "Bud development" }, { code: "61-69", desc: "Flowering" }, { code: "71-79", desc: "Fruit development" }, { code: "81-89", desc: "Ripening" }],
+        "Colza": [{ code: "00-09", desc: "Germination & Emergence" }, { code: "10-19", desc: "Leaf development" }, { code: "20-29", desc: "Side shoot formation" }, { code: "30-39", desc: "Stem elongation" }, { code: "50-59", desc: "Budding" }, { code: "60-69", desc: "Flowering" }, { code: "71-79", desc: "Pod development" }, { code: "81-89", desc: "Ripening" }],
+        "Soja": [{ code: "00-09", desc: "Germination & Emergence" }, { code: "10-19", desc: "Leaf development" }, { code: "30-39", desc: "Branching" }, { code: "51-59", desc: "Inflorescence emergence" }, { code: "60-69", desc: "Flowering" }, { code: "71-79", desc: "Pod formation" }, { code: "81-89", desc: "Ripening" }],
+        "Sorgho": [{ code: "00-09", desc: "Germination & Emergence" }, { code: "10-19", desc: "Leaf development" }, { code: "20-29", desc: "Tillering" }, { code: "30-39", desc: "Stem elongation" }, { code: "51-59", desc: "Heading" }, { code: "61-69", desc: "Flowering" }, { code: "71-79", desc: "Grain development" }, { code: "81-89", desc: "Ripening" }]
     },
     es: {
-        "Maïs": [
-            { code: "00-09", desc: "Germinación y Emergencia" },
-            { code: "10-19", desc: "Desarrollo de las hojas" },
-            { code: "30-39", desc: "Alargamiento del tallo" },
-            { code: "51-59", desc: "Aparición de la inflorescencia" },
-            { code: "61-69", desc: "Floración" },
-            { code: "71-79", desc: "Desarrollo de granos" },
-            { code: "81-89", desc: "Maduración" },
-            { code: "91-99", desc: "Senescencia" }
-        ],
-        "Tournesol": [
-            { code: "00-09", desc: "Germinación y Emergencia" },
-            { code: "10-19", desc: "Desarrollo de las hojas" },
-            { code: "30-39", desc: "Alargamiento del tallo" },
-            { code: "51-59", desc: "Aparición del botón floral" },
-            { code: "61-69", desc: "Floración" },
-            { code: "71-79", desc: "Desarrollo de los frutos" },
-            { code: "81-89", desc: "Maduración" }
-        ],
-        "Colza": [
-            { code: "00-09", desc: "Germinación y Emergencia" },
-            { code: "10-19", desc: "Desarrollo de las hojas" },
-            { code: "20-29", desc: "Formación de brotes laterales" },
-            { code: "30-39", desc: "Alargamiento del tallo" },
-            { code: "50-59", desc: "Aparición de botones" },
-            { code: "60-69", desc: "Floración" },
-            { code: "71-79", desc: "Desarrollo de las vainas" },
-            { code: "81-89", desc: "Maduración" }
-        ],
-        "Soja": [
-            { code: "00-09", desc: "Germinación y Emergencia" },
-            { code: "10-19", desc: "Desarrollo de las hojas" },
-            { code: "30-39", desc: "Ramificación" },
-            { code: "51-59", desc: "Aparición de la inflorescencia" },
-            { code: "60-69", desc: "Floración" },
-            { code: "71-79", desc: "Desarrollo de las vainas" },
-            { code: "81-89", desc: "Maduración" }
-        ],
-        "Sorgho": [
-            { code: "00-09", desc: "Germinación y Emergencia" },
-            { code: "10-19", desc: "Desarrollo de las hojas" },
-            { code: "20-29", desc: "Ahijamiento" },
-            { code: "30-39", desc: "Alargamiento del tallo" },
-            { code: "51-59", desc: "Espigado" },
-            { code: "61-69", desc: "Floración" },
-            { code: "71-79", desc: "Desarrollo de granos" },
-            { code: "81-89", desc: "Maduración" }
-      ]
+        "Maïs": [{ code: "00-09", desc: "Germinación y Emergencia" }, { code: "10-19", desc: "Desarrollo de hojas" }, { code: "30-39", desc: "Alargamiento del tallo" }, { code: "51-59", desc: "Aparición de inflorescencia" }, { code: "61-69", desc: "Floración" }, { code: "71-79", desc: "Desarrollo de granos" }, { code: "81-89", desc: "Maduración" }, { code: "91-99", desc: "Senescencia" }],
+        "Tournesol": [{ code: "00-09", desc: "Germinación y Emergencia" }, { code: "10-19", desc: "Desarrollo de hojas" }, { code: "30-39", desc: "Alargamiento del tallo" }, { code: "51-59", desc: "Aparición del botón" }, { code: "61-69", desc: "Floración" }, { code: "71-79", desc: "Desarrollo de frutos" }, { code: "81-89", desc: "Maduración" }],
+        "Colza": [{ code: "00-09", desc: "Germinación y Emergencia" }, { code: "10-19", desc: "Desarrollo de hojas" }, { code: "20-29", desc: "Brotes laterales" }, { code: "30-39", desc: "Alargamiento del tallo" }, { code: "50-59", desc: "Aparición de botones" }, { code: "60-69", desc: "Floración" }, { code: "71-79", desc: "Desarrollo de vainas" }, { code: "81-89", desc: "Maduración" }],
+        "Soja": [{ code: "00-09", desc: "Germinación y Emergencia" }, { code: "10-19", desc: "Desarrollo de hojas" }, { code: "30-39", desc: "Ramificación" }, { code: "51-59", desc: "Inflorescencia" }, { code: "60-69", desc: "Floración" }, { code: "71-79", desc: "Formación de vainas" }, { code: "81-89", desc: "Maduración" }],
+        "Sorgho": [{ code: "00-09", desc: "Germinación y Emergencia" }, { code: "10-19", desc: "Desarrollo de hojas" }, { code: "20-29", desc: "Ahijamiento" }, { code: "30-39", desc: "Alargamiento del tallo" }, { code: "51-59", desc: "Espigado" }, { code: "61-69", desc: "Floración" }, { code: "71-79", desc: "Desarrollo de granos" }, { code: "81-89", desc: "Maduración" }]
     },
-  
-pl: {
-            "Maïs": [{ code: "00-09", desc: "Kiełkowanie i wschody" }, { code: "10-19", desc: "Rozwój liści" }, { code: "30-39", desc: "Wydłużanie źdźbła" }, { code: "61-69", desc: "Kwitnienie" }, { code: "81-89", desc: "Dojrzewanie" }],
-            "Tournesol": [{ code: "00-09", desc: "Kiełkowanie" }, { code: "10-19", desc: "Rozwój liści" }, { code: "51-59", desc: "Rozwój pąka" }, { code: "61-69", desc: "Kwitnienie" }],
-            "Colza": [{ code: "10-19", desc: "Rozwój liści" }, { code: "30-39", desc: "Wzrost pędu głównego" }, { code: "50-59", desc: "Pąkowanie" }, { code: "60-69", desc: "Kwitnienie" }],
-            "Soja": [{ code: "10-19", desc: "Rozwój liści" }, { code: "51-59", desc: "Rozwój kwiatostanu" }, { code: "60-69", desc: "Kwitnienie" }],
-            "Sorgho": [{ code: "10-19", desc: "Rozwój liści" }, { code: "51-59", desc: "Kłoszenie" }, { code: "60-69", desc: "Kwitnienie" }]
-        },
-        ro: {
-            "Maïs": [{ code: "00-09", desc: "Germinare și Răsărire" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "61-69", desc: "Înflorire" }, { code: "81-89", desc: "Coacere" }],
-            "Tournesol": [{ code: "00-09", desc: "Germinare" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "51-59", desc: "Apariția butonului floral" }, { code: "61-69", desc: "Înflorire" }],
-            "Colza": [{ code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "50-59", desc: "Apariția butonilor" }, { code: "60-69", desc: "Înflorire" }],
-            "Soja": [{ code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "51-59", desc: "Apariția inflorescenței" }, { code: "60-69", desc: "Înflorire" }],
-            "Sorgho": [{ code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "51-59", desc: "Înspicare" }, { code: "60-69", desc: "Înflorire" }]
-        },
-        uk: {
-            "Maïs": [{ code: "00-09", desc: "Проростання та сходи" }, { code: "10-19", desc: "Розвиток листя" }, { code: "30-39", desc: "Подовження стебла" }, { code: "61-69", desc: "Цвітіння" }, { code: "81-89", desc: "Дозрівання" }],
-            "Tournesol": [{ code: "00-09", desc: "Проростання" }, { code: "10-19", desc: "Розвиток листя" }, { code: "51-59", desc: "Розвиток бутона" }, { code: "61-69", desc: "Цвітіння" }],
-            "Colza": [{ code: "10-19", desc: "Розвиток листя" }, { code: "30-39", desc: "Ріст стебла" }, { code: "50-59", desc: "Бутонізація" }, { code: "60-69", desc: "Цвітіння" }],
-            "Soja": [{ code: "10-19", desc: "Розвиток листя" }, { code: "51-59", desc: "Поява суцвіть" }, { code: "60-69", desc: "Цвітіння" }],
-            "Sorgho": [{ code: "10-19", desc: "Розвиток листя" }, { code: "51-59", desc: "Вихід колосу" }, { code: "60-69", desc: "Цвітіння" }]
-        }
+    pl: {
+        "Maïs": [{ code: "00-09", desc: "Kiełkowanie i wschody" }, { code: "10-19", desc: "Rozwój liści" }, { code: "30-39", desc: "Wydłużanie źdźbła" }, { code: "51-59", desc: "Rozwój wiechy" }, { code: "61-69", desc: "Kwitnienie" }, { code: "71-79", desc: "Rozwój ziarna" }, { code: "81-89", desc: "Dojrzewanie" }, { code: "91-99", desc: "Zasieranie" }],
+        "Tournesol": [{ code: "00-09", desc: "Kiełkowanie" }, { code: "10-19", desc: "Rozwój liści" }, { code: "30-39", desc: "Wzrost pędu" }, { code: "51-59", desc: "Rozwój pąka" }, { code: "61-69", desc: "Kwitnienie" }, { code: "71-79", desc: "Rozwój nasion" }, { code: "81-89", desc: "Dojrzewanie" }],
+        "Colza": [{ code: "00-09", desc: "Kiełkowanie" }, { code: "10-19", desc: "Rozwój liści" }, { code: "20-29", desc: "Rozwój pędów bocznych" }, { code: "30-39", desc: "Wzrost pędu głównego" }, { code: "50-59", desc: "Pąkowanie" }, { code: "60-69", desc: "Kwitnienie" }, { code: "71-79", desc: "Rozwój łuszczyn" }, { code: "81-89", desc: "Dojrzewanie" }],
+        "Soja": [{ code: "00-09", desc: "Kiełkowanie" }, { code: "10-19", desc: "Rozwój liści" }, { code: "30-39", desc: "Rozgałęzianie" }, { code: "51-59", desc: "Rozwój kwiatostanu" }, { code: "60-69", desc: "Kwitnienie" }, { code: "71-79", desc: "Rozwój strąków" }, { code: "81-89", desc: "Dojrzewanie" }],
+        "Sorgho": [{ code: "00-09", desc: "Kiełkowanie" }, { code: "10-19", desc: "Rozwój liści" }, { code: "20-29", desc: "Krzewienie" }, { code: "30-39", desc: "Wydłużanie źdźbła" }, { code: "51-59", desc: "Kłoszenie" }, { code: "61-69", desc: "Kwitnienie" }, { code: "71-79", desc: "Rozwój ziarna" }, { code: "81-89", desc: "Dojrzewanie" }]
+    },
+    ro: {
+        "Maïs": [{ code: "00-09", desc: "Germinare" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "51-59", desc: "Inflorescență" }, { code: "61-69", desc: "Înflorire" }, { code: "71-79", desc: "Dezvoltarea boabelor" }, { code: "81-89", desc: "Coacere" }, { code: "91-99", desc: "Senescență" }],
+        "Tournesol": [{ code: "00-09", desc: "Germinare" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "51-59", desc: "Buton floral" }, { code: "61-69", desc: "Înflorire" }, { code: "71-79", desc: "Dezvoltarea fructelor" }, { code: "81-89", desc: "Coacere" }],
+        "Colza": [{ code: "00-09", desc: "Germinare" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "20-29", desc: "Lăstari laterali" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "50-59", desc: "Butonizare" }, { code: "60-69", desc: "Înflorire" }, { code: "71-79", desc: "Formarea silicvelor" }, { code: "81-89", desc: "Coacere" }],
+        "Soja": [{ code: "00-09", desc: "Germinare" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "30-39", desc: "Ramificare" }, { code: "51-59", desc: "Inflorescență" }, { code: "60-69", desc: "Înflorire" }, { code: "71-79", desc: "Formarea păstăilor" }, { code: "81-89", desc: "Coacere" }],
+        "Sorgho": [{ code: "00-09", desc: "Germinare" }, { code: "10-19", desc: "Dezvoltarea frunzelor" }, { code: "20-29", desc: "Înfrățire" }, { code: "30-39", desc: "Alungirea tulpinii" }, { code: "51-59", desc: "Înspicare" }, { code: "61-69", desc: "Înflorire" }, { code: "71-79", desc: "Dezvoltarea boabelor" }, { code: "81-89", desc: "Coacere" }]
+    },
+    uk: {
+        "Maïs": [{ code: "00-09", desc: "Проростання" }, { code: "10-19", desc: "Розвиток листя" }, { code: "30-39", desc: "Стеблування" }, { code: "51-59", desc: "Викидання волоті" }, { code: "61-69", desc: "Цвітіння" }, { code: "71-79", desc: "Формування зерна" }, { code: "81-89", desc: "Дозрівання" }, { code: "91-99", desc: "Відмирання" }],
+        "Tournesol": [{ code: "00-09", desc: "Проростання" }, { code: "10-19", desc: "Розвиток листя" }, { code: "30-39", desc: "Стеблування" }, { code: "51-59", desc: "Утворення кошика" }, { code: "61-69", desc: "Цвітіння" }, { code: "71-79", desc: "Налив насіння" }, { code: "81-89", desc: "Дозрівання" }],
+        "Colza": [{ code: "00-09", desc: "Проростання" }, { code: "10-19", desc: "Розвиток листя" }, { code: "20-29", desc: "Бічні пагони" }, { code: "30-39", desc: "Стеблування" }, { code: "50-59", desc: "Бутонізація" }, { code: "60-69", desc: "Цвітіння" }, { code: "71-79", desc: "Утворення стручків" }, { code: "81-89", desc: "Дозрівання" }],
+        "Soja": [{ code: "00-09", desc: "Проростання" }, { code: "10-19", desc: "Розвиток листя" }, { code: "30-39", desc: "Гілкування" }, { code: "51-59", desc: "Бутонізація" }, { code: "60-69", desc: "Цвітіння" }, { code: "71-79", desc: "Утворення бобів" }, { code: "81-89", desc: "Дозрівання" }],
+        "Sorgho": [{ code: "00-09", desc: "Проростання" }, { code: "10-19", desc: "Розвиток листя" }, { code: "20-29", desc: "Кущення" }, { code: "30-39", desc: "Стеблування" }, { code: "51-59", desc: "Викидання волоті" }, { code: "61-69", desc: "Цвітіння" }, { code: "71-79", desc: "Налив зерна" }, { code: "81-89", desc: "Дозрівання" }]
+    }
 };
     
     let varieteData = [], appObservations = [], currentEssai = null, currentParcelleDigits = { d1: '0', d2: '0', d3: '0' }, selectedPlotCodeForNavigation = null, currentEspece = null, currentGps = null, parcelleValideeCode = null, currentPlotOrder = [], simpleNotationsConfig = [];
+    let externalData = []; 
 
-    function parseCSVToObjects(csvString) {
+    function parseCSVToObjects(csvString, delimiter = ';') {
         const lines = csvString.trim().split(/\r?\n/);
         if (lines.length < 2) return [];
-        const sep = lines[0].indexOf(';') > -1 ? ';' : ',';
+        let sep = delimiter;
+        if (lines[0].indexOf(sep) === -1) { sep = lines[0].indexOf(',') > -1 ? ',' : ';'; }
         const headers = lines[0].split(sep).map(h => h.trim());
         const objects = [];
         for (let i = 1; i < lines.length; i++) {
             const regex = new RegExp(`${sep}(?=(?:(?:[^"]*"){2})*[^"]*$)`);
             const currentline = lines[i].split(regex);
-            if(currentline.length >= 4) {
+            if(currentline.length >= 1) {
                 const obj = {};
                 headers.forEach((h, idx) => {
                     let val = currentline[idx] ? currentline[idx].trim() : "";
@@ -1563,36 +1360,20 @@ pl: {
     }
 document.addEventListener('DOMContentLoaded', () => {
         const savedLang = localStorage.getItem('selected_lang') || 'fr';
-        
-        // On applique la langue aux sélecteurs
         const langSelect = document.getElementById('lang-select');
-        const langSelectInit = document.getElementById('lang-select-init');
         if (langSelect) langSelect.value = savedLang;
-        if (langSelectInit) langSelectInit.value = savedLang;
-        
         applyTranslations(savedLang);
-        varieteData = parseCSVToObjects(rawCsvData);
+        varieteData = parseCSVToObjects(rawCsvData, ','); 
         initEssaiSelector();
         loadLocalObservations();
         setupEventListeners();
 
-        // --- Logique de la croix pour effacer les observations ---
         const obsInput = document.getElementById('obs');
         const clearObsBtn = document.getElementById('clear-obs');
-
         if (obsInput && clearObsBtn) {
-            // Affiche la croix seulement s'il y a déjà du texte
             clearObsBtn.style.display = obsInput.value ? 'block' : 'none';
-
-            obsInput.addEventListener('input', () => {
-                clearObsBtn.style.display = obsInput.value ? 'block' : 'none';
-            });
-
-            clearObsBtn.onclick = () => {
-                obsInput.value = '';
-                clearObsBtn.style.display = 'none';
-                obsInput.focus();
-            };
+            obsInput.addEventListener('input', () => { clearObsBtn.style.display = obsInput.value ? 'block' : 'none'; });
+            clearObsBtn.onclick = () => { obsInput.value = ''; clearObsBtn.style.display = 'none'; obsInput.focus(); };
         }
 
         const now = new Date();
@@ -1600,6 +1381,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('btn-choice-date').onclick = () => addSimpleLine('date');
         document.getElementById('btn-choice-scale').onclick = () => addSimpleLine('scale19');
         document.getElementById('custom-time').value = now.toTimeString().substring(0,5);
+
+        document.getElementById('import-external-csv').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    externalData = parseCSVToObjects(evt.target.result, ';');
+                    if (externalData.length > 0) {
+                        alert(getT('alert-import-success').replace('{n}', externalData.length));
+                    } else { alert(getT('alert-import-empty')); }
+                } catch (err) { alert(getT('alert-import-error')); console.error(err); }
+            };
+            reader.readAsText(file);
+        });
     });
 
     function initEssaiSelector() {
@@ -1619,40 +1415,52 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentEssai) return;
         const plots = varieteData.filter(p => p.Essai === currentEssai);
         const hasCoords = plots.every(p => p.Plan_X && p.Plan_Y);
-        
         if (hasCoords) {
             plots.forEach(p => { p.x = parseInt(p.Plan_X); p.y = parseInt(p.Plan_Y); });
             const mode = document.getElementById('mode-avancement').value;
-            
             switch (mode) {
-                case 'S': // Serpentin Ligne (Photo S)
-                    plots.sort((a,b) => {
-                        if (a.y !== b.y) return a.y - b.y;
-                        return (a.y % 2 !== 0) ? (a.x - b.x) : (b.x - a.x);
-                    });
-                    break;
-                case 'Z': // Ligne par ligne (Photo Z)
-                    plots.sort((a,b) => (a.y - b.y) || (a.x - b.x));
-                    break;
-                case 'U': // Serpentin Colonne (Photo U)
-                    plots.sort((a,b) => {
-                        if (a.x !== b.x) return a.x - b.x;
-                        return (a.x % 2 !== 0) ? (a.y - b.y) : (b.y - a.y);
-                    });
-                    break;
-                case 'N': // Colonne par colonne (Photo N)
-                    plots.sort((a,b) => (a.x - b.x) || (a.y - b.y));
-                    break;
+                case 'S': plots.sort((a,b) => { if (a.y !== b.y) return a.y - b.y; return (a.y % 2 !== 0) ? (a.x - b.x) : (b.x - a.x); }); break;
+                case 'Z': plots.sort((a,b) => (a.y - b.y) || (a.x - b.x)); break;
+                case 'U': plots.sort((a,b) => { if (a.x !== b.x) return a.x - b.x; return (a.x % 2 !== 0) ? (a.y - b.y) : (b.y - a.y); }); break;
+                case 'N': plots.sort((a,b) => (a.x - b.x) || (a.y - b.y)); break;
             }
             currentPlotOrder = plots.map(p => String(p.Code_Essai_Parcelle).padStart(3,'0'));
         } else {
             currentPlotOrder = plots.map(p => String(p.Code_Essai_Parcelle).padStart(3,'0')).sort();
         }
+        updateProgressBar();
+    }
+
+    function updateProgressBar() {
+        if (!currentEssai || currentPlotOrder.length === 0) {
+            document.getElementById('trial-progress-bar').style.width = '0%';
+            document.getElementById('trial-progress-text').innerText = '0 / 0 (0%)';
+            return;
+        }
+        
+        // Count unique plots for current trial in appObservations
+        const donePlots = new Set(
+            appObservations
+                .filter(o => o.ESSAI === currentEssai)
+                .map(o => String(o.Parcelle).padStart(3,'0'))
+        );
+        
+        // Intersect with valid plots in currentPlotOrder (to ignore deleted/invalid data)
+        let validDoneCount = 0;
+        currentPlotOrder.forEach(code => {
+            if(donePlots.has(code)) validDoneCount++;
+        });
+
+        const total = currentPlotOrder.length;
+        const percent = total > 0 ? Math.round((validDoneCount / total) * 100) : 0;
+        
+        document.getElementById('trial-progress-bar').style.width = percent + '%';
+        document.getElementById('trial-progress-text').innerText = `${validDoneCount} / ${total} (${percent}%)`;
     }
 
     function getT(key) {
         const lang = document.getElementById('lang-select').value;
-        return translations[lang][key] || key;
+        return translations[lang] && translations[lang][key] ? translations[lang][key] : key;
     }
 
     function handleNavigate(direction) {
@@ -1668,7 +1476,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupEventListeners() {
-        document.getElementById('lang-select').onchange = (e) => applyTranslations(e.target.value);
+        document.getElementById('lang-select').onchange = (e) => {
+            applyTranslations(e.target.value);
+            // Re-render open modal if exists to apply language
+            if(document.getElementById('bbchModal').style.display === 'block') document.getElementById('bbch-info-button').click(); 
+        };
         document.getElementById('confirmer-essai').onclick = () => {
             currentEssai = document.getElementById('choix-essai').value;
             if (currentEssai) {
@@ -1701,10 +1513,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        document.getElementById('voir-sur-carte').onclick = () => {
-            if(currentGps) window.open(`https://www.google.com/maps/search/?api=1&query=${currentGps.replace(/\s/g,'')}`, '_blank');
-        };
-
+        document.getElementById('voir-sur-carte').onclick = () => { if(currentGps) window.open(`https://www.google.com/maps/search/?api=1&query=${currentGps.replace(/\s/g,'')}`, '_blank'); };
         document.getElementById('voir-plan-semis').onclick = openSowingPlan;
         document.getElementById('closeSowingPlanModal').onclick = () => document.getElementById('sowingPlanModal').style.display='none';
         document.getElementById('btn-toggle-notations').onclick = () => {
@@ -1717,10 +1526,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById(this.dataset.target).classList.toggle('hidden-section');
         });
         
-        // Removed NEC / EP / Phyto buttons generation loop
-
         const floDiv = document.getElementById('flo-buttons');
-        // Modification: Pas de 5% au lieu de 10%
         for(let i=0; i<=100; i+=5) {
             const b = document.createElement('div'); b.className = 'square-btn'; b.style.width = '32px'; b.textContent = i;
             b.onclick = () => {
@@ -1731,7 +1537,6 @@ document.addEventListener('DOMContentLoaded', () => {
             floDiv.appendChild(b);
         }
 
-        // Modification des boutons enregistrer
         document.getElementById('enregistrer').onclick = () => enregistrerObservation(0);
         document.getElementById('enregistrer-suivant').onclick = () => enregistrerObservation(1);
         document.getElementById('enregistrer-prec').onclick = () => enregistrerObservation(-1);
@@ -1740,10 +1545,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('changer-essai').onclick = () => location.reload();
         
         document.getElementById('reset-data-local').onclick = () => {
-            if(confirm(getT("alert-reset"))) {
-                telechargerCSV();
-                setTimeout(() => { localStorage.clear(); location.reload(); }, 1000);
-            }
+            if(confirm(getT("alert-reset"))) { telechargerCSV(); setTimeout(() => { localStorage.clear(); location.reload(); }, 1000); }
         };
 
         document.getElementById('bbch-info-button').onclick = () => {
@@ -1765,15 +1567,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('plus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(el.value.charCodeAt(0)+1); };
         document.getElementById('minus-rep').onclick = () => { let el = document.getElementById('rep'); el.value = String.fromCharCode(Math.max(65, el.value.charCodeAt(0)-1)); };
         
-        // --- RECEPTIVITE BOUTONS ---
-        document.getElementById('plus-receptivite').onclick = () => document.getElementById('receptivite').value++;
-        document.getElementById('minus-receptivite').onclick = () => document.getElementById('receptivite').value = Math.max(0, document.getElementById('receptivite').value - 1);
+        const receptInput = document.getElementById('receptivite');
+        const receptClear = document.getElementById('clear-receptivite');
+        
+        document.getElementById('plus-receptivite').onclick = () => { receptInput.value++; if(receptInput.value) receptClear.style.display = 'block'; };
+        document.getElementById('minus-receptivite').onclick = () => { receptInput.value = Math.max(0, receptInput.value - 1); if(receptInput.value === "0" || receptInput.value === "") receptClear.style.display = receptInput.value === "0" ? 'block' : 'none'; };
+        receptInput.addEventListener('input', () => { receptClear.style.display = receptInput.value ? 'block' : 'none'; });
+        receptClear.onclick = () => { receptInput.value = ''; receptClear.style.display = 'none'; receptInput.focus(); };
 
-
-        document.getElementById('btn-add-simple-line').onclick = () => {
-            document.getElementById('choiceSimpleNotModal').style.display = 'block';
-            document.getElementById('new-simple-title-modal').focus();
-        };
+        document.getElementById('btn-add-simple-line').onclick = () => { document.getElementById('choiceSimpleNotModal').style.display = 'block'; document.getElementById('new-simple-title-modal').focus(); };
         document.getElementById('btn-choice-num').onclick = () => addSimpleLine('num');
         document.getElementById('btn-choice-text').onclick = () => addSimpleLine('text');
         document.getElementById('btn-choice-percent').onclick = () => addSimpleLine('percent');
@@ -1783,7 +1585,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = document.getElementById('new-simple-title-modal').value.trim();
     if (!title) return;
     const code = title.toLowerCase().replace(/\s+/g, '_');
-    // On ajoute le type (num, text, percent, date, ou scale19)
     simpleNotationsConfig.push({ label: title, code: code, type: type }); 
     document.getElementById('choiceSimpleNotModal').style.display = 'none';
     document.getElementById('new-simple-title-modal').value = "";
@@ -1799,298 +1600,257 @@ document.addEventListener('DOMContentLoaded', () => {
             for(let b of div.children) if(b.textContent === padded[idx]) b.classList.add('selected');
         });
 
-        const plot = varieteData.find(i => 
-            String(i.Code_Essai_Parcelle).padStart(3,'0') === padded && 
-            i.Essai === currentEssai
-        );
-
-        document.getElementById('variete-text').innerHTML = `<span data-i18n="lignee">${getT("lignee")}</span> ` + (plot ? plot.variete : "INCONNUE");
+        const plot = varieteData.find(i => String(i.Code_Essai_Parcelle).padStart(3,'0') === padded && i.Essai === currentEssai);
+        document.getElementById('variete-text').innerHTML = `<span data-i18n="lignee">${getT("lignee")}</span> ` + (plot ? plot.variete : getT("unknown-variety"));
         currentEspece = plot ? plot.Espece : null;
         currentGps = plot ? plot.Gps : null;
-        
         document.getElementById('espece-text').textContent = currentEspece ? (translations[localStorage.getItem('selected_lang') || 'fr'][currentEspece] || currentEspece).toUpperCase() : "";
         document.body.className = currentEspece ? `theme-${currentEspece.toLowerCase()}` : '';
-        
         document.getElementById('voir-sur-carte').style.display = (currentGps && currentGps.length > 3) ? 'inline-block' : 'none';
         const plots = varieteData.filter(p => p.Essai === currentEssai);
         document.getElementById('voir-plan-semis').style.display = (plots.length > 0 && plots[0].Plan_X) ? 'inline-block' : 'none';
         document.getElementById('valider-parcelle').style.display = (parcelleValideeCode === padded) ? 'none' : 'block';
     }
 
-       function openSowingPlan() {
-    const plots = varieteData.filter(p => p.Essai === currentEssai);
-    if (!plots.length || !plots[0].Plan_X) return alert(getT("alert-no-plan"));
+    function openSowingPlan() {
+        const plots = varieteData.filter(p => p.Essai === currentEssai);
+        if (!plots.length || !plots[0].Plan_X) return alert(getT("alert-no-plan"));
 
-    // --- LOGIQUE HIGHLIGHT VARIETE ---
-    // On récupère la parcelle courante sélectionnée
-    const selectedPadded = String(selectedPlotCodeForNavigation).padStart(3,'0');
-    const currentPlot = plots.find(p => String(p.Code_Essai_Parcelle).padStart(3,'0') === selectedPadded);
-    // On récupère le nom de la variété courante pour le mettre en gras partout
-    const highlightVariete = currentPlot ? currentPlot.variete : null;
-    // ---------------------------------
-
-    let maxX = Math.max(...plots.map(p => parseInt(p.Plan_X))), 
-        maxY = Math.max(...plots.map(p => parseInt(p.Plan_Y)));
-    
-       let html = `
-    <style>
-        #sowing-plan-grid-container table { border: 1px solid #444; width: 100%; border-collapse: collapse; }
-        #sowing-plan-grid-container th, #sowing-plan-grid-container td { 
-            border: 1px solid #ccc; 
-            text-align: center; 
-            padding: 8px; 
-            font-size: 0.9em;
-        }
-        #sowing-plan-grid-container th { 
-            background-color: var(--theme-secondary-color); 
-            color: white; 
-        }
-        .current-plot-cell { 
-            background-color: var(--theme-primary-color) !important; 
-            color: white !important; 
-            font-weight: bold; 
-            box-shadow: inset 0 0 0 2px #fff;
-        }
-    </style>
-    <table>
-        <thead>
-            <tr><th class="sticky-corner">Y\\X</th>`;
-    
-    
-    for(let c=1; c<=maxX; c++) html += `<th class="sticky-x">${c}</th>`;
-    html += '</tr></thead><tbody>';
-    
-
-    for(let r=1; r<=maxY; r++) {
-        html += `<tr><td class="sticky-y" style="background-color: var(--theme-secondary-color); color:white; font-weight:bold;">${r}</td>`;
-        for(let c=1; c<=maxX; c++) {
-            const p = plots.find(plot => parseInt(plot.Plan_X) === c && parseInt(plot.Plan_Y) === r);
-            
-            let codeOriginal = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
-            let codeAffiche = p ? parseInt(p.Code_Essai_Parcelle) : ""; 
-            
-            let isSelected = (codeOriginal === selectedPadded);
-            
-            // Gestion des classes CSS dynamiques
-            let classes = [];
-            let style = "";
-
-            if (p) {
-                // Background color selon Type
-                if (p.Type === 'M') classes.push('type-M');
-                else if (p.Type === 'F') classes.push('type-F');
-                else if (p.Type === 'H') classes.push('type-H');
-
-                // Highlight Variété (Gras) si c'est la même variété que la sélectionnée
-                if (highlightVariete && p.variete === highlightVariete) {
-                     classes.push('variete-highlight');
-                }
-                
-                // Cellule sélectionnée (Prime sur les autres fonds)
-                if (isSelected) classes.push('current-plot-cell');
-
-                style = "cursor:pointer;";
-            } else {
-                style = "background:#f9f9f9; color:#ccc;";
+        const hasExternalData = externalData && externalData.length > 0;
+        const controlsDiv = document.getElementById('plan-interactive-controls');
+        const filtersDiv = document.getElementById('interactive-filters');
+        const toggle = document.getElementById('interactive-mode-toggle');
+        const dataSelect = document.getElementById('interactive-data-select');
+        const notatorSelect = document.getElementById('interactive-notator-select');
+        const daysInput = document.getElementById('interactive-days-input');
+        const todoToggle = document.getElementById('todo-mode-toggle');
+        
+        if(hasExternalData) {
+            controlsDiv.classList.add('active');
+            filtersDiv.style.display = toggle.checked ? 'flex' : 'none';
+            if(dataSelect.options.length === 0) {
+                 const fixed = ["ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Code_Ech", "Observations"];
+                 const keys = Object.keys(externalData[0]).filter(k => !fixed.includes(k) && k !== 'id');
+                 keys.sort().forEach(k => {
+                     const opt = document.createElement('option'); opt.value = k; opt.text = k.startsWith('Not_') ? k.substring(4) : k; dataSelect.appendChild(opt);
+                 });
             }
-
-            let classAttr = classes.length ? `class="${classes.join(' ')}"` : '';
-            
-            html += `<td ${classAttr} style="${style}" onclick="${codeOriginal ? `selectFromPlan('${codeOriginal}')` : ''}">
-                        ${codeAffiche}<br>
-                        <span style="font-size:0.75em; color:#555;">${(p && p.Type) ? p.Type : ''}</span>
-                     </td>`;
+            if(notatorSelect.options.length <= 1) {
+                const notateurs = [...new Set(externalData.map(d => d.Notateur).filter(n => n))].sort();
+                notateurs.forEach(n => { const opt = document.createElement('option'); opt.value = n; opt.text = n; notatorSelect.appendChild(opt); });
+            }
+        } else {
+            controlsDiv.classList.remove('active');
+            toggle.checked = false; 
         }
-        html += '</tr>';
+
+        const isInteractive = toggle.checked;
+        const selectedDataKey = dataSelect.value;
+        const maxDays = parseInt(daysInput.value) || 0;
+        const today = new Date(); today.setHours(0,0,0,0);
+        const selectedPadded = String(selectedPlotCodeForNavigation).padStart(3,'0');
+        const currentPlot = plots.find(p => String(p.Code_Essai_Parcelle).padStart(3,'0') === selectedPadded);
+        const highlightVariete = currentPlot ? currentPlot.variete : null;
+        let maxX = Math.max(...plots.map(p => parseInt(p.Plan_X))), maxY = Math.max(...plots.map(p => parseInt(p.Plan_Y)));
+    
+        // --- HEATMAP PRE-CALCULATION ---
+        let minVal = Infinity, maxVal = -Infinity;
+        if(isInteractive && selectedDataKey) {
+             externalData.forEach(d => {
+                 let val = d[selectedDataKey];
+                 if(val && !isNaN(parseFloat(val.replace('%','')))) {
+                     let num = parseFloat(val.replace('%',''));
+                     if(num < minVal) minVal = num;
+                     if(num > maxVal) maxVal = num;
+                 }
+             });
+        }
+
+        let html = `<style>
+            #sowing-plan-grid-container table { border: 1px solid #444; width: 100%; border-collapse: collapse; }
+            #sowing-plan-grid-container th, #sowing-plan-grid-container td { border: 1px solid #ccc; text-align: center; padding: 8px; font-size: 0.9em; }
+            #sowing-plan-grid-container th { background-color: var(--theme-secondary-color); color: white; }
+            .current-plot-cell { background-color: var(--theme-primary-color) !important; color: white !important; font-weight: bold; box-shadow: inset 0 0 0 2px #fff; }
+        </style><table><thead><tr><th class="sticky-corner">Y\\X</th>`;
+        
+        for(let c=1; c<=maxX; c++) html += `<th class="sticky-x">${c}</th>`;
+        html += '</tr></thead><tbody>';
+
+        for(let r=1; r<=maxY; r++) {
+            html += `<tr><td class="sticky-y" style="background-color: var(--theme-secondary-color); color:white; font-weight:bold;">${r}</td>`;
+            for(let c=1; c<=maxX; c++) {
+                const p = plots.find(plot => parseInt(plot.Plan_X) === c && parseInt(plot.Plan_Y) === r);
+                
+                let codeOriginal = p ? String(p.Code_Essai_Parcelle).padStart(3,'0') : "";
+                let codeAffiche = p ? parseInt(p.Code_Essai_Parcelle) : ""; 
+                let displayContent = (p && p.Type) ? p.Type : '';
+                let isSelected = (codeOriginal === selectedPadded);
+                let classes = [];
+                let style = "";
+                let heatmapColor = "";
+
+                // TODO MODE CHECK
+                if(p && todoToggle.checked) {
+                    const isDone = appObservations.some(obs => 
+                        String(obs.Parcelle).padStart(3,'0') === codeOriginal && obs.ESSAI === currentEssai
+                    );
+                    if(isDone) classes.push('hatched-pattern');
+                }
+
+                // INTERACTIVE LOGIC
+                if (p && isInteractive && selectedDataKey) {
+                    let matches = externalData.filter(d => d.ESSAI === currentEssai && String(d.Parcelle).padStart(3,'0') === codeOriginal);
+                    if (notatorSelect.value !== "") matches = matches.filter(d => d.Notateur === notatorSelect.value);
+                    const recentMatches = matches.filter(d => {
+                        if(!d.Date) return false;
+                        const obsDate = new Date(d.Date); obsDate.setHours(0,0,0,0);
+                        return Math.ceil(Math.abs(today - obsDate) / (86400000)) <= maxDays;
+                    });
+                    recentMatches.sort((a,b) => { const dA = new Date(a.Date+(a.Heure?"T"+a.Heure:"")); const dB = new Date(b.Date+(b.Heure?"T"+b.Heure:"")); return dB - dA; });
+
+                    if(recentMatches.length > 0) {
+                        let val = recentMatches[0][selectedDataKey];
+                        if(val !== undefined && val !== "") {
+                             if (typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}$/)) { val = val.split('-')[2]+"/"+val.split('-')[1]; }
+                             
+                             // Heatmap Color Calc
+                             if(!isNaN(parseFloat(val.replace('%',''))) && maxVal > minVal) {
+                                 let num = parseFloat(val.replace('%',''));
+                                 let ratio = (num - minVal) / (maxVal - minVal);
+                                 let hue = ratio * 120; // 0=Red, 120=Green
+                                 heatmapColor = `background-color: hsl(${hue}, 80%, 80%); border: 1px solid hsl(${hue}, 80%, 40%);`;
+                             }
+
+                             displayContent = `<span class="interactive-val" style="${heatmapColor}">${val}</span>`;
+                        } else { displayContent = `<span style="opacity:0.3">-</span>`; }
+                    } else { displayContent = `<span style="opacity:0.3">-</span>`; }
+                } 
+
+                if (p) {
+                    if (p.Type === 'M') classes.push('type-M');
+                    else if (p.Type === 'F') classes.push('type-F');
+                    else if (p.Type === 'H') classes.push('type-H');
+                    if (highlightVariete && p.variete === highlightVariete) classes.push('variete-highlight');
+                    if (isSelected) classes.push('current-plot-cell');
+                    style = "cursor:pointer;";
+                } else { style = "background:#f9f9f9; color:#ccc;"; }
+
+                html += `<td class="${classes.join(' ')}" style="${style}" onclick="${codeOriginal ? `selectFromPlan('${codeOriginal}')` : ''}">
+                            ${codeAffiche}<br><span style="font-size:0.75em; color:#555;">${displayContent}</span></td>`;
+            }
+            html += '</tr>';
+        }
+        document.getElementById('sowing-plan-grid-container').innerHTML = html + '</tbody></table>';
+        document.getElementById('sowingPlanModal').style.display = 'block';
     }
     
-    document.getElementById('sowing-plan-grid-container').innerHTML = html + '</tbody></table>';
-    document.getElementById('sowingPlanModal').style.display = 'block';
-}
-    
-    window.selectFromPlan = (code) => {
-        selectedPlotCodeForNavigation = code; updateUIForSelectedPlot(code);
-        document.getElementById('sowingPlanModal').style.display = 'none';
-    };
+    window.selectFromPlan = (code) => { selectedPlotCodeForNavigation = code; updateUIForSelectedPlot(code); document.getElementById('sowingPlanModal').style.display = 'none'; };
 
     function enregistrerObservation(moveDir) {
     if (!parcelleValideeCode) return alert(getT("alert-valider-parcelle"));
     let obs = {
-        id: Date.now(), 
-        Notateur: document.getElementById('type-notation-session').value,
-        ESSAI: currentEssai, 
-        Parcelle: parcelleValideeCode,
+        id: Date.now(), Notateur: document.getElementById('type-notation-session').value, ESSAI: currentEssai, Parcelle: parcelleValideeCode,
         Variete: document.getElementById('variete-text').textContent.split(':').pop().trim(),
-        Date: document.getElementById('custom-date').value, 
-        Heure: document.getElementById('custom-time').value,
-        Meteo: document.getElementById('meteo-select').value, 
-        Rep: document.getElementById('rep').value,
-        Observations: document.getElementById('obs').value,
+        Date: document.getElementById('custom-date').value, Heure: document.getElementById('custom-time').value,
+        Meteo: document.getElementById('meteo-select').value, Rep: document.getElementById('rep').value, Observations: document.getElementById('obs').value,
     };
-
-    // Stade
     if(document.getElementById('stade').value) obs.Stade = document.getElementById('stade').value;
-    
-    // Floraison
-    const floSel = document.querySelector('#flo-buttons .selected'); 
-    if(floSel) obs.Floraison = floSel.textContent + "%";
-
-    // Réceptivité
+    const floSel = document.querySelector('#flo-buttons .selected'); if(floSel) obs.Floraison = floSel.textContent + "%";
     if(document.getElementById('receptivite').value) obs.Receptivite = document.getElementById('receptivite').value;
-
-    
-    // Code Echantillon
     if (document.getElementById('lettres-analyse').value !== "") {
         obs.Code_Ech = (document.getElementById('lettres-analyse').value + document.getElementById('numero-analyse').value).toUpperCase();
         document.getElementById('numero-analyse').value++;
     }
-    
-    // Notations simples dynamiques
-    simpleNotationsConfig.forEach(s => {
-        const el = document.getElementById('not-simple-'+s.code);
-        if(el && el.value) obs['Not_' + s.label] = el.value;
-    });
-
-    appObservations.unshift(obs);
-    localStorage.setItem('observations_v12', JSON.stringify(appObservations));
-    renderRecapTable();
-    
-    // moveDir : -1 (Prev), 0 (Stay), 1 (Next)
+    simpleNotationsConfig.forEach(s => { const el = document.getElementById('not-simple-'+s.code); if(el && el.value) obs['Not_' + s.label] = el.value; });
+    appObservations.unshift(obs); localStorage.setItem('observations_v12', JSON.stringify(appObservations)); renderRecapTable();
     if(moveDir !== 0) {
-        handleNavigate(moveDir);
-        parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
-        updateUIForSelectedPlot(selectedPlotCodeForNavigation);
-        document.getElementById('rep').value = 'A';
-    } else {
-        let r = document.getElementById('rep');
-        r.value = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1);
-    }
+        handleNavigate(moveDir); parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0'); updateUIForSelectedPlot(selectedPlotCodeForNavigation); document.getElementById('rep').value = 'A';
+    } else { let r = document.getElementById('rep'); r.value = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1); }
+    updateProgressBar();
 }
     
     function renderRecapTable() {
-        const tbody = document.querySelector('#recap-table tbody');
-        if(!tbody) return;
-        tbody.innerHTML = appObservations.map(o => 
-            `<tr><td>${o.ESSAI}</td><td>${o.Parcelle}</td><td>${o.Rep}</td><td>${o.Code_Ech||'-'}</td><td>${o.Stade||'-'}</td><td>${o.Floraison||'-'}</td><td><button onclick="delObs(${o.id})" class="btn-danger" style="margin:0;padding:2px;">X</button></td></tr>`
-        ).join('');
+        const tbody = document.querySelector('#recap-table tbody'); if(!tbody) return;
+        tbody.innerHTML = appObservations.map(o => `<tr><td>${o.ESSAI}</td><td>${o.Parcelle}</td><td>${o.Rep}</td><td>${o.Code_Ech||'-'}</td><td>${o.Stade||'-'}</td><td>${o.Floraison||'-'}</td><td><button onclick="delObs(${o.id})" class="btn-danger" style="margin:0;padding:2px;">X</button></td></tr>`).join('');
     }
 
-    window.delObs = (id) => {
-        if(confirm(getT("alert-delete-line"))) {
-            appObservations = appObservations.filter(o => o.id !== id);
-            localStorage.setItem('observations_v12', JSON.stringify(appObservations)); renderRecapTable();
-        }
-    };
+    window.delObs = (id) => { if(confirm(getT("alert-delete-line"))) { appObservations = appObservations.filter(o => o.id !== id); localStorage.setItem('observations_v12', JSON.stringify(appObservations)); renderRecapTable(); updateProgressBar(); } };
 
     function initSimpleNotationsUI() {        const div = document.getElementById('simple-notations-list'); div.innerHTML='';
         simpleNotationsConfig = simpleNotationsConfig.filter(s => typeof s === 'object' && s.code);
         simpleNotationsConfig.forEach(s => {
             let inputField = "";
             if (s.type === 'num') {
-                inputField = `<div class="simple-not-controls"><button class="btn-secondary" style="padding:5px 10px;" onclick="cV('${s.code}',-1)">-</button><input type="number" id="not-simple-${s.code}" value="0" style="margin:0; text-align:center;"><button class="btn-secondary" style="padding:5px 10px;" onclick="cV('${s.code}',1)">+</button></div>`;
+                inputField = `<div class="input-group-big"><button class="btn-secondary btn-xl" onclick="cV('${s.code}',-1)">-</button><div class="input-wrapper-relative"><input type="number" id="not-simple-${s.code}" value="0" class="input-big-text" oninput="checkClear('${s.code}')"><span id="clear-simple-${s.code}" class="clear-icon-inside" onclick="resetSimple('${s.code}')">&times;</span></div><button class="btn-secondary btn-xl" onclick="cV('${s.code}',1)">+</button></div>`;
             } else if (s.type === 'percent') {
                 let buttonsHtml = `<div class="square-btn-group" id="group-perc-${s.code}">`;
-                // Modification ici : de 5 en 5
-                for (let i = 0; i <= 100; i += 5) {
-                    buttonsHtml += `<div class="square-btn" style="width:32px;" onclick="setPercValue('${s.code}', '${i}', this)">${i}</div>`;
-                }
-                buttonsHtml += `</div><input type="hidden" id="not-simple-${s.code}" value="">`;
-                inputField = buttonsHtml;
+                for (let i = 0; i <= 100; i += 5) { buttonsHtml += `<div class="square-btn" style="width:32px;" onclick="setPercValue('${s.code}', '${i}', this)">${i}</div>`; }
+                inputField = buttonsHtml + `</div><input type="hidden" id="not-simple-${s.code}" value="">`;
             } else if (s.type === 'scale19') {
                 let buttonsHtml = `<div class="square-btn-group" id="group-scale-${s.code}">`;
-                for (let i = 1; i <= 9; i++) {
-                    buttonsHtml += `<div class="square-btn" onclick="setScaleValue('${s.code}', '${i}', this)">${i}</div>`;
-                }
-                buttonsHtml += `</div><input type="hidden" id="not-simple-${s.code}" value="">`;
-                inputField = buttonsHtml;
+                for (let i = 1; i <= 9; i++) { buttonsHtml += `<div class="square-btn" onclick="setScaleValue('${s.code}', '${i}', this)">${i}</div>`; }
+                inputField = buttonsHtml + `</div><input type="hidden" id="not-simple-${s.code}" value="">`;
             } else if (s.type === 'date') {
-                // --- AJOUT DATE PAR DEFAUT + BOUTONS +/- ---
-                const today = new Date().toISOString().split('T')[0];
-                const [y,m,d] = today.split('-');
-                const defaultHidden = `${d}/${m}`;
-                inputField = `
-                <div style="display:flex; align-items:center; gap:5px; width:100%;">
-                    <input type="date" id="date-input-${s.code}" class="date-input-field" value="${today}" onchange="updateDateValue('${s.code}', this.value)" style="flex-grow:1;">
-                    <button class="btn-secondary" style="padding:10px 15px;" onclick="changeDate('${s.code}', -1)">-</button>
-                    <button class="btn-secondary" style="padding:10px 15px;" onclick="changeDate('${s.code}', 1)">+</button>
-                </div>
-                <input type="hidden" id="not-simple-${s.code}" value="${defaultHidden}">`;
-            } else {
-                inputField = `<input type="text" id="not-simple-${s.code}" placeholder="..." style="margin:0">`;
-            }
+                const today = new Date().toISOString().split('T')[0]; const [y,m,d] = today.split('-'); const defaultHidden = `${d}/${m}`;
+                inputField = `<div style="display:flex; align-items:center; gap:5px; width:100%;"><input type="date" id="date-input-${s.code}" class="date-input-field" value="${today}" onchange="updateDateValue('${s.code}', this.value)" style="flex-grow:1;"><button class="btn-secondary" style="padding:10px 15px;" onclick="changeDate('${s.code}', -1)">-</button><button class="btn-secondary" style="padding:10px 15px;" onclick="changeDate('${s.code}', 1)">+</button></div><input type="hidden" id="not-simple-${s.code}" value="${defaultHidden}">`;
+            } else { inputField = `<input type="text" id="not-simple-${s.code}" placeholder="..." style="margin:0">`; }
             div.innerHTML += `<div class="simple-notation-line"><div class="simple-not-header"><span>${s.label}</span><button class="btn-danger" style="padding:2px 6px; font-size:0.7em;" onclick="removeSimpleLine('${s.code}')">X</button></div>${inputField}</div>`;
         });
     }
 
-function updateDateValue(code, fullDate) {
-    if(!fullDate) return;
-    const parts = fullDate.split('-'); // [AAAA, MM, JJ]
-    const formatted = parts[2] + "/" + parts[1]; // JJ/MM
-    document.getElementById('not-simple-' + code).value = formatted;
+function updateDateValue(code, fullDate) { if(!fullDate) return; const parts = fullDate.split('-'); document.getElementById('not-simple-' + code).value = parts[2] + "/" + parts[1]; }
+window.checkClear = (code) => { const input = document.getElementById(`not-simple-${code}`); const clearBtn = document.getElementById(`clear-simple-${code}`); if(input && clearBtn) clearBtn.style.display = input.value ? 'block' : 'none'; };
+window.resetSimple = (code) => { const input = document.getElementById(`not-simple-${code}`); const clearBtn = document.getElementById(`clear-simple-${code}`); if(input) { input.value = ''; input.focus(); } if(clearBtn) clearBtn.style.display = 'none'; };
+window.changeDate = (code, days) => { const input = document.getElementById(`date-input-${code}`); if (!input) return; let currentDate = new Date(input.value); if (isNaN(currentDate.getTime())) currentDate = new Date(); currentDate.setDate(currentDate.getDate() + days); const newDateStr = currentDate.toISOString().split('T')[0]; input.value = newDateStr; updateDateValue(code, newDateStr); };
+window.setScaleValue = (code, val, btn) => { const parent = document.getElementById(`group-scale-${code}`); parent.querySelectorAll('.selected').forEach(s => s.classList.remove('selected')); btn.classList.add('selected'); document.getElementById(`not-simple-${code}`).value = val; };
+window.setPercValue = (code, val, btn) => { const parent = document.getElementById(`group-perc-${code}`); parent.querySelectorAll('.selected').forEach(s => s.classList.remove('selected')); btn.classList.add('selected'); document.getElementById(`not-simple-${code}`).value = val + "%"; };
+window.cV = (c, d) => { let el = document.getElementById('not-simple-'+c); let val = parseInt(el.value) || 0; el.value = val + d; checkClear(c); }
+window.removeSimpleLine = (c) => { if(confirm(getT("alert-suppr-config"))) { simpleNotationsConfig = simpleNotationsConfig.filter(x => x.code !== c); localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig)); initSimpleNotationsUI(); } };
+window.openTab = (e,n) => { document.querySelectorAll('.tabcontent').forEach(x=>x.style.display='none'); document.querySelectorAll('.tablink').forEach(x=>x.classList.remove('active')); document.getElementById(n).style.display='block'; if(e) e.currentTarget.classList.add('active'); }
+function loadLocalObservations() { appObservations = JSON.parse(localStorage.getItem('observations_v12') || "[]"); simpleNotationsConfig = JSON.parse(localStorage.getItem('simpleNotationsConfig') || "[]"); renderRecapTable(); initSimpleNotationsUI(); }
+function telechargerCSV() {
+    if(!appObservations.length) return alert(getT("alert-rien"));
+    const fixedHeaders = ["Notateur", "ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Receptivite", "Code_Ech", "Observations"];
+    let dynamicKeys = new Set();
+    appObservations.forEach(o => Object.keys(o).forEach(k => { if(k.startsWith('Titre_Not_') || k.startsWith('Not_')) dynamicKeys.add(k); }));
+    const finalKeys = [...fixedHeaders, ...Array.from(dynamicKeys).sort()];
+    const headerRow = finalKeys.map(k => k.startsWith('Not_') ? k.substring(4) : k);
+    let csv = "\uFEFF" + headerRow.join(";") + "\n";
+    appObservations.forEach(o => { csv += finalKeys.map(k => o[k] === undefined ? "" : o[k]).join(";") + "\n"; });
+    const essai = currentEssai || "Essai"; const date = document.getElementById('custom-date').value || new Date().toISOString().split('T')[0]; const notateur = document.getElementById('type-notation-session').value || "Notateur"; const sanitize = (s) => s.replace(/[^a-z0-9]/gi, '_'); const filename = `${sanitize(essai)}_${sanitize(date)}_${sanitize(notateur)}.csv`;
+    const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download=filename; a.click();
 }
 
-// --- FONCTION POUR CHANGER LA DATE AVEC +/- ---
-window.changeDate = (code, days) => {
-    const input = document.getElementById(`date-input-${code}`);
-    if (!input) return;
+// --- VOICE RECOGNITION ---
+window.toggleDictation = () => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert(getT("alert-voice-error")); return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    const btn = document.getElementById('mic-btn');
+    const obsArea = document.getElementById('obs');
     
-    // Récupérer la date actuelle de l'input
-    let currentDate = new Date(input.value);
-    
-    // Si la date est invalide (ex: champ vide), prendre aujourd'hui
-    if (isNaN(currentDate.getTime())) currentDate = new Date();
-    
-    // Ajouter/Retirer des jours
-    currentDate.setDate(currentDate.getDate() + days);
-    
-    // Formater en YYYY-MM-DD
-    const newDateStr = currentDate.toISOString().split('T')[0];
-    input.value = newDateStr;
-    
-    // Mettre à jour le champ caché (JJ/MM)
-    updateDateValue(code, newDateStr);
+    // Set language based on selected UI language, mapping simple codes to full locales
+    const langMap = { 'fr': 'fr-FR', 'en': 'en-US', 'es': 'es-ES', 'pl': 'pl-PL', 'ro': 'ro-RO', 'uk': 'uk-UA' };
+    const currentLang = document.getElementById('lang-select').value;
+    recognition.lang = langMap[currentLang] || 'fr-FR';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+    btn.classList.add('listening');
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        const currentText = obsArea.value;
+        obsArea.value = currentText ? currentText + " " + transcript : transcript;
+        document.getElementById('clear-obs').style.display = 'block';
+    };
+
+    recognition.onspeechend = () => { recognition.stop(); btn.classList.remove('listening'); };
+    recognition.onerror = (event) => { console.error('Speech recognition error', event.error); btn.classList.remove('listening'); };
 };
-
-
-    window.setScaleValue = (code, val, btn) => {
-        const parent = document.getElementById(`group-scale-${code}`);
-        parent.querySelectorAll('.selected').forEach(s => s.classList.remove('selected'));
-        btn.classList.add('selected');
-        document.getElementById(`not-simple-${code}`).value = val;
-    };
-
-
-    window.setPercValue = (code, val, btn) => {
-        const parent = document.getElementById(`group-perc-${code}`);
-        parent.querySelectorAll('.selected').forEach(s => s.classList.remove('selected'));
-        btn.classList.add('selected');
-        document.getElementById(`not-simple-${code}`).value = val + "%";
-    };
-    
-    window.cV = (c, d) => { let el = document.getElementById('not-simple-'+c); el.value = (parseInt(el.value) || 0) + d; }
-    window.removeSimpleLine = (c) => { simpleNotationsConfig = simpleNotationsConfig.filter(x => x.code !== c); localStorage.setItem('simpleNotationsConfig', JSON.stringify(simpleNotationsConfig)); initSimpleNotationsUI(); };
-    window.openTab = (e,n) => { document.querySelectorAll('.tabcontent').forEach(x=>x.style.display='none'); document.querySelectorAll('.tablink').forEach(x=>x.classList.remove('active')); document.getElementById(n).style.display='block'; if(e) e.currentTarget.classList.add('active'); }
-    function loadLocalObservations() { 
-        appObservations = JSON.parse(localStorage.getItem('observations_v12') || "[]");
-        simpleNotationsConfig = JSON.parse(localStorage.getItem('simpleNotationsConfig') || "[]");
-        renderRecapTable(); initSimpleNotationsUI();
-    }
-    
-    function telechargerCSV() {
-        if(!appObservations.length) return alert(getT("alert-rien"));
-        // Fixed headers updated: Added Receptivite
-        const fixedHeaders = ["Notateur", "ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Receptivite", "Code_Ech", "Observations"];
-        let dynamicKeys = new Set();
-        appObservations.forEach(o => Object.keys(o).forEach(k => { if(k.startsWith('Titre_Not_') || k.startsWith('Not_')) dynamicKeys.add(k); }));
-        const finalKeys = [...fixedHeaders, ...Array.from(dynamicKeys).sort()];
-        
-        // Remove 'Not_' prefix for the header row only
-        const headerRow = finalKeys.map(k => k.startsWith('Not_') ? k.substring(4) : k);
-        
-        let csv = "\uFEFF" + headerRow.join(";") + "\n";
-        appObservations.forEach(o => { csv += finalKeys.map(k => o[k] === undefined ? "" : o[k]).join(";") + "\n"; });
-        const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download="Export_Notations.csv"; a.click();
-    }
 </script>
 </body>
 </html>
