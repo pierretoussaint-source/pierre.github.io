@@ -92,12 +92,12 @@ html {
     .save-buttons-container button { flex: 1; padding: 15px 2px; font-size: 0.9em; line-height: 1.2; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .hidden-section { display: none !important; }
-    .notation-group-container { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 15px; background-color: #fdfdfd; }
+    .notation-group-container { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 15px; background-color: #fdfdfd; transition: all 0.3s ease; }
     .not-buttons-row { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
     .not-btn-choix { flex: 1; padding: 8px; font-size: 0.9em; background-color: #e9ecef; color: #333; border: 1px solid #ccc; min-width: 50px; cursor: pointer; }
     .not-btn-choix.active { background-color: var(--theme-secondary-color); color: white; border-color: var(--theme-secondary-color); box-shadow: inset 0 3px 5px rgba(0,0,0,0.2); }
     
-    .simple-notation-line { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+    .simple-notation-line { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; transition: all 0.3s ease;}
     .simple-not-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9em;}
     .simple-not-controls { display: flex; align-items: center; gap: 5px; }
     #bbch-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
@@ -161,6 +161,32 @@ html {
     .mic-btn { position: absolute; right: 10px; bottom: 50px; background-color: white; border: 1px solid #ccc; border-radius: 50%; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 1.2em; }
     .mic-btn.listening { background-color: #e74c3c; color: white; animation: pulse 1.5s infinite; border-color: #c0392b; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+    /* Zen Mode Star */
+    .btn-star { background: transparent; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-size: 1.1em; padding: 2px 8px; color: #f1c40f; transition: 0.2s; background-color: #fff; }
+    .btn-star:hover { background-color: #f8f9fa; transform: scale(1.05); }
+
+    /* Zen Mode Specific Overrides */
+    #zen-content { width: 100%; max-width: 100vw; box-sizing: border-box; padding: 10px; }
+    #zen-content .hidden-section { display: block !important; }
+    #zen-content .notation-group-container { border: none; background: transparent; box-shadow: none; margin-bottom: 0; width: 100%; padding: 5px 0; }
+    #zen-content .simple-notation-line { border-bottom: none; width: 100%; }
+    #zen-content .btn-star { display: none; } /* Masquer l'étoile en mode focus */
+    
+    #zen-content .square-btn-group { gap: 8px; justify-content: center; flex-wrap: wrap; }
+    #zen-content .square-btn { flex: 0 1 calc(20% - 8px); min-width: 50px; height: 50px; line-height: 48px; font-size: 1.3em; }
+    
+    #zen-content .input-inc-dec { justify-content: center; width: 100%; }
+    #zen-content .input-inc-dec input { width: 120px !important; font-size: 1.5em; height: 55px; }
+    #zen-content .input-inc-dec button { font-size: 1.5em; padding: 10px 25px !important; height: 55px; }
+    
+    #zen-content .input-group-big { justify-content: center; width: 100%; }
+    #zen-content .input-big-text { font-size: 2.2em !important; height: 70px; }
+    #zen-content .btn-xl { width: 80px !important; font-size: 2.2em !important; height: 70px !important; display: flex !important; align-items: center; justify-content: center;}
+    
+    #zen-content h4, #zen-content .simple-not-header { font-size: 1.5em; text-align: center; justify-content: center; width: 100%; margin-bottom:20px; flex-wrap: wrap; }
+    
+    #zen-save-buttons-container .save-buttons-container button { font-size: 1.3em; padding: 25px 10px; height: auto; }
 </style>
 <body>
 
@@ -255,7 +281,10 @@ html {
                         <div id="not-stade" class="notation-group-container hidden-section">
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
                                 <label for="stade" style="width:auto; margin:0;" data-i18n="stade-bbch">Stade (BBCH) :</label>
-                                <button type="button" id="bbch-info-button" class="btn-secondary" data-i18n="btn-info" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
+                                <div>
+                                    <button type="button" class="btn-star" onclick="toggleZenMode('not-stade')" title="Mode Plein Écran">⭐</button>
+                                    <button type="button" id="bbch-info-button" class="btn-secondary" data-i18n="btn-info" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
+                                </div>
                             </div>
                             <div class="input-inc-dec">
                                 <button type="button" id="minus-stade" class="btn-secondary">-</button>
@@ -265,12 +294,18 @@ html {
                         </div>
 
                         <div id="not-flo" class="notation-group-container hidden-section">
-                            <h4 data-i18n="taux-flo">Taux de floraison (%) <span id="flo-display">0</span></h4>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <h4 data-i18n="taux-flo" style="margin:0 0 10px 0;">Taux de floraison (%) <span id="flo-display">0</span></h4>
+                                <button type="button" class="btn-star" onclick="toggleZenMode('not-flo')" title="Mode Plein Écran">⭐</button>
+                            </div>
                             <div id="flo-buttons" class="square-btn-group"></div>
                         </div>
                         
                         <div id="not-receptivite" class="notation-group-container hidden-section">
-                             <h4 data-i18n="receptivite-label">Réceptivité (Nb)</h4>
+                             <div style="display:flex; justify-content:space-between; align-items:center;">
+                                 <h4 data-i18n="receptivite-label" style="margin:0 0 10px 0;">Réceptivité (Nb)</h4>
+                                 <button type="button" class="btn-star" onclick="toggleZenMode('not-receptivite')" title="Mode Plein Écran">⭐</button>
+                             </div>
                              <!-- Nouveau Design Gros Boutons + Reset -->
                              <div class="input-group-big">
                                  <button type="button" id="minus-receptivite" class="btn-secondary btn-xl">-</button>
@@ -283,7 +318,10 @@ html {
                         </div>
 
                         <div id="not-prlvmt" class="notation-group-container hidden-section">
-                            <h4 data-i18n="prelevements">Prélèvements / Échantillons</h4>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <h4 data-i18n="prelevements" style="margin:0 0 10px 0;">Prélèvements / Échantillons</h4>
+                                <button type="button" class="btn-star" onclick="toggleZenMode('not-prlvmt')" title="Mode Plein Écran">⭐</button>
+                            </div>
                             <div style="display:flex; align-items:center; gap:5px; margin-bottom:5px;">
                                 <label style="width:auto; margin:0;" data-i18n="code">Code:</label>
                                 <input type="text" id="lettres-analyse" size="5" placeholder="AAA" style="width:60px !important; margin:0;">
@@ -301,16 +339,18 @@ html {
                     
                     <hr>
                     <div style="position: relative; margin-top: 15px;">
-    <label for="obs" data-i18n="observations">Observations:</label>
-    <textarea id="obs" rows="2" style="padding-right: 40px;"></textarea>
-    <span id="clear-obs" style="position: absolute; right: 10px; bottom: 22px; cursor: pointer; color: #e74c3c; font-weight: bold; font-size: 1.2em; display: none;">&times;</span>
-    <div id="mic-btn" class="mic-btn" onclick="toggleDictation()">🎤</div>
-</div>
+                        <label for="obs" data-i18n="observations">Observations:</label>
+                        <textarea id="obs" rows="2" style="padding-right: 40px;"></textarea>
+                        <span id="clear-obs" style="position: absolute; right: 10px; bottom: 22px; cursor: pointer; color: #e74c3c; font-weight: bold; font-size: 1.2em; display: none;">&times;</span>
+                        <div id="mic-btn" class="mic-btn" onclick="toggleDictation()">🎤</div>
+                    </div>
 
-                    <div class="save-buttons-container">
-                        <button id="enregistrer-prec" class="btn-accent" data-i18n="enregistrer-prec">← Enr. Préc.</button>
-                        <button id="enregistrer" class="btn-primary" data-i18n="enregistrer">Enregistrer</button>
-                        <button id="enregistrer-suivant" class="btn-accent" data-i18n="enregistrer-suivant">Enr. Suiv. →</button>
+                    <div id="save-buttons-placeholder">
+                        <div class="save-buttons-container" id="main-save-buttons">
+                            <button id="enregistrer-prec" class="btn-accent" data-i18n="enregistrer-prec">← Enr. Préc.</button>
+                            <button id="enregistrer" class="btn-primary" data-i18n="enregistrer">Enregistrer</button>
+                            <button id="enregistrer-suivant" class="btn-accent" data-i18n="enregistrer-suivant">Enr. Suiv. →</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -380,6 +420,7 @@ html {
 </div>
 
     <div id="bbchModal" class="modal"><div class="modal-content"><span class="close-button" id="closeBbchModal" style="float:right; font-size:24px; cursor:pointer;">×</span><h2 data-i18n="h2-bbch">Stades BBCH</h2><div id="bbch-modal-body"></div></div></div>
+    
     <div id="sowingPlanModal" class="modal">
         <div class="modal-content"> 
             <span class="close-button" id="closeSowingPlanModal" style="float:right; font-size:24px; cursor:pointer;">×</span>
@@ -431,6 +472,27 @@ html {
         </div>
     </div>
 
+    <!-- ZEN MODE / FOCUS OVERLAY -->
+    <div id="zen-overlay" style="display:none; position:fixed; z-index:99999; top:0; left:0; width:100%; height:100%; background:var(--theme-background-color); flex-direction:column; padding:15px; box-sizing:border-box;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+                <h1 id="zen-title" style="margin:0; font-size:3.5em; color:var(--theme-heading-color); line-height:1;">P001</h1>
+                <h2 id="zen-subtitle" style="margin:5px 0 0 0; font-size:1.8em; color:#555;">Variété</h2>
+                <h3 id="zen-rep" style="margin:5px 0 0 0; font-size:1.5em; color:var(--theme-primary-color);">Rep : A</h3>
+            </div>
+            <button onclick="exitZenMode()" class="btn-danger" style="margin:0; font-size:1.2em; padding:15px;" data-i18n="btn-quitter">❌ Quitter</button>
+        </div>
+        <hr style="width:100%; margin:20px 0; border: 1px solid #ccc;">
+        
+        <div id="zen-content" style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
+            <!-- Targeted notation element will be moved here -->
+        </div>
+        
+        <div id="zen-save-buttons-container" style="padding-bottom: 20px;">
+            <!-- Save buttons will be moved here -->
+        </div>
+    </div>
+
 <script>
    const translations = {
     fr: {
@@ -451,7 +513,8 @@ html {
         "label-import": "Import Données Externes (Session uniquement) :", "desc-import": "Le fichier doit être un CSV au format Notea (séparateur point-virgule). Utile pour le mode interactif du plan de semis.",
         "avancement-hachure": "Avancement (Hachuré) :", "interactif": "INTERACTIF", "donnee": "Donnée :", "filter-notateur": "Notateur :", "jours-max": "Jours max (Hier: 1) :", "option-tous": "Tous",
         "alert-import-success": "Données externes chargées avec succès ! ({n} lignes).", "alert-import-empty": "Erreur: Aucune donnée trouvée.", "alert-import-error": "Erreur lecture CSV.", "alert-voice-error": "La reconnaissance vocale n'est pas supportée par ce navigateur.",
-        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (JJ/MM)", "btn-choice-scale": "1-9 (Échelle)", "btn-choice-photo": "📷 Photo"
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (JJ/MM)", "btn-choice-scale": "1-9 (Échelle)", "btn-choice-photo": "📷 Photo",
+        "btn-quitter": "❌ Quitter"
     },
     en: {
         "title": "Notes", "choix-essai": "Trial Choice:", "notateur": "Your Name / Scorer:", "notateur-placeholder": "Name...", "confirmer": "Confirm",
@@ -471,7 +534,8 @@ html {
         "label-import": "External Data Import (Session only):", "desc-import": "File must be CSV in Notea format (semicolon separator). Useful for interactive sowing plan mode.",
         "avancement-hachure": "Progress (Hatched):", "interactif": "INTERACTIVE", "donnee": "Data:", "filter-notateur": "Scorer:", "jours-max": "Max Days (Yest: 1):", "option-tous": "All",
         "alert-import-success": "External data loaded successfully! ({n} lines).", "alert-import-empty": "Error: No data found.", "alert-import-error": "Error reading CSV.", "alert-voice-error": "Voice recognition not supported by this browser.",
-        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (DD/MM)", "btn-choice-scale": "1-9 (Scale)", "btn-choice-photo": "📷 Photo"
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (DD/MM)", "btn-choice-scale": "1-9 (Scale)", "btn-choice-photo": "📷 Photo",
+        "btn-quitter": "❌ Exit"
     },
     es: {
         "title": "Notas", "choix-essai": "Elegir Ensayo:", "notateur": "Su Nombre / Anotador:", "notateur-placeholder": "Nombre...", "confirmer": "Confirmar",
@@ -491,7 +555,8 @@ html {
         "label-import": "Importar Datos Externos (Sesión):", "desc-import": "Archivo CSV formato Notea (separador ;). Útil para modo interactivo del plan.",
         "avancement-hachure": "Progreso (Rayado):", "interactif": "INTERACTIVO", "donnee": "Dato:", "filter-notateur": "Anotador:", "jours-max": "Días máx (Ayer: 1):", "option-tous": "Todos",
         "alert-import-success": "¡Datos cargados con éxito! ({n} líneas).", "alert-import-empty": "Error: No se encontraron datos.", "alert-import-error": "Error al leer CSV.", "alert-voice-error": "Reconocimiento de voz no soportado.",
-        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Fecha (DD/MM)", "btn-choice-scale": "1-9 (Escala)", "btn-choice-photo": "📷 Foto"
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Fecha (DD/MM)", "btn-choice-scale": "1-9 (Escala)", "btn-choice-photo": "📷 Foto",
+        "btn-quitter": "❌ Salir"
     },
     pl: {
         "title": "Notatki", "choix-essai": "Wybór próby:", "notateur": "Twoje Imię:", "notateur-placeholder": "Imię...", "confirmer": "Potwierdź",
@@ -511,7 +576,8 @@ html {
         "label-import": "Import danych zewn. (Tylko sesja):", "desc-import": "Plik CSV w formacie Notea (średnik). Przydatne do interaktywnego planu.",
         "avancement-hachure": "Postęp (Zakreskowane):", "interactif": "INTERAKTYWNY", "donnee": "Dane:", "filter-notateur": "Oceniający:", "jours-max": "Max dni (Wczoraj: 1):", "option-tous": "Wszyscy",
         "alert-import-success": "Dane zewnętrzne załadowane! ({n} linii).", "alert-import-empty": "Błąd: Brak danych.", "alert-import-error": "Błąd odczytu CSV.", "alert-voice-error": "Rozpoznawanie mowy nieobsługiwane.",
-        "btn-choice-num": "123 (Liczba)", "btn-choice-text": "ABC (Tekst)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (DD/MM)", "btn-choice-scale": "1-9 (Skala)", "btn-choice-photo": "📷 Zdjęcie"
+        "btn-choice-num": "123 (Liczba)", "btn-choice-text": "ABC (Tekst)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (DD/MM)", "btn-choice-scale": "1-9 (Skala)", "btn-choice-photo": "📷 Zdjęcie",
+        "btn-quitter": "❌ Zamknij"
     },
     ro: {
         "title": "Notații", "choix-essai": "Alegere test:", "notateur": "Numele Tău:", "notateur-placeholder": "Nume...", "confirmer": "Confirmă",
@@ -531,7 +597,8 @@ html {
         "label-import": "Import Date Externe (Doar sesiune):", "desc-import": "Fișierul trebuie să fie CSV format Notea (separator punct și virgulă). Util pentru modul interactiv.",
         "avancement-hachure": "Progres (Hașurat):", "interactif": "INTERACTIV", "donnee": "Date:", "filter-notateur": "Evaluator:", "jours-max": "Zile max (Ieri: 1):", "option-tous": "Toți",
         "alert-import-success": "Date externe încărcate cu succes! ({n} linii).", "alert-import-empty": "Eroare: Nu s-au găsit date.", "alert-import-error": "Eroare citire CSV.", "alert-voice-error": "Recunoașterea vocală nu este suportată.",
-        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (ZZ/LL)", "btn-choice-scale": "1-9 (Scară)", "btn-choice-photo": "📷 Foto"
+        "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (ZZ/LL)", "btn-choice-scale": "1-9 (Scară)", "btn-choice-photo": "📷 Foto",
+        "btn-quitter": "❌ Ieșire"
     },
     uk: {
         "title": "Нотатки", "choix-essai": "Вибір випробування:", "notateur": "Ваше Ім'я:", "notateur-placeholder": "Ім'я...", "confirmer": "Підтвердити",
@@ -551,7 +618,8 @@ html {
         "label-import": "Імпорт зовн. даних (Тільки сесія):", "desc-import": "Файл має бути CSV у форматі Notea (роздільник крапка з комою). Для інтерактивного плану.",
         "avancement-hachure": "Прогрес (Заштриховано):", "interactif": "ІНТЕРАКТИВ", "donnee": "Дані:", "filter-notateur": "Оцінювач:", "jours-max": "Макс днів (Вчора: 1):", "option-tous": "Всі",
         "alert-import-success": "Зовнішні дані завантажено! ({n} рядків).", "alert-import-empty": "Помилка: Дані не знайдено.", "alert-import-error": "Помилка читання CSV.", "alert-voice-error": "Розпізнавання голосу не підтримується.",
-        "btn-choice-num": "123 (Число)", "btn-choice-text": "ABC (Текст)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Дата (ДД/ММ)", "btn-choice-scale": "1-9 (Шкала)", "btn-choice-photo": "📷 Фото"
+        "btn-choice-num": "123 (Число)", "btn-choice-text": "ABC (Текст)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Дата (ДД/ММ)", "btn-choice-scale": "1-9 (Шкала)", "btn-choice-photo": "📷 Фото",
+        "btn-quitter": "❌ Вийти"
     }
 };
 
@@ -1167,14 +1235,58 @@ html {
 586,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",96,6,H
 587,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",97,6,H
 588,FILL-FILL-FONGI AUTOM,25COL001,Colza,"43.734344, 1.240952",98,6,H
+4,R13SG1MJO-Influx-plenaris-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1,H
+5,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1,H
+7,R13SG1MJO-Influx-plenaris-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1,H
+8,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1,H
+19,R469MJSO-Influx-plenaris-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2,H
+20,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2,H
+22,R469MJSO-Influx-plenaris-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2,H
+23,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2,H
+26,R4NA1MJ-Influx-plenaris-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2,H
+27,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2,H
+33,R8035MJI-Influx-plenaris-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2,H
+34,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2,H
+40,R8035M1JS-Influx-plenaris-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3,H
+41,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3,H
+43,R8035M1JS-Influx-plenaris-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3,H
+44,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3,H
+49,R890JP-Influx-plenaris-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3,H
+50,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3,H
+60,R13SG1MJO-Influx-plenaris-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4,H
+61,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4,H
+62,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4,H
+63,R13SG1MJO-Influx-plenaris-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4,H
+65,R12BQ3MI-Influx-plenaris-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4,H
+66,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4,H
+73,R469MJSO-Influx-plenaris-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5,H
+74,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5,H
+75,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5,H
+76,R469MJSO-Influx-plenaris-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5,H
+77,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5,H
+78,R4NA1MJ-Influx-plenaris-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5,H
+79,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5,H
+80,R8035MJI-Influx-plenaris-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5,H
+86,R890JP-Influx-plenaris-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6,H
+87,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6,H
+88,R8035M1JS-Influx-plenaris-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6,H
+89,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6,H
+90,R8035M1JS-Influx-plenaris-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6,H
+91,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6,H
+103,R12BQ3MI-Influx-plenaris-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7,H
+104,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7,H
+106,R13SG1MJO-Influx-plenaris-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7,H
+107,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7,H
+109,R13SG1MJO-Influx-plenaris-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7,H
+110,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7,H
+114,R469MJSO-Influx-plenaris-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7,H
+115,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7,H
+117,R469MJSO-Influx-plenaris-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7,H
+118,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7,H
 1,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,1,M
 2,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,1,M
 3,R12BQ3MI-Influx-plenaris-XCLG589630T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,1,M
-4,R13SG1MJO-Influx-plenaris-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1,M
-5,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1,M
 6,R13SG1MJO-Influx-plenaris-F0440F606583T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,1,M
-7,R13SG1MJO-Influx-plenaris-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1,M
-8,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1,M
 9,R14WD1M-Influx-plenaris-XRCH24MA82335T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,1,M
 10,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,1,M
 11,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,1,M
@@ -1185,38 +1297,24 @@ html {
 16,R4NO4M-Influx-plenaris-XESG559541TT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,1,M
 17,R4NO4MJ-Influx-plenaris-F0440D474497T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,1,M
 18,R469MJKO-Influx-plenaris-F0440F597862T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,2,M
-19,R469MJSO-Influx-plenaris-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2,M
-20,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2,M
 21,R469MJSO-Influx-plenaris-F0440F597559T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,2,M
-22,R469MJSO-Influx-plenaris-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2,M
-23,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2,M
 24,R469MJSO-Influx-plenaris-F0440F597563T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,2,M
 25,R469MJSO-Influx-plenaris-XRCH25MA84934T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,2,M
-26,R4NA1MJ-Influx-plenaris-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2,M
-27,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2,M
 28,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,2,M
 29,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,2,M
 30,R4NA1MJO-Influx-plenaris-F0440F609634T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,2,M
 31,R4NA1MJO-Influx-plenaris-XCLG590786T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,2,M
 32,R8035MJ-Influx-plenaris-F0440F597569T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,2,M
-33,R8035MJI-Influx-plenaris-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2,M
-34,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2,M
 35,R5PE4MS-Influx-plenaris-F0440F610782T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,3,M
 36,R5PE4MS-Influx-plenaris-F0440G554644T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,3,M
 37,R5PG6MJS-Influx-plenaris-F0440F610784T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,3,M
 38,R5PG6MJS-Influx-plenaris-F0440G547818T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,3,M
 39,R8035M1JS-Influx-plenaris-F0440F597387T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,3,M
-40,R8035M1JS-Influx-plenaris-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3,M
-41,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3,M
 42,R8035M1JS-Influx-plenaris-F0440F597390T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,3,M
-43,R8035M1JS-Influx-plenaris-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3,M
-44,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3,M
 45,R8035M1JS-Influx-plenaris-XESF598972T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,3,M
 46,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,3,M
 47,R890JP-Influx-plenaris-F0440D472278T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,3,M
 48,R890JP-Influx-plenaris-F0440D472306T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,3,M
-49,R890JP-Influx-plenaris-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3,M
-50,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3,M
 51,SR1087MS-Influx-plenaris-XRCHE67458T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,3,M
 52,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,4,M
 53,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,4,M
@@ -1226,38 +1324,18 @@ html {
 57,R4NA1MK-Influx-plenaris-F0440F610406T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,4,M
 58,R4NO4M-Influx-plenaris-XESG559541TT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,4,M
 59,R4NA1MK-Influx-plenaris-F0440F610791T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,4,M
-60,R13SG1MJO-Influx-plenaris-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4,M
-61,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4,M
-62,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4,M
-63,R13SG1MJO-Influx-plenaris-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4,M
 64,R13SG1MJO-Influx-plenaris-F0440F606583T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,4,M
-65,R12BQ3MI-Influx-plenaris-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4,M
-66,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4,M
 67,R12BQ3MI-Influx-plenaris-XCLG589630T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,4,M
 68,R4NO4MJ-Influx-plenaris-F0440D474497T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,4,M
 69,R469MJSO-Influx-plenaris-F0440F597559T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,5,M
 70,R469MJSO-Influx-plenaris-F0440F597563T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,5,M
 71,R469MJKO-Influx-plenaris-F0440F597862T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,5,M
 72,R469MJSO-Influx-plenaris-XRCH25MA84934T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,5,M
-73,R469MJSO-Influx-plenaris-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5,M
-74,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5,M
-75,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5,M
-76,R469MJSO-Influx-plenaris-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5,M
-77,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5,M
-78,R4NA1MJ-Influx-plenaris-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5,M
-79,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5,M
-80,R8035MJI-Influx-plenaris-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5,M
 81,R8035MJ-Influx-plenaris-F0440F597569T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,5,M
 82,R4NA1MJO-Influx-plenaris-XCLG590786T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,5,M
 83,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,5,M
 84,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,5,M
 85,R4NA1MJO-Influx-plenaris-F0440F609634T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,5,M
-86,R890JP-Influx-plenaris-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6,M
-87,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6,M
-88,R8035M1JS-Influx-plenaris-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6,M
-89,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6,M
-90,R8035M1JS-Influx-plenaris-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6,M
-91,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6,M
 92,R8035M1JS-Influx-plenaris-XESF598972T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,6,M
 93,R8035M1JS-Influx-plenaris-F0440F597390T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,6,M
 94,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,6,M
@@ -1269,22 +1347,12 @@ html {
 100,R890JP-Influx-plenaris-F0440D472306T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,6,M
 101,R890JP-Influx-plenaris-F0440D472278T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,6,M
 102,R5PE4MS-Influx-plenaris-F0440G554644T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,6,M
-103,R12BQ3MI-Influx-plenaris-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7,M
-104,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7,M
 105,R12BQ3MI-Influx-plenaris-XCLG589630T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",3,7,M
-106,R13SG1MJO-Influx-plenaris-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7,M
-107,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7,M
 108,R13SG1MJO-Influx-plenaris-F0440F606583T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",6,7,M
-109,R13SG1MJO-Influx-plenaris-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7,M
-110,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7,M
 111,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",9,7,M
 112,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",10,7,M
 113,R469MJKO-Influx-plenaris-F0440F597862T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",11,7,M
-114,R469MJSO-Influx-plenaris-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7,M
-115,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7,M
 116,R469MJSO-Influx-plenaris-F0440F597559T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",14,7,M
-117,R469MJSO-Influx-plenaris-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7,M
-118,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7,M
 119,R469MJSO-Influx-plenaris-F0440F597563T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",17,7,M
 120,R469MJSO-Influx-plenaris-XRCH25MA84934T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7,M
 1,ARMONICA-male,Training,Tournesol,"0.0,0.0",1,1,M
@@ -1386,6 +1454,474 @@ html {
 97,IZZLI-male,Training,Sorgho,"0.0,0.0",14,7,M
 98,IZZLI-female,Training,Sorgho,"0.0,0.0",15,7,F
 99,IZZLI-hrybride,Training,Sorgho,"0.0,0.0",16,7,H
+1,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",1,1,F
+2,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",2,1,F
+3,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",3,1,F
+4,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",4,1,F
+5,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",5,1,F
+6,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",6,1,F
+7,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",7,1,F
+8,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",8,1,F
+9,R4NA1MK,PC Seville 2026,Tournesol,"0.0,0.0",9,1,M
+10,R4NA1MK,PC Seville 2026,Tournesol,"0.0,0.0",10,1,M
+11,R4NA1MK,PC Seville 2026,Tournesol,"0.0,0.0",11,1,M
+12,R7ST3MJI,PC Seville 2026,Tournesol,"0.0,0.0",12,1,M
+13,R12BQ3MI,PC Seville 2026,Tournesol,"0.0,0.0",13,1,M
+14,R12BQ3MI,PC Seville 2026,Tournesol,"0.0,0.0",14,1,M
+15,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",15,1,M
+16,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",16,1,M
+17,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",17,1,M
+18,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",18,1,M
+19,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",19,1,F
+20,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",20,1,F
+21,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",21,1,F
+22,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",22,1,F
+23,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",23,1,F
+24,F18DM5MJKA,PC Seville 2026,Tournesol,"0.0,0.0",24,1,F
+25,F18DM5MJKA,PC Seville 2026,Tournesol,"0.0,0.0",25,1,F
+26,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",26,1,F
+27,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",27,1,F
+28,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",28,1,F
+29,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",29,1,F
+30,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",30,1,F
+31,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",31,1,F
+32,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",32,1,F
+33,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",33,1,F
+34,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",34,1,F
+35,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",35,1,F
+36,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",36,1,F
+37,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",37,1,F
+38,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",38,1,F
+39,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",39,1,M
+40,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",40,1,M
+41,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",41,1,M
+42,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",42,1,M
+43,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",43,1,M
+44,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",44,1,M
+45,R5PE4MJS,PC Seville 2026,Tournesol,"0.0,0.0",45,1,M
+46,LG71234IA,PC Seville 2026,Tournesol,"0.0,0.0",46,1,F
+47,R11ST6MI,PC Seville 2026,Tournesol,"0.0,0.0",47,1,M
+48,F7AX2MJKOA,PC Seville 2026,Tournesol,"0.0,0.0",48,1,F
+49,F7AX2MJKOA,PC Seville 2026,Tournesol,"0.0,0.0",49,1,F
+50,F7AX2MJKOA,PC Seville 2026,Tournesol,"0.0,0.0",50,1,F
+51,R14WZ3MJIO,PC Seville 2026,Tournesol,"0.0,0.0",51,1,M
+52,R14WZ3MJIO,PC Seville 2026,Tournesol,"0.0,0.0",52,1,M
+53,R4NA1MKO,PC Seville 2026,Tournesol,"0.0,0.0",53,1,M
+54,F5DC5MA,PC Seville 2026,Tournesol,"0.0,0.0",54,1,F
+55,F5DC5MA,PC Seville 2026,Tournesol,"0.0,0.0",55,1,F
+56,F5DC5MA,PC Seville 2026,Tournesol,"0.0,0.0",56,1,F
+57,R4NO4MJ,PC Seville 2026,Tournesol,"0.0,0.0",57,1,M
+58,R4NO4M,PC Seville 2026,Tournesol,"0.0,0.0",58,1,M
+59,F7AX2MJOA,PC Seville 2026,Tournesol,"0.0,0.0",59,1,F
+60,F7AX2MJOA,PC Seville 2026,Tournesol,"0.0,0.0",60,1,F
+61,F7AX2MJOA,PC Seville 2026,Tournesol,"0.0,0.0",61,1,F
+62,R13SG1MJO,PC Seville 2026,Tournesol,"0.0,0.0",62,1,M
+63,R13SG1MJO,PC Seville 2026,Tournesol,"0.0,0.0",63,1,M
+64,R13SG1MJO,PC Seville 2026,Tournesol,"0.0,0.0",64,1,M
+65,F7AX2MJSA,PC Seville 2026,Tournesol,"0.0,0.0",65,1,F
+66,F7AX2MJSA,PC Seville 2026,Tournesol,"0.0,0.0",66,1,F
+67,R21DW2JS,PC Seville 2026,Tournesol,"0.0,0.0",67,1,M
+68,R4NA1MJS,PC Seville 2026,Tournesol,"0.0,0.0",68,1,M
+69,R4NA1MJS,PC Seville 2026,Tournesol,"0.0,0.0",69,1,M
+70,R4NA1MJS,PC Seville 2026,Tournesol,"0.0,0.0",70,1,M
+71,F18003JSA,PC Seville 2026,Tournesol,"0.0,0.0",71,1,F
+72,F18003JSA,PC Seville 2026,Tournesol,"0.0,0.0",72,1,F
+73,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",73,1,F
+74,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",74,1,F
+75,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",75,1,F
+76,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",76,1,F
+77,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",77,1,F
+78,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",78,1,F
+79,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",79,1,F
+80,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",80,1,F
+81,R9TQ6S,PC Seville 2026,Tournesol,"0.0,0.0",81,1,M
+82,SR1087MS,PC Seville 2026,Tournesol,"0.0,0.0",82,1,M
+83,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",83,1,F
+84,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",84,1,F
+85,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",85,1,F
+86,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",86,1,F
+87,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",87,1,F
+88,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",1,2,F
+89,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",2,2,F
+90,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",3,2,F
+91,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",4,2,F
+92,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",5,2,F
+93,R5PE4MS,PC Seville 2026,Tournesol,"0.0,0.0",6,2,M
+94,R5PE4MS,PC Seville 2026,Tournesol,"0.0,0.0",7,2,M
+95,F7AX2MOA,PC Seville 2026,Tournesol,"0.0,0.0",8,2,F
+96,R4NA1MJO,PC Seville 2026,Tournesol,"0.0,0.0",9,2,M
+97,R4NA1MJO,PC Seville 2026,Tournesol,"0.0,0.0",10,2,M
+98,V7506RO,PC Seville 2026,Tournesol,"0.0,0.0",11,2,M
+99,F15QM3JIA,PC Seville 2026,Tournesol,"0.0,0.0",12,2,F
+100,F15QM3JIA,PC Seville 2026,Tournesol,"0.0,0.0",13,2,F
+101,R5PE4M2K,PC Seville 2026,Tournesol,"0.0,0.0",14,2,M
+102,R5PE4M2K,PC Seville 2026,Tournesol,"0.0,0.0",15,2,M
+103,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",16,2,F
+104,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",17,2,F
+105,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",18,2,F
+106,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",19,2,F
+107,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",20,2,F
+108,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",21,2,F
+109,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",22,2,F
+110,R4NA1MJ,PC Seville 2026,Tournesol,"0.0,0.0",23,2,M
+111,R4NA1MJ,PC Seville 2026,Tournesol,"0.0,0.0",24,2,M
+112,R4NA1MJ,PC Seville 2026,Tournesol,"0.0,0.0",25,2,M
+113,F14JF1MJA,PC Seville 2026,Tournesol,"0.0,0.0",26,2,F
+114,F14JF1MJA,PC Seville 2026,Tournesol,"0.0,0.0",27,2,F
+115,F14JF1MJA,PC Seville 2026,Tournesol,"0.0,0.0",28,2,F
+116,R14WD1M,PC Seville 2026,Tournesol,"0.0,0.0",29,2,M
+117,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",30,2,F
+118,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",31,2,F
+119,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",32,2,F
+120,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",33,2,F
+121,R8035MJI,PC Seville 2026,Tournesol,"0.0,0.0",34,2,M
+122,F7AX2JA,PC Seville 2026,Tournesol,"0.0,0.0",35,2,F
+123,F7AX2JA,PC Seville 2026,Tournesol,"0.0,0.0",36,2,F
+124,R4NA1M,PC Seville 2026,Tournesol,"0.0,0.0",37,2,M
+125,F15ML1MA,PC Seville 2026,Tournesol,"0.0,0.0",38,2,F
+126,R13SS3MJ,PC Seville 2026,Tournesol,"0.0,0.0",39,2,M
+127,SF1561M2SA,PC Seville 2026,Tournesol,"0.0,0.0",40,2,F
+128,SF1561M2SA,PC Seville 2026,Tournesol,"0.0,0.0",41,2,F
+129,SF1561M2SA,PC Seville 2026,Tournesol,"0.0,0.0",42,2,F
+130,R5PG6MJS,PC Seville 2026,Tournesol,"0.0,0.0",43,2,M
+131,R5PG6MJS,PC Seville 2026,Tournesol,"0.0,0.0",44,2,M
+132,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",45,2,F
+133,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",46,2,F
+134,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",47,2,F
+135,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",48,2,F
+136,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",49,2,F
+137,R16DG2MJSO,PC Seville 2026,Tournesol,"0.0,0.0",50,2,M
+138,R16DG2MJSO,PC Seville 2026,Tournesol,"0.0,0.0",51,2,M
+139,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",52,2,F
+140,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",53,2,F
+141,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",54,2,F
+142,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",55,2,F
+143,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",56,2,F
+144,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",57,2,F
+145,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",58,2,F
+146,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",59,2,F
+147,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",60,2,M
+148,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",61,2,M
+149,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",62,2,M
+150,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",63,2,M
+151,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",64,2,M
+152,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",65,2,F
+153,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",66,2,F
+154,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",67,2,F
+155,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",68,2,F
+156,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",69,2,F
+157,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",70,2,F
+158,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",71,2,F
+159,SF1566MOA,PC Seville 2026,Tournesol,"0.0,0.0",72,2,F
+160,SF1566MOA,PC Seville 2026,Tournesol,"0.0,0.0",73,2,F
+161,SF1566MOA,PC Seville 2026,Tournesol,"0.0,0.0",74,2,F
+162,F9ES4MIOA,PC Seville 2026,Tournesol,"0.0,0.0",75,2,F
+163,F9ES4MIOA,PC Seville 2026,Tournesol,"0.0,0.0",76,2,F
+164,R469MJKO,PC Seville 2026,Tournesol,"0.0,0.0",77,2,M
+165,F4AL5MA,PC Seville 2026,Tournesol,"0.0,0.0",78,2,F
+166,R8035MJ,PC Seville 2026,Tournesol,"0.0,0.0",79,2,M
+167,F9AZ8MA,PC Seville 2026,Tournesol,"0.0,0.0",80,2,F
+168,F9AZ8MA,PC Seville 2026,Tournesol,"0.0,0.0",81,2,F
+169,F9AZ8MA,PC Seville 2026,Tournesol,"0.0,0.0",82,2,F
+170,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",83,2,F
+171,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",84,2,F
+172,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",85,2,F
+173,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",86,2,F
+174,EMPTY,PC Seville 2026,Tournesol,"0.0,0.0",87,2,
+175,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",1,3,F
+176,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",2,3,F
+177,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",3,3,F
+178,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",4,3,F
+179,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",5,3,F
+180,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",6,3,F
+181,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",7,3,F
+182,F7AX2MJKA,PC Seville 2026,Tournesol,"0.0,0.0",8,3,F
+183,R4NA1MK,PC Seville 2026,Tournesol,"0.0,0.0",9,3,M
+184,R4NA1MK,PC Seville 2026,Tournesol,"0.0,0.0",10,3,M
+185,R4NA1MK,PC Seville 2026,Tournesol,"0.0,0.0",11,3,M
+186,R7ST3MJI,PC Seville 2026,Tournesol,"0.0,0.0",12,3,M
+187,R12BQ3MI,PC Seville 2026,Tournesol,"0.0,0.0",13,3,M
+188,R12BQ3MI,PC Seville 2026,Tournesol,"0.0,0.0",14,3,M
+189,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",15,3,M
+190,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",16,3,M
+191,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",17,3,M
+192,R14WZ3MJI,PC Seville 2026,Tournesol,"0.0,0.0",18,3,M
+193,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",19,3,F
+194,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",20,3,F
+195,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",21,3,F
+196,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",22,3,F
+197,F5DN3M2KA,PC Seville 2026,Tournesol,"0.0,0.0",23,3,F
+198,F18DM5MJKA,PC Seville 2026,Tournesol,"0.0,0.0",24,3,F
+199,F18DM5MJKA,PC Seville 2026,Tournesol,"0.0,0.0",25,3,F
+200,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",26,3,F
+201,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",27,3,F
+202,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",28,3,F
+203,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",29,3,F
+204,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",30,3,F
+205,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",31,3,F
+206,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",32,3,F
+207,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",33,3,F
+208,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",34,3,F
+209,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",35,3,F
+210,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",36,3,F
+211,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",37,3,F
+212,F19002MJSA,PC Seville 2026,Tournesol,"0.0,0.0",38,3,F
+213,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",39,3,M
+214,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",40,3,M
+215,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",41,3,M
+216,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",42,3,M
+217,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",43,3,M
+218,R8035M1JS,PC Seville 2026,Tournesol,"0.0,0.0",44,3,M
+219,R5PE4MJS,PC Seville 2026,Tournesol,"0.0,0.0",45,3,M
+220,LG71234IA,PC Seville 2026,Tournesol,"0.0,0.0",46,3,F
+221,R11ST6MI,PC Seville 2026,Tournesol,"0.0,0.0",47,3,M
+222,F7AX2MJKOA,PC Seville 2026,Tournesol,"0.0,0.0",48,3,F
+223,F7AX2MJKOA,PC Seville 2026,Tournesol,"0.0,0.0",49,3,F
+224,F7AX2MJKOA,PC Seville 2026,Tournesol,"0.0,0.0",50,3,F
+225,R14WZ3MJIO,PC Seville 2026,Tournesol,"0.0,0.0",51,3,M
+226,R14WZ3MJIO,PC Seville 2026,Tournesol,"0.0,0.0",52,3,M
+227,R4NA1MKO,PC Seville 2026,Tournesol,"0.0,0.0",53,3,M
+228,F5DC5MA,PC Seville 2026,Tournesol,"0.0,0.0",54,3,F
+229,F5DC5MA,PC Seville 2026,Tournesol,"0.0,0.0",55,3,F
+230,F5DC5MA,PC Seville 2026,Tournesol,"0.0,0.0",56,3,F
+231,R4NO4MJ,PC Seville 2026,Tournesol,"0.0,0.0",57,3,M
+232,R4NO4M,PC Seville 2026,Tournesol,"0.0,0.0",58,3,M
+233,F7AX2MJOA,PC Seville 2026,Tournesol,"0.0,0.0",59,3,F
+234,F7AX2MJOA,PC Seville 2026,Tournesol,"0.0,0.0",60,3,F
+235,F7AX2MJOA,PC Seville 2026,Tournesol,"0.0,0.0",61,3,F
+236,R13SG1MJO,PC Seville 2026,Tournesol,"0.0,0.0",62,3,M
+237,R13SG1MJO,PC Seville 2026,Tournesol,"0.0,0.0",63,3,M
+238,R13SG1MJO,PC Seville 2026,Tournesol,"0.0,0.0",64,3,M
+239,F7AX2MJSA,PC Seville 2026,Tournesol,"0.0,0.0",65,3,F
+240,F7AX2MJSA,PC Seville 2026,Tournesol,"0.0,0.0",66,3,F
+241,R21DW2JS,PC Seville 2026,Tournesol,"0.0,0.0",67,3,M
+242,R4NA1MJS,PC Seville 2026,Tournesol,"0.0,0.0",68,3,M
+243,R4NA1MJS,PC Seville 2026,Tournesol,"0.0,0.0",69,3,M
+244,R4NA1MJS,PC Seville 2026,Tournesol,"0.0,0.0",70,3,M
+245,F18003JSA,PC Seville 2026,Tournesol,"0.0,0.0",71,3,F
+246,F18003JSA,PC Seville 2026,Tournesol,"0.0,0.0",72,3,F
+247,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",73,3,F
+248,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",74,3,F
+249,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",75,3,F
+250,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",76,3,F
+251,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",77,3,F
+252,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",78,3,F
+253,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",79,3,F
+254,LG751234A,PC Seville 2026,Tournesol,"0.0,0.0",80,3,F
+255,R9TQ6S,PC Seville 2026,Tournesol,"0.0,0.0",81,3,M
+256,SR1087MS,PC Seville 2026,Tournesol,"0.0,0.0",82,3,M
+257,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",83,3,F
+258,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",84,3,F
+259,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",85,3,F
+260,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",86,3,F
+261,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",87,3,F
+262,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",1,4,F
+263,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",2,4,F
+264,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",3,4,F
+265,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",4,4,F
+266,F754271MA,PC Seville 2026,Tournesol,"0.0,0.0",5,4,F
+267,R5PE4MS,PC Seville 2026,Tournesol,"0.0,0.0",6,4,M
+268,R5PE4MS,PC Seville 2026,Tournesol,"0.0,0.0",7,4,M
+269,F7AX2MOA,PC Seville 2026,Tournesol,"0.0,0.0",8,4,F
+270,R4NA1MJO,PC Seville 2026,Tournesol,"0.0,0.0",9,4,M
+271,R4NA1MJO,PC Seville 2026,Tournesol,"0.0,0.0",10,4,M
+272,V7506RO,PC Seville 2026,Tournesol,"0.0,0.0",11,4,M
+273,F15QM3JIA,PC Seville 2026,Tournesol,"0.0,0.0",12,4,F
+274,F15QM3JIA,PC Seville 2026,Tournesol,"0.0,0.0",13,4,F
+275,R5PE4M2K,PC Seville 2026,Tournesol,"0.0,0.0",14,4,M
+276,R5PE4M2K,PC Seville 2026,Tournesol,"0.0,0.0",15,4,M
+277,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",16,4,F
+278,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",17,4,F
+279,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",18,4,F
+280,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",19,4,F
+281,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",20,4,F
+282,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",21,4,F
+283,F7AX2MJA,PC Seville 2026,Tournesol,"0.0,0.0",22,4,F
+284,R4NA1MJ,PC Seville 2026,Tournesol,"0.0,0.0",23,4,M
+285,R4NA1MJ,PC Seville 2026,Tournesol,"0.0,0.0",24,4,M
+286,R4NA1MJ,PC Seville 2026,Tournesol,"0.0,0.0",25,4,M
+287,F14JF1MJA,PC Seville 2026,Tournesol,"0.0,0.0",26,4,F
+288,F14JF1MJA,PC Seville 2026,Tournesol,"0.0,0.0",27,4,F
+289,F14JF1MJA,PC Seville 2026,Tournesol,"0.0,0.0",28,4,F
+290,R14WD1M,PC Seville 2026,Tournesol,"0.0,0.0",29,4,M
+291,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",30,4,F
+292,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",31,4,F
+293,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",32,4,F
+294,F9AZ8MJKA,PC Seville 2026,Tournesol,"0.0,0.0",33,4,F
+295,R8035MJI,PC Seville 2026,Tournesol,"0.0,0.0",34,4,M
+296,F7AX2JA,PC Seville 2026,Tournesol,"0.0,0.0",35,4,F
+297,F7AX2JA,PC Seville 2026,Tournesol,"0.0,0.0",36,4,F
+298,R4NA1M,PC Seville 2026,Tournesol,"0.0,0.0",37,4,M
+299,F15ML1MA,PC Seville 2026,Tournesol,"0.0,0.0",38,4,F
+300,R13SS3MJ,PC Seville 2026,Tournesol,"0.0,0.0",39,4,M
+301,SF1561M2SA,PC Seville 2026,Tournesol,"0.0,0.0",40,4,F
+302,SF1561M2SA,PC Seville 2026,Tournesol,"0.0,0.0",41,4,F
+303,SF1561M2SA,PC Seville 2026,Tournesol,"0.0,0.0",42,4,F
+304,R5PG6MJS,PC Seville 2026,Tournesol,"0.0,0.0",43,4,M
+305,R5PG6MJS,PC Seville 2026,Tournesol,"0.0,0.0",44,4,M
+306,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",45,4,F
+307,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",46,4,F
+308,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",47,4,F
+309,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",48,4,F
+310,F9011MSOA,PC Seville 2026,Tournesol,"0.0,0.0",49,4,F
+311,R16DG2MJSO,PC Seville 2026,Tournesol,"0.0,0.0",50,4,M
+312,R16DG2MJSO,PC Seville 2026,Tournesol,"0.0,0.0",51,4,M
+313,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",52,4,F
+314,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",53,4,F
+315,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",54,4,F
+316,SF2615MSOA,PC Seville 2026,Tournesol,"0.0,0.0",55,4,F
+317,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",56,4,F
+318,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",57,4,F
+319,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",58,4,F
+320,F618MJSOA,PC Seville 2026,Tournesol,"0.0,0.0",59,4,F
+321,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",60,4,M
+322,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",61,4,M
+323,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",62,4,M
+324,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",63,4,M
+325,R469MJSO,PC Seville 2026,Tournesol,"0.0,0.0",64,4,M
+326,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",65,4,F
+327,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",66,4,F
+328,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",67,4,F
+329,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",68,4,F
+330,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",69,4,F
+331,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",70,4,F
+332,F6AH8MSOA,PC Seville 2026,Tournesol,"0.0,0.0",71,4,F
+333,SF1566MOA,PC Seville 2026,Tournesol,"0.0,0.0",72,4,F
+334,SF1566MOA,PC Seville 2026,Tournesol,"0.0,0.0",73,4,F
+335,SF1566MOA,PC Seville 2026,Tournesol,"0.0,0.0",74,4,F
+336,F9ES4MIOA,PC Seville 2026,Tournesol,"0.0,0.0",75,4,F
+337,F9ES4MIOA,PC Seville 2026,Tournesol,"0.0,0.0",76,4,F
+338,R469MJKO,PC Seville 2026,Tournesol,"0.0,0.0",77,4,M
+339,F4AL5MA,PC Seville 2026,Tournesol,"0.0,0.0",78,4,F
+340,R8035MJ,PC Seville 2026,Tournesol,"0.0,0.0",79,4,M
+341,F9AZ8MA,PC Seville 2026,Tournesol,"0.0,0.0",80,4,F
+342,F9AZ8MA,PC Seville 2026,Tournesol,"0.0,0.0",81,4,F
+343,F9AZ8MA,PC Seville 2026,Tournesol,"0.0,0.0",82,4,F
+344,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",83,4,F
+345,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",84,4,F
+346,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",85,4,F
+347,SOLF2615A,PC Seville 2026,Tournesol,"0.0,0.0",86,4,F
+348,EMPTY,PC Seville 2026,Tournesol,"0.0,0.0",87,4,
+4,R13SG1MJO-Influx-plenaris-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,1,H
+5,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,1,H
+7,R13SG1MJO-Influx-plenaris-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,1,H
+8,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,1,H
+19,R469MJSO-Influx-plenaris-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,2,H
+20,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,2,H
+22,R469MJSO-Influx-plenaris-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,2,H
+23,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,2,H
+26,R4NA1MJ-Influx-plenaris-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,2,H
+27,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,2,H
+33,R8035MJI-Influx-plenaris-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,2,H
+34,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,2,H
+40,R8035M1JS-Influx-plenaris-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,3,H
+41,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,3,H
+43,R8035M1JS-Influx-plenaris-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,3,H
+44,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,3,H
+49,R890JP-Influx-plenaris-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,3,H
+50,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,3,H
+60,R13SG1MJO-Influx-plenaris-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,4,H
+61,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,4,H
+62,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,4,H
+63,R13SG1MJO-Influx-plenaris-F0440G531148T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,4,H
+65,R12BQ3MI-Influx-plenaris-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,4,H
+66,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,4,H
+73,R469MJSO-Influx-plenaris-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,5,H
+74,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,5,H
+75,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,5,H
+76,R469MJSO-Influx-plenaris-F0440F597560T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,5,H
+77,R4NA1MJ-Influx-plenaris+Lalrise-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,5,H
+78,R4NA1MJ-Influx-plenaris-F0440L419760T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,5,H
+79,R8035MJI-Influx-plenaris+Lalrise-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,5,H
+80,R8035MJI-Influx-plenaris-XRCHLMA78116T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,5,H
+86,R890JP-Influx-plenaris-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,6,H
+87,R890JP-Influx-plenaris+Lalrise-F0440D495654T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,6,H
+88,R8035M1JS-Influx-plenaris-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,6,H
+89,R8035M1JS-Influx-plenaris+Lalrise-F0440F597388T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,6,H
+90,R8035M1JS-Influx-plenaris-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,6,H
+91,R8035M1JS-Influx-plenaris+Lalrise-F0440F597568T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,6,H
+103,R12BQ3MI-Influx-plenaris-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",1,7,H
+104,R12BQ3MI-Influx-plenaris+Lalrise-F0440F597857T0A-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",2,7,H
+106,R13SG1MJO-Influx-plenaris-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",4,7,H
+107,R13SG1MJO-Influx-plenaris+Lalrise-F0440F597555T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",5,7,H
+109,R13SG1MJO-Influx-plenaris-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",7,7,H
+110,R13SG1MJO-Influx-plenaris+Lalrise-F0440G531148T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",8,7,H
+114,R469MJSO-Influx-plenaris-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",12,7,H
+115,R469MJSO-Influx-plenaris+Lalrise-F0440F597558T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",13,7,H
+117,R469MJSO-Influx-plenaris-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",15,7,H
+118,R469MJSO-Influx-plenaris+Lalrise-F0440F597560T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",16,7,H
+1,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,1,M
+2,R12BQ3MI-Influx-plenaris-F0440F597857T0A-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,1,M
+3,R12BQ3MI-Influx-plenaris-XCLG589630T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,1,M
+6,R13SG1MJO-Influx-plenaris-F0440F606583T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",6,1,M
+9,R14WD1M-Influx-plenaris-XRCH24MA82335T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",9,1,M
+10,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",10,1,M
+11,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,1,M
+12,R21DW2JS-Influx-plenaris-F0440F597914T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,1,M
+13,R4NA1MK-Influx-plenaris-F0440F610406T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,1,M
+14,R4NA1MK-Influx-plenaris-F0440F610791T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,1,M
+15,R4NA1MK-Influx-plenaris-XESF601666T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,1,M
+16,R4NO4M-Influx-plenaris-XESG559541TT0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",16,1,M
+17,R4NO4MJ-Influx-plenaris-F0440D474497T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,1,M
+18,R469MJKO-Influx-plenaris-F0440F597862T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,2,M
+21,R469MJSO-Influx-plenaris-F0440F597559T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,2,M
+24,R469MJSO-Influx-plenaris-F0440F597563T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",7,2,M
+25,R469MJSO-Influx-plenaris-XRCH25MA84934T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,2,M
+28,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,2,M
+29,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,2,M
+30,R4NA1MJO-Influx-plenaris-F0440F609634T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,2,M
+31,R4NA1MJO-Influx-plenaris-XCLG590786T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,2,M
+32,R8035MJ-Influx-plenaris-F0440F597569T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",15,2,M
+35,R5PE4MS-Influx-plenaris-F0440F610782T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",1,3,M
+36,R5PE4MS-Influx-plenaris-F0440G554644T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",2,3,M
+37,R5PG6MJS-Influx-plenaris-F0440F610784T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",3,3,M
+38,R5PG6MJS-Influx-plenaris-F0440G547818T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",4,3,M
+39,R8035M1JS-Influx-plenaris-F0440F597387T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",5,3,M
+42,R8035M1JS-Influx-plenaris-F0440F597390T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",8,3,M
+45,R8035M1JS-Influx-plenaris-XESF598972T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",11,3,M
+46,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",12,3,M
+47,R890JP-Influx-plenaris-F0440D472278T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",13,3,M
+48,R890JP-Influx-plenaris-F0440D472306T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",14,3,M
+51,SR1087MS-Influx-plenaris-XRCHE67458T0-1,2026Vigor test Spain,Tournesol,"0.0,0.0",17,3,M
+52,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,4,M
+53,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,4,M
+54,R14WD1M-Influx-plenaris-XRCH24MA82335T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,4,M
+55,R21DW2JS-Influx-plenaris-F0440F597914T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,4,M
+56,R4NA1MK-Influx-plenaris-XESF601666T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",5,4,M
+57,R4NA1MK-Influx-plenaris-F0440F610406T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",6,4,M
+58,R4NO4M-Influx-plenaris-XESG559541TT0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,4,M
+59,R4NA1MK-Influx-plenaris-F0440F610791T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,4,M
+64,R13SG1MJO-Influx-plenaris-F0440F606583T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,4,M
+67,R12BQ3MI-Influx-plenaris-XCLG589630T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,4,M
+68,R4NO4MJ-Influx-plenaris-F0440D474497T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,4,M
+69,R469MJSO-Influx-plenaris-F0440F597559T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",1,5,M
+70,R469MJSO-Influx-plenaris-F0440F597563T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",2,5,M
+71,R469MJKO-Influx-plenaris-F0440F597862T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",3,5,M
+72,R469MJSO-Influx-plenaris-XRCH25MA84934T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",4,5,M
+81,R8035MJ-Influx-plenaris-F0440F597569T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,5,M
+82,R4NA1MJO-Influx-plenaris-XCLG590786T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,5,M
+83,R4NA1MJ-Influx-plenaris-XRCHLMA78403T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,5,M
+84,R4NA1MJ-Influx-plenaris-XRCHLMA77990T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,5,M
+85,R4NA1MJO-Influx-plenaris-F0440F609634T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,5,M
+92,R8035M1JS-Influx-plenaris-XESF598972T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",7,6,M
+93,R8035M1JS-Influx-plenaris-F0440F597390T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",8,6,M
+94,R8035M1JS-Influx-plenaris-XRCH24MA82418T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",9,6,M
+95,R8035M1JS-Influx-plenaris-F0440F597387T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",10,6,M
+96,R5PG6MJS-Influx-plenaris-F0440F610784T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",11,6,M
+97,R5PG6MJS-Influx-plenaris-F0440G547818T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",12,6,M
+98,R5PE4MS-Influx-plenaris-F0440F610782T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",13,6,M
+99,SR1087MS-Influx-plenaris-XRCHE67458T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",14,6,M
+100,R890JP-Influx-plenaris-F0440D472306T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",15,6,M
+101,R890JP-Influx-plenaris-F0440D472278T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",16,6,M
+102,R5PE4MS-Influx-plenaris-F0440G554644T0-2,2026Vigor test Spain,Tournesol,"0.0,0.0",17,6,M
+105,R12BQ3MI-Influx-plenaris-XCLG589630T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",3,7,M
+108,R13SG1MJO-Influx-plenaris-F0440F606583T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",6,7,M
+111,R16DG2MJSO-Influx-plenaris-XRCHLMA78119BT0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",9,7,M
+112,R16DG2MJSO-Influx-plenaris-XRCHLMA78119T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",10,7,M
+113,R469MJKO-Influx-plenaris-F0440F597862T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",11,7,M
+116,R469MJSO-Influx-plenaris-F0440F597559T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",14,7,M
+119,R469MJSO-Influx-plenaris-F0440F597563T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",17,7,M
+120,R469MJSO-Influx-plenaris-XRCH25MA84934T0-Plastique,2026Vigor test Spain,Tournesol,"0.0,0.0",18,7,M
 `
 
    const bbchInfoData = {
@@ -1582,7 +2118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('valider-parcelle').onclick = () => {
             parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
             document.getElementById('valider-parcelle').style.display = 'none';
-            // NEW: Reset Rep to 'A' only on validation
             document.getElementById('rep').value = 'A';
         };
         document.getElementById('parcelle-suivante').onclick = () => handleNavigate(1);
@@ -1598,7 +2133,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentParcelleDigits[k] = i;
                     selectedPlotCodeForNavigation = `${currentParcelleDigits.d1}${currentParcelleDigits.d2}${currentParcelleDigits.d3}`;
                     updateUIForSelectedPlot(selectedPlotCodeForNavigation);
-                    // REMOVED: Reset Rep on manual change
                 };
                 div.appendChild(b);
             }
@@ -1701,6 +2235,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const plots = varieteData.filter(p => p.Essai === currentEssai);
         document.getElementById('voir-plan-semis').style.display = (plots.length > 0 && plots[0].Plan_X) ? 'inline-block' : 'none';
         document.getElementById('valider-parcelle').style.display = (parcelleValideeCode === padded) ? 'none' : 'block';
+        
+        updateZenHeader();
     }
 
     function openSowingPlan() {
@@ -1849,7 +2385,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.selectFromPlan = (code) => { selectedPlotCodeForNavigation = code; updateUIForSelectedPlot(code); document.getElementById('sowingPlanModal').style.display = 'none'; };
 
     function enregistrerObservation(moveDir) {
+    if (!parcelleValideeCode && currentZenTarget) {
+        document.getElementById('valider-parcelle').click();
+    }
     if (!parcelleValideeCode) return alert(getT("alert-valider-parcelle"));
+    
     let obs = {
         id: Date.now(), Notateur: document.getElementById('type-notation-session').value, ESSAI: currentEssai, Parcelle: parcelleValideeCode,
         Variete: document.getElementById('variete-text').textContent.split(':').pop().trim(),
@@ -1869,6 +2409,7 @@ document.addEventListener('DOMContentLoaded', () => {
         handleNavigate(moveDir); parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0'); updateUIForSelectedPlot(selectedPlotCodeForNavigation); document.getElementById('rep').value = 'A';
     } else { let r = document.getElementById('rep'); r.value = String.fromCharCode(r.value.toUpperCase().charCodeAt(0)+1); }
     updateProgressBar();
+    updateZenHeader();
 }
     
     function renderRecapTable() {
@@ -1910,7 +2451,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <input type="hidden" id="not-simple-${s.code}" value="">
                 `;
             } else { inputField = `<input type="text" id="not-simple-${s.code}" placeholder="..." style="margin:0">`; }
-            div.innerHTML += `<div class="simple-notation-line"><div class="simple-not-header"><span>${s.label}</span><button class="btn-danger" style="padding:2px 6px; font-size:0.7em;" onclick="removeSimpleLine('${s.code}')">X</button></div>${inputField}</div>`;
+            div.innerHTML += `<div id="simple-line-${s.code}" class="simple-notation-line"><div class="simple-not-header"><span>${s.label}</span><div><button type="button" class="btn-star" onclick="toggleZenMode('simple-line-${s.code}')" title="Mode Plein Écran">⭐</button> <button class="btn-danger" style="padding:2px 6px; font-size:0.7em;" onclick="removeSimpleLine('${s.code}')">X</button></div></div>${inputField}</div>`;
         });
     }
 
@@ -1987,20 +2528,17 @@ window.handlePhotoUpload = (event, code) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Get Naming Components
     const prefix = document.getElementById('photo-prefix-' + code).value || "IMG";
     const numInput = document.getElementById('photo-num-' + code);
-    const num = String(numInput.value).padStart(3, '0'); // 001
+    const num = String(numInput.value).padStart(3, '0'); 
     
-    // NEW: Get Notateur
-    const notateurRaw = document.getElementById('type-notation-session').value || "Inconnu";
+    const varieteRaw = document.getElementById('variete-text').textContent.split(':').pop().trim() || "Inconnue";
+    const essaiRaw = currentEssai || "Essai";
     const sanitize = (s) => s.replace(/[^a-z0-9]/gi, '_');
     
-    // NEW: Construct base name (Notateur_PrefixNum) without extension
-    const baseName = `${sanitize(notateurRaw)}_${sanitize(prefix)}${num}`;
+    const baseName = `${sanitize(varieteRaw)}_${sanitize(essaiRaw)}_${sanitize(prefix)}${num}`;
     const filename = `${baseName}.jpg`;
 
-    // Download Logic (Save to device)
     const blobUrl = URL.createObjectURL(file);
     const link = document.createElement("a");
     link.href = blobUrl;
@@ -2009,16 +2547,71 @@ window.handlePhotoUpload = (event, code) => {
     link.click();
     document.body.removeChild(link);
 
-    // Update Hidden Input for CSV with Base Name (No Extension)
     document.getElementById('not-simple-' + code).value = baseName;
 
-    // Increment Counter & Save State
     numInput.value++;
     savePhotoState(code);
 
-    // Auto-Save Observation
     enregistrerObservation(0); 
 };
+
+// --- ZEN MODE / FOCUS MODE LOGIC ---
+let currentZenTarget = null;
+let originalZenParent = null;
+let wakeLock = null;
+
+async function toggleZenMode(targetId) {
+    currentZenTarget = document.getElementById(targetId);
+    if (!currentZenTarget) return;
+
+    originalZenParent = currentZenTarget.parentNode;
+    
+    // Déplacer les éléments dans l'overlay
+    document.getElementById('zen-content').appendChild(currentZenTarget);
+    document.getElementById('zen-save-buttons-container').appendChild(document.getElementById('main-save-buttons'));
+
+    updateZenHeader();
+    document.getElementById('zen-overlay').style.display = 'flex';
+
+    // Demander le maintien de l'écran allumé (Wake Lock API)
+    try {
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+        }
+    } catch (err) {
+        console.log('Wake Lock error', err);
+    }
+}
+
+function exitZenMode() {
+    if (currentZenTarget && originalZenParent) {
+        originalZenParent.appendChild(currentZenTarget);
+    }
+    // Remettre les boutons de sauvegarde à leur place
+    const placeholder = document.getElementById('save-buttons-placeholder');
+    if(placeholder) placeholder.appendChild(document.getElementById('main-save-buttons'));
+    
+    document.getElementById('zen-overlay').style.display = 'none';
+    currentZenTarget = null;
+    originalZenParent = null;
+
+    // Relâcher le maintien de l'écran
+    if (wakeLock !== null) {
+        wakeLock.release().then(() => wakeLock = null);
+    }
+}
+
+function updateZenHeader() {
+    if (document.getElementById('zen-overlay').style.display === 'flex') {
+        const num = parcelleValideeCode || String(selectedPlotCodeForNavigation).padStart(3,'0');
+        const variete = document.getElementById('variete-text').textContent.split(':').pop().trim();
+        const rep = document.getElementById('rep').value;
+        
+        document.getElementById('zen-title').textContent = `Parcelle ${num}`;
+        document.getElementById('zen-subtitle').textContent = variete;
+        document.getElementById('zen-rep').textContent = `${getT('rep')} ${rep}`;
+    }
+}
 </script>
 </body>
 </html>
