@@ -199,15 +199,22 @@ html {
         margin-bottom: 25px !important;
         flex-wrap: nowrap;
     }
+    
+    /* Titres qui réduisent leur police au lieu de passer à la ligne */
     #zen-content h4, #zen-content .simple-not-header span, #zen-content label[for="stade"] { 
-        font-size: 2.2em !important; 
+        font-size: clamp(1.2em, 4.5vw, 2.2em) !important; 
         text-align: left; 
-        width: auto !important; 
         margin-bottom: 0 !important; 
         color: var(--theme-heading-color); 
-        display:block; 
-        flex-grow:1;
+        display: block; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1 1 auto;
+        min-width: 0;
+        padding-right: 10px;
     }
+    
     #zen-content #bbch-info-button { display: none !important; }
     #zen-content .zen-next-val-btn { 
         display: inline-flex !important; 
@@ -218,6 +225,7 @@ html {
         min-height: 80px; 
         align-items: center; 
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        flex-shrink: 0;
     }
 
     /* Layout CSS Grid for big inputs */
@@ -420,12 +428,12 @@ html {
                         </div>
 
                         <div id="not-stade" class="notation-group-container hidden-section">
-                            <div class="zen-title-wrapper" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                                <label for="stade" style="width:auto; margin:0;" data-i18n="stade-bbch">Stade (BBCH) :</label>
+                            <div class="zen-title-wrapper">
+                                <label for="stade" data-i18n="stade-bbch">Stade (BBCH) :</label>
                                 <div style="display:flex; gap:10px; align-items:center;">
                                     <button type="button" class="btn-star" onclick="toggleZenMode('not-stade')" title="Mode Plein Écran">⭐</button>
                                     <button type="button" id="bbch-info-button" class="btn-secondary" data-i18n="btn-info" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
-                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
+                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suivant</button>
                                 </div>
                             </div>
                             <div class="input-inc-dec">
@@ -436,22 +444,22 @@ html {
                         </div>
 
                         <div id="not-flo" class="notation-group-container hidden-section">
-                            <div class="zen-title-wrapper" style="display:flex; justify-content:space-between; align-items:center;">
-                                <h4 data-i18n="taux-flo" style="margin:0 0 10px 0;">Taux de floraison (%) <span id="flo-display">0</span></h4>
+                            <div class="zen-title-wrapper">
+                                <h4><span data-i18n="taux-flo">Taux de floraison (%) </span><span id="flo-display">0</span></h4>
                                 <div style="display:flex; gap:10px; align-items:center;">
                                     <button type="button" class="btn-star" onclick="toggleZenMode('not-flo')" title="Mode Plein Écran">⭐</button>
-                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
+                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suivant</button>
                                 </div>
                             </div>
                             <div id="flo-buttons" class="square-btn-group"></div>
                         </div>
                         
                         <div id="not-receptivite" class="notation-group-container hidden-section">
-                             <div class="zen-title-wrapper" style="display:flex; justify-content:space-between; align-items:center;">
-                                 <h4 data-i18n="receptivite-label" style="margin:0 0 10px 0;">Réceptivité (Nb)</h4>
+                             <div class="zen-title-wrapper">
+                                 <h4 data-i18n="receptivite-label">Réceptivité (Nb)</h4>
                                  <div style="display:flex; gap:10px; align-items:center;">
                                      <button type="button" class="btn-star" onclick="toggleZenMode('not-receptivite')" title="Mode Plein Écran">⭐</button>
-                                     <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
+                                     <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suivant</button>
                                  </div>
                              </div>
                              <div class="input-group-big">
@@ -465,11 +473,11 @@ html {
                         </div>
 
                         <div id="not-prlvmt" class="notation-group-container hidden-section">
-                            <div class="zen-title-wrapper" style="display:flex; justify-content:space-between; align-items:center;">
-                                <h4 data-i18n="prelevements" style="margin:0 0 10px 0;">Prélèvements / Échantillons</h4>
+                            <div class="zen-title-wrapper">
+                                <h4 data-i18n="prelevements">Prélèvements / Échantillons</h4>
                                 <div style="display:flex; gap:10px; align-items:center;">
                                     <button type="button" class="btn-star" onclick="toggleZenMode('not-prlvmt')" title="Mode Plein Écran">⭐</button>
-                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
+                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suivant</button>
                                 </div>
                             </div>
                             <div class="prlvmt-grid-wrapper" style="display:flex; align-items:center; gap:5px; margin-bottom:5px;">
@@ -673,7 +681,7 @@ html {
         "avancement-hachure": "Avancement (Hachuré) :", "deplacement-fleches": "Déplacement (Flèches) :", "interactif": "INTERACTIF", "donnee": "Donnée :", "filter-notateur": "Notateur :", "jours-max": "Jours max (Hier: 1) :", "option-tous": "Tous",
         "alert-import-success": "Données externes chargées avec succès ! ({n} lignes).", "alert-import-empty": "Erreur: Aucune donnée trouvée.", "alert-import-error": "Erreur lecture CSV.", "alert-voice-error": "La reconnaissance vocale n'est pas supportée par ce navigateur.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (JJ/MM)", "btn-choice-scale": "1-9 (Échelle)", "btn-choice-photo": "📷 Photo",
-        "btn-quitter": "❌ Quitter", "suiv-valider": "⏭ Suiv. & Valider"
+        "btn-quitter": "❌ Quitter", "suiv-valider": "⏭ Suivant"
     },
     en: {
         "title": "Notes", "choix-essai": "Trial Choice:", "notateur": "Your Name / Scorer:", "notateur-placeholder": "Name...", "confirmer": "Confirm",
@@ -694,7 +702,7 @@ html {
         "avancement-hachure": "Progress (Hatched):", "deplacement-fleches": "Movement (Arrows):", "interactif": "INTERACTIVE", "donnee": "Data:", "filter-notateur": "Scorer:", "jours-max": "Max Days (Yest: 1):", "option-tous": "All",
         "alert-import-success": "External data loaded successfully! ({n} lines).", "alert-import-empty": "Error: No data found.", "alert-import-error": "Error reading CSV.", "alert-voice-error": "Voice recognition not supported by this browser.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (DD/MM)", "btn-choice-scale": "1-9 (Scale)", "btn-choice-photo": "📷 Photo",
-        "btn-quitter": "❌ Exit", "suiv-valider": "⏭ Next & Valid."
+        "btn-quitter": "❌ Exit", "suiv-valider": "⏭ Next"
     },
     es: {
         "title": "Notas", "choix-essai": "Elegir Ensayo:", "notateur": "Su Nombre / Anotador:", "notateur-placeholder": "Nombre...", "confirmer": "Confirmar",
@@ -715,7 +723,7 @@ html {
         "avancement-hachure": "Progreso (Rayado):", "deplacement-fleches": "Movimiento (Flechas):", "interactif": "INTERACTIVO", "donnee": "Dato:", "filter-notateur": "Anotador:", "jours-max": "Días máx (Ayer: 1):", "option-tous": "Todos",
         "alert-import-success": "¡Datos cargados con éxito! ({n} líneas).", "alert-import-empty": "Error: No se encontraron datos.", "alert-import-error": "Error al leer CSV.", "alert-voice-error": "Reconocimiento de voz no soportado.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Fecha (DD/MM)", "btn-choice-scale": "1-9 (Escala)", "btn-choice-photo": "📷 Foto",
-        "btn-quitter": "❌ Salir", "suiv-valider": "⏭ Sig. y Valid."
+        "btn-quitter": "❌ Salir", "suiv-valider": "⏭ Siguiente"
     },
     pl: {
         "title": "Notatki", "choix-essai": "Wybór próby:", "notateur": "Twoje Imię:", "notateur-placeholder": "Imię...", "confirmer": "Potwierdź",
@@ -736,7 +744,7 @@ html {
         "avancement-hachure": "Postęp (Zakreskowane):", "deplacement-fleches": "Ruch (Strzałki):", "interactif": "INTERAKTYWNY", "donnee": "Dane:", "filter-notateur": "Oceniający:", "jours-max": "Max dni (Wczoraj: 1):", "option-tous": "Wszyscy",
         "alert-import-success": "Dane zewnętrzne załadowane! ({n} linii).", "alert-import-empty": "Błąd: Brak danych.", "alert-import-error": "Błąd odczytu CSV.", "alert-voice-error": "Rozpoznawanie mowy nieobsługiwane.",
         "btn-choice-num": "123 (Liczba)", "btn-choice-text": "ABC (Tekst)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (DD/MM)", "btn-choice-scale": "1-9 (Skala)", "btn-choice-photo": "📷 Zdjęcie",
-        "btn-quitter": "❌ Zamknij", "suiv-valider": "⏭ Nast. i Zatw."
+        "btn-quitter": "❌ Zamknij", "suiv-valider": "⏭ Następny"
     },
     ro: {
         "title": "Notații", "choix-essai": "Alegere test:", "notateur": "Numele Tău:", "notateur-placeholder": "Nume...", "confirmer": "Confirmă",
@@ -757,7 +765,7 @@ html {
         "avancement-hachure": "Progres (Hașurat):", "deplacement-fleches": "Deplasare (Săgeți):", "interactif": "INTERACTIV", "donnee": "Date:", "filter-notateur": "Evaluator:", "jours-max": "Zile max (Ieri: 1):", "option-tous": "Toți",
         "alert-import-success": "Date externe încărcate cu succes! ({n} linii).", "alert-import-empty": "Eroare: Nu s-au găsit date.", "alert-import-error": "Eroare citire CSV.", "alert-voice-error": "Recunoașterea vocală nu este suportată.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (ZZ/LL)", "btn-choice-scale": "1-9 (Scară)", "btn-choice-photo": "📷 Foto",
-        "btn-quitter": "❌ Ieșire", "suiv-valider": "⏭ Urm. & Valid."
+        "btn-quitter": "❌ Ieșire", "suiv-valider": "⏭ Următorul"
     },
     uk: {
         "title": "Нотатки", "choix-essai": "Вибір випробування:", "notateur": "Ваше Ім'я:", "notateur-placeholder": "Ім'я...", "confirmer": "Підтвердити",
@@ -778,7 +786,7 @@ html {
         "avancement-hachure": "Прогрес (Заштриховано):", "deplacement-fleches": "Рух (Стрілки):", "interactif": "ІНТЕРАКТИВ", "donnee": "Дані:", "filter-notateur": "Оцінювач:", "jours-max": "Макс днів (Вчора: 1):", "option-tous": "Всі",
         "alert-import-success": "Зовнішні дані завантажено! ({n} рядків).", "alert-import-empty": "Помилка: Дані не знайдено.", "alert-import-error": "Помилка читання CSV.", "alert-voice-error": "Розпізнавання голосу не підтримується.",
         "btn-choice-num": "123 (Число)", "btn-choice-text": "ABC (Текст)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Дата (ДД/ММ)", "btn-choice-scale": "1-9 (Шкала)", "btn-choice-photo": "📷 Фото",
-        "btn-quitter": "❌ Вийти", "suiv-valider": "⏭ Наст. і Підтв."
+        "btn-quitter": "❌ Вийти", "suiv-valider": "⏭ Наступний"
     }
 };
 
