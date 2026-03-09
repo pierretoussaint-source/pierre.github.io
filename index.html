@@ -174,9 +174,10 @@ html {
     .mic-btn.listening { background-color: #e74c3c; color: white; animation: pulse 1.5s infinite; border-color: #c0392b; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-    /* Zen Mode Star */
+    /* Zen Mode Star & Next Validate Button */
     .btn-star { background: transparent; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-size: 1.1em; padding: 2px 8px; color: #f1c40f; transition: 0.2s; background-color: #fff; }
     .btn-star:hover { background-color: #f8f9fa; transform: scale(1.05); }
+    .zen-next-val-btn { display: none; }
 
     /* =======================================================
        ZEN MODE (FOCUS) ADAPTIVE STYLES
@@ -188,11 +189,38 @@ html {
     #zen-content .btn-star { display: none !important; }
     #zen-content .btn-danger { display: none !important; }
 
-    #zen-content h4, #zen-content .simple-not-header span { font-size: 2.2em !important; text-align: center; width: 100%; margin-bottom: 15px !important; color: var(--theme-heading-color); display:block; }
-    #zen-content label[for="stade"] { font-size: 2.2em !important; text-align: center; width: 100%; margin-bottom: 15px !important; color: var(--theme-heading-color); display:block; }
+    /* Zen Title Row with Next & Valid Button */
+    #zen-content .zen-title-wrapper {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 25px !important;
+        flex-wrap: nowrap;
+    }
+    #zen-content h4, #zen-content .simple-not-header span, #zen-content label[for="stade"] { 
+        font-size: 2.2em !important; 
+        text-align: left; 
+        width: auto !important; 
+        margin-bottom: 0 !important; 
+        color: var(--theme-heading-color); 
+        display:block; 
+        flex-grow:1;
+    }
     #zen-content #bbch-info-button { display: none !important; }
+    #zen-content .zen-next-val-btn { 
+        display: inline-flex !important; 
+        font-size: 1.6em !important; 
+        padding: 10px 25px !important; 
+        border-radius: 20px !important; 
+        margin: 0 0 0 10px; 
+        min-height: 80px; 
+        align-items: center; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
 
-    /* Layout CSS Grid for big inputs (Input on top, Cubes taking ALL remaining space) */
+    /* Layout CSS Grid for big inputs */
     #zen-content .input-inc-dec, 
     #zen-content .input-group-big,
     #zen-content .date-grid-wrapper {
@@ -392,11 +420,12 @@ html {
                         </div>
 
                         <div id="not-stade" class="notation-group-container hidden-section">
-                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                            <div class="zen-title-wrapper" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
                                 <label for="stade" style="width:auto; margin:0;" data-i18n="stade-bbch">Stade (BBCH) :</label>
-                                <div>
+                                <div style="display:flex; gap:10px; align-items:center;">
                                     <button type="button" class="btn-star" onclick="toggleZenMode('not-stade')" title="Mode Plein Écran">⭐</button>
                                     <button type="button" id="bbch-info-button" class="btn-secondary" data-i18n="btn-info" style="margin:0; padding:2px 8px; font-size:0.8em;">Info</button>
+                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
                                 </div>
                             </div>
                             <div class="input-inc-dec">
@@ -407,17 +436,23 @@ html {
                         </div>
 
                         <div id="not-flo" class="notation-group-container hidden-section">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="zen-title-wrapper" style="display:flex; justify-content:space-between; align-items:center;">
                                 <h4 data-i18n="taux-flo" style="margin:0 0 10px 0;">Taux de floraison (%) <span id="flo-display">0</span></h4>
-                                <button type="button" class="btn-star" onclick="toggleZenMode('not-flo')" title="Mode Plein Écran">⭐</button>
+                                <div style="display:flex; gap:10px; align-items:center;">
+                                    <button type="button" class="btn-star" onclick="toggleZenMode('not-flo')" title="Mode Plein Écran">⭐</button>
+                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
+                                </div>
                             </div>
                             <div id="flo-buttons" class="square-btn-group"></div>
                         </div>
                         
                         <div id="not-receptivite" class="notation-group-container hidden-section">
-                             <div style="display:flex; justify-content:space-between; align-items:center;">
+                             <div class="zen-title-wrapper" style="display:flex; justify-content:space-between; align-items:center;">
                                  <h4 data-i18n="receptivite-label" style="margin:0 0 10px 0;">Réceptivité (Nb)</h4>
-                                 <button type="button" class="btn-star" onclick="toggleZenMode('not-receptivite')" title="Mode Plein Écran">⭐</button>
+                                 <div style="display:flex; gap:10px; align-items:center;">
+                                     <button type="button" class="btn-star" onclick="toggleZenMode('not-receptivite')" title="Mode Plein Écran">⭐</button>
+                                     <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
+                                 </div>
                              </div>
                              <div class="input-group-big">
                                  <button type="button" id="minus-receptivite" class="btn-secondary cube-btn">-</button>
@@ -430,9 +465,12 @@ html {
                         </div>
 
                         <div id="not-prlvmt" class="notation-group-container hidden-section">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="zen-title-wrapper" style="display:flex; justify-content:space-between; align-items:center;">
                                 <h4 data-i18n="prelevements" style="margin:0 0 10px 0;">Prélèvements / Échantillons</h4>
-                                <button type="button" class="btn-star" onclick="toggleZenMode('not-prlvmt')" title="Mode Plein Écran">⭐</button>
+                                <div style="display:flex; gap:10px; align-items:center;">
+                                    <button type="button" class="btn-star" onclick="toggleZenMode('not-prlvmt')" title="Mode Plein Écran">⭐</button>
+                                    <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()" data-i18n="suiv-valider">⏭ Suiv. & Valider</button>
+                                </div>
                             </div>
                             <div class="prlvmt-grid-wrapper" style="display:flex; align-items:center; gap:5px; margin-bottom:5px;">
                                 <label style="width:auto; margin:0;" data-i18n="code">Code:</label>
@@ -599,6 +637,7 @@ html {
                 <h1 id="zen-title" style="margin:0; font-size:3.5em; color:var(--theme-heading-color); line-height:1;">P001</h1>
                 <h2 id="zen-subtitle" style="margin:5px 0 0 0; font-size:1.8em; color:#555;">Variété</h2>
                 <h3 id="zen-rep" style="margin:5px 0 0 0; font-size:1.5em; color:var(--theme-primary-color);">Rep : A</h3>
+                <h4 id="zen-interactive-preview" style="margin:10px 0 0 0; font-size:1.3em; color:#d35400; display:none; background:#fdfdfd; padding:4px 8px; border-radius:4px; border:1px solid #d35400;"></h4>
             </div>
             <button onclick="exitZenMode()" class="btn-danger" style="margin:0; font-size:1.2em; padding:15px; border-radius:15px;" data-i18n="btn-quitter">❌ Quitter</button>
         </div>
@@ -634,7 +673,7 @@ html {
         "avancement-hachure": "Avancement (Hachuré) :", "deplacement-fleches": "Déplacement (Flèches) :", "interactif": "INTERACTIF", "donnee": "Donnée :", "filter-notateur": "Notateur :", "jours-max": "Jours max (Hier: 1) :", "option-tous": "Tous",
         "alert-import-success": "Données externes chargées avec succès ! ({n} lignes).", "alert-import-empty": "Erreur: Aucune donnée trouvée.", "alert-import-error": "Erreur lecture CSV.", "alert-voice-error": "La reconnaissance vocale n'est pas supportée par ce navigateur.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (JJ/MM)", "btn-choice-scale": "1-9 (Échelle)", "btn-choice-photo": "📷 Photo",
-        "btn-quitter": "❌ Quitter"
+        "btn-quitter": "❌ Quitter", "suiv-valider": "⏭ Suiv. & Valider"
     },
     en: {
         "title": "Notes", "choix-essai": "Trial Choice:", "notateur": "Your Name / Scorer:", "notateur-placeholder": "Name...", "confirmer": "Confirm",
@@ -655,7 +694,7 @@ html {
         "avancement-hachure": "Progress (Hatched):", "deplacement-fleches": "Movement (Arrows):", "interactif": "INTERACTIVE", "donnee": "Data:", "filter-notateur": "Scorer:", "jours-max": "Max Days (Yest: 1):", "option-tous": "All",
         "alert-import-success": "External data loaded successfully! ({n} lines).", "alert-import-empty": "Error: No data found.", "alert-import-error": "Error reading CSV.", "alert-voice-error": "Voice recognition not supported by this browser.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Date (DD/MM)", "btn-choice-scale": "1-9 (Scale)", "btn-choice-photo": "📷 Photo",
-        "btn-quitter": "❌ Exit"
+        "btn-quitter": "❌ Exit", "suiv-valider": "⏭ Next & Valid."
     },
     es: {
         "title": "Notas", "choix-essai": "Elegir Ensayo:", "notateur": "Su Nombre / Anotador:", "notateur-placeholder": "Nombre...", "confirmer": "Confirmar",
@@ -676,7 +715,7 @@ html {
         "avancement-hachure": "Progreso (Rayado):", "deplacement-fleches": "Movimiento (Flechas):", "interactif": "INTERACTIVO", "donnee": "Dato:", "filter-notateur": "Anotador:", "jours-max": "Días máx (Ayer: 1):", "option-tous": "Todos",
         "alert-import-success": "¡Datos cargados con éxito! ({n} líneas).", "alert-import-empty": "Error: No se encontraron datos.", "alert-import-error": "Error al leer CSV.", "alert-voice-error": "Reconocimiento de voz no soportado.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Fecha (DD/MM)", "btn-choice-scale": "1-9 (Escala)", "btn-choice-photo": "📷 Foto",
-        "btn-quitter": "❌ Salir"
+        "btn-quitter": "❌ Salir", "suiv-valider": "⏭ Sig. y Valid."
     },
     pl: {
         "title": "Notatki", "choix-essai": "Wybór próby:", "notateur": "Twoje Imię:", "notateur-placeholder": "Imię...", "confirmer": "Potwierdź",
@@ -697,7 +736,7 @@ html {
         "avancement-hachure": "Postęp (Zakreskowane):", "deplacement-fleches": "Ruch (Strzałki):", "interactif": "INTERAKTYWNY", "donnee": "Dane:", "filter-notateur": "Oceniający:", "jours-max": "Max dni (Wczoraj: 1):", "option-tous": "Wszyscy",
         "alert-import-success": "Dane zewnętrzne załadowane! ({n} linii).", "alert-import-empty": "Błąd: Brak danych.", "alert-import-error": "Błąd odczytu CSV.", "alert-voice-error": "Rozpoznawanie mowy nieobsługiwane.",
         "btn-choice-num": "123 (Liczba)", "btn-choice-text": "ABC (Tekst)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (DD/MM)", "btn-choice-scale": "1-9 (Skala)", "btn-choice-photo": "📷 Zdjęcie",
-        "btn-quitter": "❌ Zamknij"
+        "btn-quitter": "❌ Zamknij", "suiv-valider": "⏭ Nast. i Zatw."
     },
     ro: {
         "title": "Notații", "choix-essai": "Alegere test:", "notateur": "Numele Tău:", "notateur-placeholder": "Nume...", "confirmer": "Confirmă",
@@ -718,7 +757,7 @@ html {
         "avancement-hachure": "Progres (Hașurat):", "deplacement-fleches": "Deplasare (Săgeți):", "interactif": "INTERACTIV", "donnee": "Date:", "filter-notateur": "Evaluator:", "jours-max": "Zile max (Ieri: 1):", "option-tous": "Toți",
         "alert-import-success": "Date externe încărcate cu succes! ({n} linii).", "alert-import-empty": "Eroare: Nu s-au găsit date.", "alert-import-error": "Eroare citire CSV.", "alert-voice-error": "Recunoașterea vocală nu este suportată.",
         "btn-choice-num": "123 (Num)", "btn-choice-text": "ABC (Txt)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Data (ZZ/LL)", "btn-choice-scale": "1-9 (Scară)", "btn-choice-photo": "📷 Foto",
-        "btn-quitter": "❌ Ieșire"
+        "btn-quitter": "❌ Ieșire", "suiv-valider": "⏭ Urm. & Valid."
     },
     uk: {
         "title": "Нотатки", "choix-essai": "Вибір випробування:", "notateur": "Ваше Ім'я:", "notateur-placeholder": "Ім'я...", "confirmer": "Підтвердити",
@@ -739,7 +778,7 @@ html {
         "avancement-hachure": "Прогрес (Заштриховано):", "deplacement-fleches": "Рух (Стрілки):", "interactif": "ІНТЕРАКТИВ", "donnee": "Дані:", "filter-notateur": "Оцінювач:", "jours-max": "Макс днів (Вчора: 1):", "option-tous": "Всі",
         "alert-import-success": "Зовнішні дані завантажено! ({n} рядків).", "alert-import-empty": "Помилка: Дані не знайдено.", "alert-import-error": "Помилка читання CSV.", "alert-voice-error": "Розпізнавання голосу не підтримується.",
         "btn-choice-num": "123 (Число)", "btn-choice-text": "ABC (Текст)", "btn-choice-percent": "% (5-100)", "btn-choice-date": "📅 Дата (ДД/ММ)", "btn-choice-scale": "1-9 (Шкала)", "btn-choice-photo": "📷 Фото",
-        "btn-quitter": "❌ Вийти"
+        "btn-quitter": "❌ Вийти", "suiv-valider": "⏭ Наст. і Підтв."
     }
 };
 
@@ -1977,17 +2016,29 @@ html {
         if (lines.length < 2) return [];
         let sep = delimiter;
         if (lines[0].indexOf(sep) === -1) { sep = lines[0].indexOf(',') > -1 ? ',' : ';'; }
-        const headers = lines[0].split(sep).map(h => h.trim());
+        
+        // RegEx pour séparer correctement même s'il y a des virgules/points-virgules dans des champs entre guillemets
+        const regex = new RegExp(`${sep}(?=(?:(?:[^"]*"){2})*[^"]*$)`);
+        
+        // Fonction pour nettoyer les guillemets et espaces d'une valeur
+        const cleanVal = (val) => {
+            if (!val) return "";
+            val = val.trim();
+            if (val.startsWith('"') && val.endsWith('"')) {
+                val = val.substring(1, val.length - 1);
+            }
+            return val;
+        };
+
+        const headers = lines[0].split(regex).map(cleanVal);
         const objects = [];
         for (let i = 1; i < lines.length; i++) {
-            const regex = new RegExp(`${sep}(?=(?:(?:[^"]*"){2})*[^"]*$)`);
             const currentline = lines[i].split(regex);
-            if(currentline.length >= 1) {
+            // On s'assure que la ligne n'est pas vide
+            if(currentline.length >= 1 && lines[i].trim() !== "") {
                 const obj = {};
                 headers.forEach((h, idx) => {
-                    let val = currentline[idx] ? currentline[idx].trim() : "";
-                    if (val.startsWith('"') && val.endsWith('"')) val = val.substring(1, val.length - 1);
-                    obj[h] = val;
+                    obj[h] = cleanVal(currentline[idx]);
                 });
                 objects.push(obj);
             }
@@ -2025,7 +2076,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const reader = new FileReader();
             reader.onload = function(evt) {
                 try {
-                    externalData = parseCSVToObjects(evt.target.result, ';');
+                    // Force delimiter to ; or let it auto-detect based on file
+                    let content = evt.target.result;
+                    // Auto-détection fine pour le CSV externe
+                    let sep = ';';
+                    if (content.split('\n')[0].indexOf(';') === -1 && content.split('\n')[0].indexOf(',') > -1) {
+                        sep = ',';
+                    }
+                    externalData = parseCSVToObjects(content, sep);
+                    
                     if (externalData.length > 0) {
                         alert(getT('alert-import-success').replace('{n}', externalData.length));
                     } else { alert(getT('alert-import-empty')); }
@@ -2107,6 +2166,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updateUIForSelectedPlot(selectedPlotCodeForNavigation);
         parcelleValideeCode = null;
         document.getElementById('valider-parcelle').style.display = 'block';
+        
+        // Bloquer la saisie
+        const notationArea = document.getElementById('central-notations-container');
+        const obsArea = document.getElementById('obs').parentNode;
+        const saveArea = document.getElementById('save-buttons-placeholder');
+        [notationArea, obsArea, saveArea].forEach(el => {
+            if(el) {
+                el.style.opacity = '0.4';
+                el.style.pointerEvents = 'none';
+            }
+        });
     }
 
     function setupEventListeners() {
@@ -2128,6 +2198,17 @@ document.addEventListener('DOMContentLoaded', () => {
             parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
             document.getElementById('valider-parcelle').style.display = 'none';
             document.getElementById('rep').value = 'A';
+            
+            // Débloquer la zone de saisie visuellement
+            const notationArea = document.getElementById('central-notations-container');
+            const obsArea = document.getElementById('obs').parentNode;
+            const saveArea = document.getElementById('save-buttons-placeholder');
+            [notationArea, obsArea, saveArea].forEach(el => {
+                if(el) {
+                    el.style.opacity = '1';
+                    el.style.pointerEvents = 'auto';
+                }
+            });
         };
         document.getElementById('parcelle-suivante').onclick = () => handleNavigate(1);
         document.getElementById('parcelle-precedente').onclick = () => handleNavigate(-1);
@@ -2243,7 +2324,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('voir-sur-carte').style.display = (currentGps && currentGps.length > 3) ? 'inline-block' : 'none';
         const plots = varieteData.filter(p => p.Essai === currentEssai);
         document.getElementById('voir-plan-semis').style.display = (plots.length > 0 && plots[0].Plan_X) ? 'inline-block' : 'none';
-        document.getElementById('valider-parcelle').style.display = (parcelleValideeCode === padded) ? 'none' : 'block';
+        
+        const isValide = (parcelleValideeCode === padded);
+        document.getElementById('valider-parcelle').style.display = isValide ? 'none' : 'block';
+        
+        // Bloquer la zone de saisie si non validé
+        const notationArea = document.getElementById('central-notations-container');
+        const obsArea = document.getElementById('obs').parentNode;
+        const saveArea = document.getElementById('save-buttons-placeholder');
+        [notationArea, obsArea, saveArea].forEach(el => {
+            if(el) {
+                el.style.opacity = isValide ? '1' : '0.4';
+                el.style.pointerEvents = isValide ? 'auto' : 'none';
+            }
+        });
         
         updateZenHeader();
     }
@@ -2366,7 +2460,7 @@ document.addEventListener('DOMContentLoaded', () => {
                              if(!isNaN(parseFloat(val.replace('%',''))) && maxVal > minVal) {
                                  let num = parseFloat(val.replace('%',''));
                                  let ratio = (num - minVal) / (maxVal - minVal);
-                                 let hue = ratio * 120; // 0=Red, 120=Green
+                                 let hue = ratio * 120; 
                                  heatmapColor = `background-color: hsl(${hue}, 80%, 80%); border: 1px solid hsl(${hue}, 80%, 40%);`;
                              }
 
@@ -2472,6 +2566,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.selectFromPlan = (code) => { selectedPlotCodeForNavigation = code; updateUIForSelectedPlot(code); document.getElementById('sowingPlanModal').style.display = 'none'; };
 
+    window.zenNextAndValidate = () => {
+        // Change de parcelle (suivant)
+        handleNavigate(1);
+        
+        // Validation automatique
+        parcelleValideeCode = String(selectedPlotCodeForNavigation).padStart(3,'0');
+        document.getElementById('valider-parcelle').style.display = 'none';
+        document.getElementById('rep').value = 'A';
+        
+        // Débloquer la zone de saisie visuellement
+        const notationArea = document.getElementById('central-notations-container');
+        const obsArea = document.getElementById('obs').parentNode;
+        const saveArea = document.getElementById('save-buttons-placeholder');
+        [notationArea, obsArea, saveArea].forEach(el => {
+            if(el) {
+                el.style.opacity = '1';
+                el.style.pointerEvents = 'auto';
+            }
+        });
+        
+        // Mettre à jour l'en-tête du mode Zen
+        updateZenHeader();
+    };
+
     function enregistrerObservation(moveDir) {
     if (!parcelleValideeCode && currentZenTarget) {
         document.getElementById('valider-parcelle').click();
@@ -2539,7 +2657,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <input type="hidden" id="not-simple-${s.code}" value="">
                 `;
             } else { inputField = `<input type="text" id="not-simple-${s.code}" placeholder="..." style="margin:0; height:45px; border-radius:10px;">`; }
-            div.innerHTML += `<div id="simple-line-${s.code}" class="simple-notation-line"><div class="simple-not-header"><span>${s.label}</span><div><button type="button" class="btn-star" onclick="toggleZenMode('simple-line-${s.code}')" title="Mode Plein Écran">⭐</button> <button class="btn-danger" style="padding:2px 6px; font-size:0.7em;" onclick="removeSimpleLine('${s.code}')">X</button></div></div>${inputField}</div>`;
+            div.innerHTML += `<div id="simple-line-${s.code}" class="simple-notation-line"><div class="simple-not-header zen-title-wrapper" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;"><span>${s.label}</span><div style="display:flex; gap:10px; align-items:center;"><button type="button" class="btn-star" onclick="toggleZenMode('simple-line-${s.code}')" title="Mode Plein Écran">⭐</button> <button class="btn-danger" style="padding:2px 6px; font-size:0.7em;" onclick="removeSimpleLine('${s.code}')">X</button> <button type="button" class="btn-accent zen-next-val-btn" onclick="zenNextAndValidate()">${getT("suiv-valider")}</button></div></div>${inputField}</div>`;
         });
     }
 
@@ -2555,12 +2673,24 @@ window.openTab = (e,n) => { document.querySelectorAll('.tabcontent').forEach(x=>
 function loadLocalObservations() { appObservations = JSON.parse(localStorage.getItem('observations_v12') || "[]"); simpleNotationsConfig = JSON.parse(localStorage.getItem('simpleNotationsConfig') || "[]"); renderRecapTable(); initSimpleNotationsUI(); }
 function telechargerCSV() {
     if(!appObservations.length) return alert(getT("alert-rien"));
+    // Nettoyage en cas d'anciens imports (suppression des clés vides ou buguées)
+    appObservations = appObservations.map(obs => {
+        let cleanObs = {};
+        for(let key in obs) {
+            if(key && key.trim() !== "" && !key.includes('ï»¿')) cleanObs[key] = obs[key];
+        }
+        return cleanObs;
+    });
+
     const fixedHeaders = ["Notateur", "ESSAI", "Parcelle", "Variete", "Date", "Heure", "Meteo", "Rep", "Stade", "Floraison", "Receptivite", "Code_Ech", "Observations"];
     let dynamicKeys = new Set();
     appObservations.forEach(o => Object.keys(o).forEach(k => { if(k.startsWith('Titre_Not_') || k.startsWith('Not_')) dynamicKeys.add(k); }));
     const finalKeys = [...fixedHeaders, ...Array.from(dynamicKeys).sort()];
-    const headerRow = finalKeys.map(k => k.startsWith('Not_') ? k.substring(4) : k);
-    let csv = "\uFEFF" + headerRow.join(";") + "\n";
+    
+    // Header clean (NO BOM, removing Not_ prefix from custom notes, keeping pure text)
+    const headerRow = finalKeys.map(k => (k.startsWith('Not_') && k !== 'Notateur') ? k.substring(4) : k);
+    
+    let csv = headerRow.join(";") + "\n";
     appObservations.forEach(o => { csv += finalKeys.map(k => o[k] === undefined ? "" : o[k]).join(";") + "\n"; });
     const essai = currentEssai || "Essai"; const date = document.getElementById('custom-date').value || new Date().toISOString().split('T')[0]; const notateur = document.getElementById('type-notation-session').value || "Notateur"; const sanitize = (s) => s.replace(/[^a-z0-9]/gi, '_'); const filename = `${sanitize(essai)}_${sanitize(date)}_${sanitize(notateur)}.csv`;
     const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download=filename; a.click();
@@ -2609,6 +2739,7 @@ window.savePhotoState = (code) => {
 
 // --- PHOTO LOGIC ---
 window.triggerPhoto = (code) => {
+    if (!parcelleValideeCode) return alert(getT("alert-valider-parcelle"));
     document.getElementById('file-input-' + code).click();
 };
 
@@ -2703,6 +2834,41 @@ function updateZenHeader() {
         document.getElementById('zen-title').textContent = `Parcelle ${num}`;
         document.getElementById('zen-subtitle').textContent = variete;
         document.getElementById('zen-rep').textContent = `${getT('rep')} ${rep}`;
+
+        // APERCU DE LA DONNEE INTERACTIVE EN MODE FOCUS
+        const previewEl = document.getElementById('zen-interactive-preview');
+        const isInteractive = document.getElementById('interactive-mode-toggle').checked;
+        const selectedDataKey = document.getElementById('interactive-data-select').value;
+        
+        if (isInteractive && selectedDataKey && externalData && externalData.length > 0) {
+            const maxDays = parseInt(document.getElementById('interactive-days-input').value) || 0;
+            const notatorSelect = document.getElementById('interactive-notator-select').value;
+            const today = new Date(); today.setHours(0,0,0,0);
+            
+            let matches = externalData.filter(d => d.ESSAI === currentEssai && String(d.Parcelle).padStart(3,'0') === String(num).padStart(3,'0'));
+            if (notatorSelect !== "") matches = matches.filter(d => d.Notateur === notatorSelect);
+            
+            const recentMatches = matches.filter(d => {
+                if(!d.Date) return false;
+                const obsDate = new Date(d.Date); obsDate.setHours(0,0,0,0);
+                return Math.ceil(Math.abs(today - obsDate) / (86400000)) <= maxDays;
+            });
+            
+            const validMatches = recentMatches.filter(d => d[selectedDataKey] !== undefined && d[selectedDataKey] !== null && String(d[selectedDataKey]).trim() !== "");
+            validMatches.sort((a,b) => { const dA = new Date(a.Date+(a.Heure?"T"+a.Heure:"")); const dB = new Date(b.Date+(b.Heure?"T"+b.Heure:"")); return dB - dA; });
+
+            if (validMatches.length > 0) {
+                let val = validMatches[0][selectedDataKey];
+                if (typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}$/)) { val = val.split('-')[2]+"/"+val.split('-')[1]; }
+                let label = selectedDataKey.startsWith('Not_') ? selectedDataKey.substring(4) : selectedDataKey;
+                previewEl.textContent = `${label} : ${val}`;
+                previewEl.style.display = 'inline-block';
+            } else {
+                previewEl.style.display = 'none';
+            }
+        } else {
+            previewEl.style.display = 'none';
+        }
     }
 }
 </script>
